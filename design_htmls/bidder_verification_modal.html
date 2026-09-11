@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bidder Deep-Dive Verification Modal — ABC Industries Ltd.</title>
+<!-- Tailwind CSS CDN with forms and container-queries plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            govNavy: {
+              DEFAULT: '#1e3a8a',
+              hover: '#172554',
+              subtle: '#eff6ff',
+            },
+            govEmerald: {
+              DEFAULT: '#10b981',
+              dark: '#047857',
+              subtle: '#ecfdf5',
+            }
+          }
+        }
+      }
+    };
+  </script>
+<style data-purpose="custom-scrollbar">
+    /* Subtle custom scrollbar for modal content */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-900/60 font-sans antialiased text-slate-800 min-h-screen flex items-center justify-center p-2 sm:p-4 lg:p-6 backdrop-blur-xs">
+<!-- BEGIN: ModalContainer -->
+<main class="w-full max-w-6xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[96vh]" data-purpose="compliance-verification-modal">
+<!-- BEGIN: ModalHeader -->
+<header class="border-b border-slate-200 px-6 py-4 bg-white" data-purpose="modal-header">
+<!-- Breadcrumb & API Status -->
+<div class="flex flex-wrap items-center justify-between gap-2 text-xs mb-2.5">
+<div class="flex items-center space-x-1.5 text-slate-500 font-medium">
+<span>Tender: <span class="font-mono text-slate-700">GEM/2026/B/489201</span></span>
+<span class="text-slate-300">›</span>
+<span class="text-slate-900 font-semibold">Bidder Technical &amp; Statutory Compliance Deep-Dive</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-medium text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          Live GeM API Sync: Active
+        </div>
+</div>
+<!-- Bidder Identity & Score Badge Strip -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div>
+<div class="flex flex-wrap items-center gap-2.5">
+<h1 class="text-2xl font-bold tracking-tight text-slate-900">ABC Industries Ltd.</h1>
+<span class="px-2 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">L-1 Bidder</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+<svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+              Statutory Verified
+            </span>
+</div>
+<div class="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-slate-500 mt-1.5 font-mono">
+<span><strong class="text-slate-600 font-sans font-medium">GSTIN:</strong> 27AAACA1234A1Z5</span>
+<span class="text-slate-300">•</span>
+<span><strong class="text-slate-600 font-sans font-medium">GeM Seller ID:</strong> GEM-SLR-9821</span>
+<span class="text-slate-300">•</span>
+<span><strong class="text-slate-600 font-sans font-medium">PAN:</strong> AAACA1234A</span>
+<span class="text-slate-300">•</span>
+<span><strong class="text-slate-600 font-sans font-medium">Udyam:</strong> UDYAM-MH-02-0045812</span>
+</div>
+</div>
+<!-- Compliance Score Card & Actions -->
+<div class="flex items-center space-x-3">
+<div class="border border-emerald-200 bg-emerald-50/40 rounded-lg px-3.5 py-1.5 text-right flex items-center gap-3">
+<div>
+<p class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Compliance Index</p>
+<div class="flex items-baseline justify-end gap-1">
+<span class="text-2xl font-extrabold text-emerald-600">92</span>
+<span class="text-xs font-semibold text-slate-400">/ 100</span>
+</div>
+</div>
+<div class="h-7 w-[1px] bg-emerald-200"></div>
+<span class="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wide bg-emerald-100 text-emerald-800 border border-emerald-300">
+              Low Risk
+            </span>
+</div>
+<!-- Audit Dossier Button -->
+<button class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-xs" type="button">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            Audit Dossier
+          </button>
+<!-- Dismiss / Close Modal -->
+<button aria-label="Close dialog" class="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+</header>
+<!-- END: ModalHeader -->
+<!-- BEGIN: ScrollableBodyContent -->
+<div class="overflow-y-auto flex-1 p-6 space-y-6 bg-slate-50/50">
+<!-- BEGIN: FivePillarStrip -->
+<!-- 5-pillar statutory compliance cards -->
+<section aria-label="Statutory Verification Pillars" data-purpose="statutory-pillars-grid">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+<!-- Pillar 1: GSTN Status -->
+<div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+<span class="font-medium text-slate-600">1. GSTN STATUS</span>
+<svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<p class="font-bold text-sm text-slate-900 leading-tight">Active &amp; Regular</p>
+<p class="text-[11px] text-slate-500 mt-1">Filed to July 2026 • 0 Defaults</p>
+</div>
+<!-- Pillar 2: Udyam MSME -->
+<div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+<span class="font-medium text-slate-600">2. UDYAM MSME</span>
+<svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<p class="font-bold text-sm text-slate-900 leading-tight">Medium Enterprise</p>
+<p class="text-[11px] text-slate-500 mt-1">Manufacturing NIC-2819</p>
+</div>
+<!-- Pillar 3: Income Tax / PAN -->
+<div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+<span class="font-medium text-slate-600">3. INCOME TAX / PAN</span>
+<svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<p class="font-bold text-sm text-slate-900 leading-tight">ITR-V Validated</p>
+<p class="text-[11px] text-slate-500 mt-1">AY 24-25 &amp; 25-26 Matched</p>
+</div>
+<!-- Pillar 4: EPFO Standing -->
+<div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+<span class="font-medium text-slate-600">4. EPFO STANDING</span>
+<svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<p class="font-bold text-sm text-slate-900 leading-tight">248 Active Members</p>
+<p class="text-[11px] text-slate-500 mt-1">ECR Cleared • No Notice</p>
+</div>
+<!-- Pillar 5: Debarment Check -->
+<div class="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+<span class="font-medium text-slate-600">5. DEBARMENT CHECK</span>
+<svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<p class="font-bold text-sm text-slate-900 leading-tight">Clean Central Record</p>
+<p class="text-[11px] text-slate-500 mt-1">Checked 14 Public Portals</p>
+</div>
+</div>
+</section>
+<!-- END: FivePillarStrip -->
+<!-- BEGIN: CrossValidationMatrix -->
+<section class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs" data-purpose="automated-cross-validation-matrix">
+<!-- Matrix Subheader -->
+<div class="flex flex-wrap items-center justify-between px-5 py-3 border-b border-slate-200 bg-slate-50/80">
+<div class="flex items-center gap-2">
+<svg class="w-4 h-4 text-govNavy" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<h2 class="text-xs font-bold uppercase tracking-wider text-slate-800">
+              Automated Cross-Validation Matrix (Bid Document vs. Government Registry)
+            </h2>
+</div>
+<span class="text-[11px] font-mono font-medium text-slate-500">
+            Engine Rule v2.4 (GFR 2017 compliant)
+          </span>
+</div>
+<!-- Matrix Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs" data-purpose="validation-table">
+<thead>
+<tr class="bg-slate-100/75 border-b border-slate-200 text-slate-600 font-semibold uppercase text-[10px] tracking-wider">
+<th class="py-2.5 px-4" scope="col">Verification Check Item</th>
+<th class="py-2.5 px-4" scope="col">Submitted Bid Value</th>
+<th class="py-2.5 px-4" scope="col">Live Portal API Value</th>
+<th class="py-2.5 px-4" scope="col">Variance / Delta</th>
+<th class="py-2.5 px-4 text-right" scope="col">Confidence &amp; Result</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 font-normal">
+<!-- Check 1: Entity Legal Name -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 px-4">
+<p class="font-medium text-slate-900 text-xs">Entity Legal Name</p>
+<p class="text-[11px] text-slate-400 font-mono">MCA / ROC Registry Match</p>
+</td>
+<td class="py-3 px-4 font-medium text-slate-800">ABC Industries Limited</td>
+<td class="py-3 px-4 font-mono font-medium text-slate-700">ABC INDUSTRIES LIMITED</td>
+<td class="py-3 px-4">
+<span class="text-emerald-700 font-medium text-xs">0.0% variance (Exact Match)</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
+                    100% • Verified
+                  </span>
+</td>
+</tr>
+<!-- Check 2: Average Turnover -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 px-4">
+<p class="font-medium text-slate-900 text-xs">Average Turnover (FY 24-25)</p>
+<p class="text-[11px] text-slate-400 font-mono">ITR-6 Form &amp; Audited Balance Sheet</p>
+</td>
+<td class="py-3 px-4 font-medium text-slate-800">₹48.60 Crore</td>
+<td class="py-3 px-4 font-mono text-slate-700">₹48.58 Crore (ITR / MCA)</td>
+<td class="py-3 px-4">
+<span class="text-emerald-700 font-medium text-xs">+0.04% <span class="text-[10px] text-slate-400">(Allowable ≤ 1.0%)</span></span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
+                    99.8% • Validated
+                  </span>
+</td>
+</tr>
+<!-- Check 3: MSME Classification -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 px-4">
+<p class="font-medium text-slate-900 text-xs">MSME Classification</p>
+<p class="text-[11px] text-slate-400 font-mono">Udyam Registration Portal</p>
+</td>
+<td class="py-3 px-4 font-medium text-slate-800">Medium Enterprise</td>
+<td class="py-3 px-4 font-mono text-slate-700">Medium (Inv: ₹18.2 Cr, Turn: ₹48.58 Cr)</td>
+<td class="py-3 px-4">
+<span class="text-emerald-700 font-medium text-xs">Category Concurrence</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
+                    100% • Verified
+                  </span>
+</td>
+</tr>
+<!-- Check 4: PAN Status & Linking -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 px-4">
+<p class="font-medium text-slate-900 text-xs">PAN Status &amp; Linking</p>
+<p class="text-[11px] text-slate-400 font-mono">NSDL / Income Tax API</p>
+</td>
+<td class="py-3 px-4 font-mono font-medium text-slate-800">AAACA1234A</td>
+<td class="py-3 px-4 font-mono text-slate-700">AAACA1234A (Active / Operative)</td>
+<td class="py-3 px-4">
+<span class="text-emerald-700 font-medium text-xs">Identical PAN-Aadhaar Seeded</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
+                    100% • Verified
+                  </span>
+</td>
+</tr>
+<!-- Check 5: Central Debarment & Blacklist -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 px-4">
+<p class="font-medium text-slate-900 text-xs">Central Debarment &amp; Blacklist</p>
+<p class="text-[11px] text-slate-400 font-mono">CIPP, CVC &amp; GeM Ban Repository</p>
+</td>
+<td class="py-3 px-4 font-medium text-slate-800">Declaration: Not Debarred</td>
+<td class="py-3 px-4 font-mono text-slate-700">0 Adverse Records Across 14 Portals</td>
+<td class="py-3 px-4">
+<span class="text-emerald-700 font-medium text-xs">Clean Background</span>
+</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
+                    Zero Risk • Clear
+                  </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- END: CrossValidationMatrix -->
+<!-- BEGIN: BottomVerificationPanels -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-5" data-purpose="forensics-and-recommendation-split">
+<!-- Left Column: Document Forensics & Bounding OCR (7 cols) -->
+<article class="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col justify-between" data-purpose="document-forensics-panel">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<svg class="w-4 h-4 text-govNavy" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">Document Forensics &amp; Bounding OCR</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-semibold">
+                OCR Confidence: 98.4%
+              </span>
+</div>
+<!-- Visual Simulated OCR Document Preview -->
+<div class="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3.5 font-mono text-[11px] text-slate-600 relative">
+<div class="flex justify-between items-center text-[10px] text-slate-400 border-b border-slate-200/80 pb-1.5 mb-2.5 uppercase tracking-wider">
+<span>Government of India – Ministry of MSME</span>
+<span>UDYAM-MH-02-0045812</span>
+</div>
+<!-- OCR Bounding Box 1 -->
+<div class="border border-dashed border-blue-500 bg-blue-50/40 p-2 rounded mb-2 relative">
+<div class="text-[9px] font-semibold tracking-wider text-blue-600 uppercase mb-0.5">
+                  Identified Legal Entity [Confidence: 99.4%]
+                </div>
+<div class="text-slate-900 font-bold">
+                  ABC INDUSTRIES LIMITED (Reg: 12/04/2016)
+                </div>
+</div>
+<!-- OCR Bounding Box 2 -->
+<div class="border border-dashed border-emerald-500 bg-emerald-50/40 p-2 rounded mb-2.5 relative">
+<div class="text-[9px] font-semibold tracking-wider text-emerald-700 uppercase mb-0.5">
+                  Manufacturing Class &amp; Scale [Confidence: 97.9%]
+                </div>
+<div class="text-slate-900 font-bold">
+                  Enterprise Scale: MEDIUM • Major Activity: MANUFACTURING
+                </div>
+</div>
+<!-- Document Footnote & Tamper Verification -->
+<div class="flex flex-wrap items-center justify-between text-[10px] text-slate-500 pt-2 border-t border-slate-200/80">
+<div class="flex items-center gap-1.5 text-emerald-700 font-sans font-medium">
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+                  e-Sign Validated (NIC CA Cert)
+                </div>
+<span class="text-slate-400">Tamper Hash: 4e9a8f...39bc</span>
+</div>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between text-[11px] text-slate-500">
+<span>Layout Engine: <span class="font-mono text-slate-700 font-medium">LayoutLMv3-GovIN</span></span>
+<span>Font Substitution: <strong class="font-normal text-emerald-700">None Detected</strong></span>
+</div>
+</article>
+<!-- Right Column: AI Recommendation Engine & Cryptographic Audit Trail (5 cols) -->
+<article class="lg:col-span-5 bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col justify-between" data-purpose="recommendation-audit-panel">
+<div>
+<!-- AI Recommendation Section -->
+<div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-100">
+<svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+<h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">AI Recommendation Engine</h3>
+</div>
+<p class="text-xs text-slate-700 leading-relaxed font-sans">
+<strong class="font-bold text-slate-900">Recommended for Technical Qualification.</strong> ABC Industries Ltd. satisfies all statutory compliance mandates under <span class="font-semibold text-slate-900">GFR Rule 144(xi)</span> and <span class="font-semibold text-slate-900">Make in India (PPO 2017)</span>. All 5 connected public registries returned zero critical variances.
+            </p>
+</div>
+<!-- Cryptographic Audit Trail -->
+<div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50 rounded-lg p-3" data-purpose="cryptographic-trail">
+<div class="flex items-center justify-between text-[10px] text-slate-500 uppercase tracking-wider mb-2">
+<span class="font-bold text-slate-700">Cryptographic Audit Trail</span>
+<span class="font-mono text-govNavy font-semibold">SHA-256</span>
+</div>
+<div class="space-y-1 text-[11px] font-mono">
+<div class="flex items-start gap-1">
+<span class="text-slate-400 font-sans text-[10px] uppercase w-16 shrink-0">Doc Hash:</span>
+<span class="text-slate-700 break-all leading-tight select-all">8f9b23e80d46511a54c379a2f77e6c71c4c1a26087b</span>
+</div>
+<div class="flex items-start gap-1">
+<span class="text-slate-400 font-sans text-[10px] uppercase w-16 shrink-0">Timestamp:</span>
+<span class="text-slate-700 font-medium">2026-09-06T14:32:18+05:30</span>
+</div>
+<div class="flex items-start gap-1">
+<span class="text-slate-400 font-sans text-[10px] uppercase w-16 shrink-0">Audited By:</span>
+<span class="text-slate-700">Automated Engine v4.8 (Authenticated)</span>
+</div>
+</div>
+</div>
+</article>
+</section>
+<!-- END: BottomVerificationPanels -->
+</div>
+<!-- END: ScrollableBodyContent -->
+<!-- BEGIN: ModalFooter -->
+<footer class="border-t border-slate-200 px-6 py-3.5 bg-white flex flex-wrap items-center justify-between gap-4" data-purpose="modal-action-bar">
+<!-- Sync Status Timestamp -->
+<div class="flex items-center gap-2 text-xs text-slate-500 font-mono">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>Last Registry Sync: <strong class="font-sans font-medium text-slate-700">Sept 6, 2026 14:32 IST</strong></span>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-wrap items-center gap-2.5">
+<button class="px-3.5 py-2 text-xs font-semibold rounded-md border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-300 transition-colors shadow-2xs" type="button">
+          Seek Clarification (GeM)
+        </button>
+<button class="px-3.5 py-2 text-xs font-semibold rounded-md border border-rose-200 text-rose-700 bg-rose-50/50 hover:bg-rose-100 hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-300 transition-colors" type="button">
+          Reject Compliance
+        </button>
+<button class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-md text-white bg-govNavy hover:bg-govNavy-hover focus:outline-none focus:ring-2 focus:ring-govNavy/40 transition-colors shadow-sm" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+          Approve Technical Compliance
+        </button>
+</div>
+</footer>
+<!-- END: ModalFooter -->
+</main>
+<!-- END: ModalContainer -->
+</body></html>
