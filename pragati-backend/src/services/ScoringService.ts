@@ -1,5 +1,5 @@
 import { VerificationResult } from './ComplianceEngineService';
-
+import { recommendationService } from './RecommendationService';
 export interface ScoringResult {
   score: number;
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -7,7 +7,7 @@ export interface ScoringResult {
 }
 
 export class ScoringService {
-  public calculateScoreAndRisk(verificationResults: VerificationResult[]): ScoringResult {
+  public async calculateScoreAndRisk(verificationResults: VerificationResult[]): Promise<ScoringResult> {
     let score = 100;
     const mismatchDeduction = 15;
     const failureDeduction = 40;
@@ -34,15 +34,12 @@ export class ScoringService {
     else if (score >= 40) riskLevel = 'HIGH';
     else riskLevel = 'CRITICAL';
 
-    // AI Recommendation (Mocked for now)
-    let recommendation = '';
-    if (riskLevel === 'LOW') {
-      recommendation = 'Bidder demonstrates high compliance. All major checks passed.';
-    } else if (riskLevel === 'MEDIUM') {
-      recommendation = `Bidder has ${mismatchCount} mismatches. Recommend manual review of discrepancies.`;
-    } else {
-      recommendation = `Critical compliance failures detected (${failureCount} failures, ${mismatchCount} mismatches). Proceed with caution or disqualify.`;
-    }
+    const recommendation = await recommendationService.generateRecommendation(
+      score,
+      riskLevel,
+      mismatchCount,
+      failureCount
+    );
 
     return {
       score,

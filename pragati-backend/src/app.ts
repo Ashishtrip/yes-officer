@@ -11,8 +11,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Setup routes
+import authRoutes from './routes/authRoutes';
 import { bidRoutes } from './routes/bidRoutes';
+import documentRoutes from './routes/documentRoutes';
+
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/bids', bidRoutes);
+app.use('/api/v1/documents', documentRoutes);
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {
