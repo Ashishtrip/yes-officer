@@ -45,7 +45,17 @@ function convertHtmlToJsx(html) {
   return jsx;
 }
 
-const inputHtml = fs.readFileSync('design_htmls/tenders_bids_management.html', 'utf8');
+const args = process.argv.slice(2);
+if (args.length < 3) {
+  console.error("Usage: node convert.js <input_html_path> <output_tsx_path> <component_name>");
+  process.exit(1);
+}
+
+const inputPath = args[0];
+const outputPath = args[1];
+const componentName = args[2];
+
+const inputHtml = fs.readFileSync(inputPath, 'utf8');
 const jsxBody = convertHtmlToJsx(inputHtml);
 
 const finalComponent = `"use client";
@@ -53,7 +63,7 @@ const finalComponent = `"use client";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function TendersManagement() {
+export default function ${componentName}() {
   return (
     <>
       ${jsxBody}
@@ -62,7 +72,9 @@ export default function TendersManagement() {
 }
 `;
 
-fs.mkdirSync('src/app/tenders', { recursive: true });
-fs.writeFileSync('src/app/tenders/page.tsx', finalComponent);
+const path = require('path');
+const outDir = path.dirname(outputPath);
+fs.mkdirSync(outDir, { recursive: true });
+fs.writeFileSync(outputPath, finalComponent);
 
-console.log("Conversion successful");
+console.log(\`Conversion successful: \${outputPath}\`);
