@@ -7,17 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-
-// Mock data since we don't have tender APIs fully implemented
-const mockTenders = [
-  { id: 'TND-2023-001', title: 'Road Construction - Highway 45', department: 'Public Works', deadline: '2023-11-15', status: 'ACTIVE' },
-  { id: 'TND-2023-002', title: 'Supply of Medical Equipment', department: 'Health Ministry', deadline: '2023-10-30', status: 'CLOSED' },
-  { id: 'TND-2023-003', title: 'IT Infrastructure Upgrade', department: 'IT Cell', deadline: '2023-12-01', status: 'ACTIVE' },
-];
+import { api } from '@/services/api';
 
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
+  const [tenders, setTenders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -30,6 +26,20 @@ export default function Dashboard() {
     if (userStr) {
       setUser(JSON.parse(userStr));
     }
+
+    // Fetch tenders
+    api.getTenders()
+      .then(res => {
+        if (res.success) {
+          setTenders(res.data.tenders);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load tenders', err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [router]);
 
   const handleLogout = () => {
@@ -38,7 +48,7 @@ export default function Dashboard() {
     router.push('/login');
   };
 
-  if (!user) return <div className="p-8">Loading...</div>;
+  if (!user || loading) return <div className="p-8">Loading Dashboard...</div>;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -102,11 +112,11 @@ export default function Dashboard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {mockTenders.map((tender) => (
+                {tenders.map((tender) => (
                   <TableRow key={tender.id}>
-                    <TableCell className="font-medium">{tender.id}</TableCell>
+                    <TableCell className="font-medium">{tender.gem_tender_id}</TableCell>
                     <TableCell>{tender.title}</TableCell>
-                    <TableCell>{tender.department}</TableCell>
+                    <TableCell>{tender.category}</TableCell>
                     <TableCell>
                       <Badge variant={tender.status === 'ACTIVE' ? 'default' : 'secondary'}>
                         {tender.status}
@@ -114,7 +124,7 @@ export default function Dashboard() {
                     </TableCell>
                     <TableCell className="text-right">
                       <Link href={`/tender/${tender.id}`}>
-                        <Button variant="ghost" size="sm">View Bidders</Button>
+                        <Button variant="ghost" size="sm">View {tender._count?.bids || 0} Bidders</Button>
                       </Link>
                     </TableCell>
                   </TableRow>
