@@ -9,23 +9,17 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { ChevronLeft } from 'lucide-react';
 import { api } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function TenderDetail() {
   const router = useRouter();
   const params = useParams();
-  const [user, setUser] = useState<any>(null);
+  const { user } = useAuth();
   const [tender, setTender] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingTender, setLoadingTender] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-    const userStr = localStorage.getItem('user');
-    if (userStr) setUser(JSON.parse(userStr));
-
     if (params.id) {
       api.getTenderById(params.id as string)
         .then(res => {
@@ -34,20 +28,21 @@ export default function TenderDetail() {
           }
         })
         .catch(err => console.error('Failed to load tender', err))
-        .finally(() => setLoading(false));
+        .finally(() => setLoadingTender(false));
     }
-  }, [router, params.id]);
+  }, [params.id]);
 
-  if (!user || loading) return <div className="p-8">Loading Tender details...</div>;
+  if (loadingTender) return <div className="p-8">Loading Tender details...</div>;
   if (!tender) return <div className="p-8 text-red-500">Tender not found.</div>;
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-slate-50">
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold">Yes, Officer</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-600">Welcome, {user.name}</span>
+            <span className="text-sm text-slate-600">Welcome, {user?.name}</span>
           </div>
         </div>
       </header>
@@ -111,5 +106,6 @@ export default function TenderDetail() {
         </Card>
       </main>
     </div>
+    </ProtectedRoute>
   );
 }

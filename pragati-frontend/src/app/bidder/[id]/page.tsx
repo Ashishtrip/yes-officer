@@ -10,25 +10,19 @@ import { ChevronLeft, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { api } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function BidderDetail() {
   const router = useRouter();
   const params = useParams();
-  const [user, setUser] = useState<any>(null);
+  const { user } = useAuth();
   const [bid, setBid] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingBid, setLoadingBid] = useState(true);
   const [remarks, setRemarks] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-    const userStr = localStorage.getItem('user');
-    if (userStr) setUser(JSON.parse(userStr));
-
     if (params.id) {
       api.getBidDetails(params.id as string)
         .then(res => {
@@ -37,9 +31,9 @@ export default function BidderDetail() {
           }
         })
         .catch(err => console.error('Failed to fetch bid details', err))
-        .finally(() => setLoading(false));
+        .finally(() => setLoadingBid(false));
     }
-  }, [router, params.id]);
+  }, [params.id]);
 
   const handleDecision = async (decision: 'APPROVED' | 'REJECTED') => {
     if (!remarks.trim()) {
@@ -58,16 +52,17 @@ export default function BidderDetail() {
     }
   };
 
-  if (!user || loading) return <div className="p-8">Loading Bidder details...</div>;
+  if (loadingBid) return <div className="p-8">Loading Bidder details...</div>;
   if (!bid) return <div className="p-8 text-red-500">Bid not found.</div>;
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-slate-50 pb-12">
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold">Yes, Officer</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-600">Welcome, {user.name}</span>
+            <span className="text-sm text-slate-600">Welcome, {user?.name}</span>
           </div>
         </div>
       </header>
@@ -188,5 +183,6 @@ export default function BidderDetail() {
         </div>
       </main>
     </div>
+    </ProtectedRoute>
   );
 }

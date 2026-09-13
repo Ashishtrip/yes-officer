@@ -1,32 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { api } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function Dashboard() {
-  const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const { user, logout } = useAuth();
   const [tenders, setTenders] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingTenders, setLoadingTenders] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-    
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      setUser(JSON.parse(userStr));
-    }
-
     // Fetch tenders
     api.getTenders()
       .then(res => {
@@ -38,29 +27,22 @@ export default function Dashboard() {
         console.error('Failed to load tenders', err);
       })
       .finally(() => {
-        setLoading(false);
+        setLoadingTenders(false);
       });
-  }, [router]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    router.push('/login');
-  };
-
-  if (!user || loading) return <div className="p-8">Loading Dashboard...</div>;
+  }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold">Yes, Officer</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-600">Welcome, {user.name} ({user.role})</span>
-            <Button variant="outline" size="sm" onClick={handleLogout}>Logout</Button>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-slate-50">
+        <header className="bg-white border-b">
+          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 className="text-xl font-bold">Yes, Officer</h1>
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-slate-600">Welcome, {user?.name} ({user?.role})</span>
+              <Button variant="outline" size="sm" onClick={logout}>Logout</Button>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
       
       <main className="container mx-auto px-4 py-8 space-y-8">
         <div>
@@ -135,5 +117,6 @@ export default function Dashboard() {
         </Card>
       </main>
     </div>
+    </ProtectedRoute>
   );
 }
