@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tender {
+  id               String   @id @default(uuid())
+  gem_tender_id    String   @unique
+  title            String
+  category         String
+  bid_end_date     DateTime
+  compliance_rules Json
+  status           String
+  created_at       DateTime @default(now())
+  bids             Bid[]
+}
+
+model Bidder {
+  id             String   @id @default(uuid())
+  entity_name    String
+  pan            String
+  gstin          String
+  udyam_number   String?
+  gem_seller_id  String
+  entity_type    String
+  created_at     DateTime @default(now())
+  bid            Bid?
+}
+
+model Bid {
+  id                String               @id @default(uuid())
+  tender_id         String
+  bidder_id         String               @unique
+  status            String
+  compliance_score  Float?
+  risk_level        String?
+  ai_recommendation String?
+  po_decision       String?
+  po_comments       String?
+  created_at        DateTime             @default(now())
+
+  tender            Tender               @relation(fields: [tender_id], references: [id])
+  bidder            Bidder               @relation(fields: [bidder_id], references: [id])
+  documents         Document[]
+  verificationChecks VerificationCheck[]
+}
+
+model Document {
+  id                        String   @id @default(uuid())
+  bid_id                    String
+  document_type             String
+  file_path                 String
+  extracted_fields          Json?
+  classification_label      String?
+  classification_confidence Float?
+  uploaded_at               DateTime @default(now())
+
+  bid                       Bid      @relation(fields: [bid_id], references: [id])
+}
+
+model VerificationCheck {
+  id                 String   @id @default(uuid())
+  bid_id             String
+  check_type         String
+  portal_source      String
+  status             String
+  submitted_value    Json?
+  verified_value     Json?
+  match_result       String?
+  discrepancy_detail String?
+  verified_at        DateTime @default(now())
+
+  bid                Bid      @relation(fields: [bid_id], references: [id])
+}
