@@ -24,7 +24,7 @@ export class BidController extends BaseController {
     const { id } = req.params;
     try {
       const bid = await prisma.bid.findUnique({
-        where: { id },
+        where: { id: id as string },
         include: {
           tender: true,
           bidder: true,
@@ -34,13 +34,13 @@ export class BidController extends BaseController {
       });
       
       if (!bid) {
-        return this.handleError(res, new Error('Bid not found'), 'Bid not found', 404);
+        return this.handleError(new Error('Bid not found'), res, 'Bid not found', 404);
       }
       
       this.handleSuccess(res, { bid });
     } catch (error) {
       console.error('Error fetching bid details:', error);
-      this.handleError(res, error as Error, 'Failed to fetch bid details');
+      this.handleError(error, res, 'Failed to fetch bid details');
     }
   };
 
@@ -50,7 +50,7 @@ export class BidController extends BaseController {
     
     try {
       const bid = await prisma.bid.update({
-        where: { id },
+        where: { id: id as string },
         data: {
           po_decision: decision,
           po_comments: comments,
@@ -61,7 +61,7 @@ export class BidController extends BaseController {
       // Log action to audit service
       await auditService.logAction({
         action: `PO_DECISION_${decision}`,
-        bid_id: id,
+        bid_id: id as string,
         tender_id: bid.tender_id,
         details: { comments, decision }
       });
@@ -69,7 +69,7 @@ export class BidController extends BaseController {
       this.handleSuccess(res, { bid, message: 'Decision submitted successfully' });
     } catch (error) {
       console.error('Error submitting PO decision:', error);
-      this.handleError(res, error as Error, 'Failed to submit PO decision');
+      this.handleError(error, res, 'Failed to submit PO decision');
     }
   };
 
@@ -136,7 +136,7 @@ export class BidController extends BaseController {
       }, 201);
     } catch (error) {
       console.error('Error saving bid to DB:', error);
-      this.handleError(res, error as Error, 'Failed to ingest bid');
+      this.handleError(error, res, 'Failed to ingest bid');
     }
   };
 }

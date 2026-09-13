@@ -9,12 +9,12 @@ export abstract class BaseController {
     });
   }
 
-  protected handleError(error: unknown, res: Response, context: string): void {
+  protected handleError(error: unknown, res: Response, context: string, statusCode: number = 400): void {
     console.error(`Error in ${context}:`, error);
     // Sentry.captureException(error);
     
     if (error instanceof Error) {
-      res.status(400).json({
+      res.status(statusCode).json({
         success: false,
         error: error.message,
       });
