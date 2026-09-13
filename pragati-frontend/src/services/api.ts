@@ -18,7 +18,25 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
+// Response interceptor to handle 401 errors
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const api = {
+  // Auth
+  getMe: () => apiClient.get('/auth/me').then(res => res.data),
+
   // Tenders
   getTenders: () => apiClient.get('/tenders').then(res => res.data),
   getTenderById: (id: string) => apiClient.get(`/tenders/${id}`).then(res => res.data),
