@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import { BaseController } from './BaseController';
 import { documentProcessingService } from '../services/DocumentProcessingService';
+import { auditService } from '../services/AuditService';
+import { storageService } from '../services/StorageService';
 import fs from 'fs';
+import path from 'path';
 
 export class DocumentController extends BaseController {
   public uploadDocument = async (req: Request, res: Response): Promise<void> => {
@@ -16,10 +19,26 @@ export class DocumentController extends BaseController {
 
       const extractionResult = await documentProcessingService.processDocument(filePath, mimeType);
 
-      // Clean up uploaded file
+      // Determine a unique object key for MinIO
+      const fileName = path.basename(filePath);
+      const destinationKey = `uploads/${Date.now()}_${fileName}`;
+
+      // Upload original file to MinIO
+      await storageService.uploadFile(filePath, destinationKey, mimeType);
+
+      // Clean up uploaded local temporary file
       fs.unlinkSync(filePath);
 
-      this.handleSuccess(res, extractionResult);
+      // Log the document upload action
+      await auditService.logAction({
+        action: 'DOCUMENT_UPLOADED',
+        details: { mimeType, destinationKey, extractionSuccess: !!extractionResult },
+      });
+
+      this.handleSuccess(res, {
+        ...extractionResult,
+        storageKey: destinationKey
+      });
     } catch (error) {
       this.handleError(error, res, 'DocumentController.uploadDocument');
     }

@@ -3,6 +3,7 @@ import { BaseController } from './BaseController';
 import { ComplianceEngineService } from '../services/ComplianceEngineService';
 import { ScoringService } from '../services/ScoringService';
 import { PortalIntegrationService } from '../services/PortalIntegrationService';
+import { auditService } from '../services/AuditService';
 
 export class BidController extends BaseController {
   private complianceEngine: ComplianceEngineService;
@@ -36,6 +37,14 @@ export class BidController extends BaseController {
       aiRecommendation: scoringResult.recommendation,
       createdAt: new Date(),
     };
+
+    // Log the bid ingestion action
+    await auditService.logAction({
+      action: 'BID_INGESTED',
+      bid_id: savedBid.id,
+      tender_id: tenderId,
+      details: { bidder, complianceScore: scoringResult.score, riskLevel: scoringResult.riskLevel },
+    });
 
     this.handleSuccess(res, {
       bid: savedBid,
