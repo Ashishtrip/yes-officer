@@ -19,7 +19,7 @@ export class DocumentProcessingService {
       };
     }
 
-    const name = \`projects/\${projectId}/locations/\${location}/processors/\${processorId}\`;
+    const name = `projects/${projectId}/locations/${location}/processors/${processorId}`;
 
     // Read the file into memory.
     const imageFile = fs.readFileSync(filePath);
