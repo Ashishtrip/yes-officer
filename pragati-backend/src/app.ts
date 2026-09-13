@@ -14,10 +14,12 @@ app.use(express.urlencoded({ extended: true }));
 import authRoutes from './routes/authRoutes';
 import { bidRoutes } from './routes/bidRoutes';
 import documentRoutes from './routes/documentRoutes';
+import auditRoutes from './routes/auditRoutes';
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/bids', bidRoutes);
 app.use('/api/v1/documents', documentRoutes);
+app.use('/api/v1/audit', auditRoutes);
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {
