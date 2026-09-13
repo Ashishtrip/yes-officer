@@ -23,7 +23,7 @@ export class BidController extends BaseController {
     const verificationResults = await this.complianceEngine.crossValidateBidder(bidder);
 
     // 2. Calculate score and risk
-    const scoringResult = this.scoringService.calculateScoreAndRisk(verificationResults);
+    const scoringResult = await this.scoringService.calculateScoreAndRisk(verificationResults);
 
     // 3. Save to database (mocked for now since Prisma client generation failed)
     const savedBid = {
@@ -37,10 +37,10 @@ export class BidController extends BaseController {
       createdAt: new Date(),
     };
 
-    this.sendSuccess(res, {
+    this.handleSuccess(res, {
       bid: savedBid,
       verificationResults,
       scoringResult
-    }, 'Bid ingested and evaluated successfully', 201);
+    }, 201);
   };
 }
