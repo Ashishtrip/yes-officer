@@ -15,11 +15,13 @@ import authRoutes from './routes/authRoutes';
 import { bidRoutes } from './routes/bidRoutes';
 import documentRoutes from './routes/documentRoutes';
 import auditRoutes from './routes/auditRoutes';
+import { tenderRoutes } from './routes/tenderRoutes';
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/bids', bidRoutes);
 app.use('/api/v1/documents', documentRoutes);
 app.use('/api/v1/audit', auditRoutes);
+app.use('/api/v1/tenders', tenderRoutes);
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {
