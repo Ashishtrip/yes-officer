@@ -1,8 +1,8 @@
-import { ScoringService } from './ScoringService';
-import { recommendationService } from './RecommendationService';
-import { VerificationResult } from './ComplianceEngineService';
+import { ScoringService } from '../ScoringService';
+import { recommendationService } from '../RecommendationService';
+import { VerificationResult } from '../ComplianceEngineService';
 
-jest.mock('./RecommendationService', () => ({
+jest.mock('../RecommendationService', () => ({
   recommendationService: {
     generateRecommendation: jest.fn(),
   },
@@ -20,8 +20,8 @@ describe('ScoringService', () => {
     (recommendationService.generateRecommendation as jest.Mock).mockResolvedValue('All good');
 
     const results: VerificationResult[] = [
-      { checkType: 'PAN', status: 'MATCH', matchedValue: 'ABCDE1234F' } as VerificationResult,
-      { checkType: 'GSTIN', status: 'MATCH', matchedValue: '22ABCDE1234F1Z5' } as VerificationResult,
+      { checkType: 'PAN', status: 'MATCH', matchedValue: 'ABCDE1234F' } as unknown as VerificationResult,
+      { checkType: 'GSTIN', status: 'MATCH', matchedValue: '22ABCDE1234F1Z5' } as unknown as VerificationResult,
     ];
 
     const result = await scoringService.calculateScoreAndRisk(results);
@@ -36,8 +36,8 @@ describe('ScoringService', () => {
     (recommendationService.generateRecommendation as jest.Mock).mockResolvedValue('Review needed');
 
     const results: VerificationResult[] = [
-      { checkType: 'PAN', status: 'MISMATCH', matchedValue: 'ABCDE1234F' } as VerificationResult,
-      { checkType: 'GSTIN', status: 'MISMATCH', matchedValue: '22ABCDE1234F1Z5' } as VerificationResult,
+      { checkType: 'PAN', status: 'MISMATCH', matchedValue: 'ABCDE1234F' } as unknown as VerificationResult,
+      { checkType: 'GSTIN', status: 'MISMATCH', matchedValue: '22ABCDE1234F1Z5' } as unknown as VerificationResult,
     ]; // 100 - 15 - 15 = 70
 
     const result = await scoringService.calculateScoreAndRisk(results);
@@ -52,8 +52,8 @@ describe('ScoringService', () => {
     (recommendationService.generateRecommendation as jest.Mock).mockResolvedValue('High risk');
 
     const results: VerificationResult[] = [
-      { checkType: 'PAN', status: 'FAILED' } as VerificationResult,
-      { checkType: 'GSTIN', status: 'FAILED' } as VerificationResult,
+      { checkType: 'PAN', status: 'FAILED' } as unknown as VerificationResult,
+      { checkType: 'GSTIN', status: 'FAILED' } as unknown as VerificationResult,
     ]; // 100 - 40 - 40 = 20
 
     const result = await scoringService.calculateScoreAndRisk(results);
@@ -68,9 +68,9 @@ describe('ScoringService', () => {
     (recommendationService.generateRecommendation as jest.Mock).mockResolvedValue('Critical failure');
 
     const results: VerificationResult[] = [
-      { checkType: 'PAN', status: 'FAILED' } as VerificationResult,
-      { checkType: 'GSTIN', status: 'FAILED' } as VerificationResult,
-      { checkType: 'UDYAM', status: 'FAILED' } as VerificationResult,
+      { checkType: 'PAN', status: 'FAILED' } as unknown as VerificationResult,
+      { checkType: 'GSTIN', status: 'FAILED' } as unknown as VerificationResult,
+      { checkType: 'UDYAM', status: 'FAILED' } as unknown as VerificationResult,
     ]; // 100 - 120 = -20 -> 0
 
     const result = await scoringService.calculateScoreAndRisk(results);
