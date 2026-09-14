@@ -20,7 +20,7 @@ export class TenderController extends BaseController {
       this.handleSuccess(res, { tenders });
     } catch (error) {
       console.error('Error fetching tenders:', error);
-      this.handleError(res, error as Error, 'Failed to fetch tenders');
+      this.handleError(error, res, 'Failed to fetch tenders');
     }
   };
 
@@ -29,7 +29,7 @@ export class TenderController extends BaseController {
     
     try {
       const tender = await prisma.tender.findUnique({
-        where: { id },
+        where: { id: id as string },
         include: {
           bids: {
             include: {
@@ -40,13 +40,13 @@ export class TenderController extends BaseController {
       });
       
       if (!tender) {
-        return this.handleError(res, new Error('Tender not found'), 'Tender not found', 404);
+        return this.handleError(new Error('Tender not found'), res, 'Tender not found', 404);
       }
       
       this.handleSuccess(res, { tender });
     } catch (error) {
       console.error('Error fetching tender details:', error);
-      this.handleError(res, error as Error, 'Failed to fetch tender details');
+      this.handleError(error, res, 'Failed to fetch tender details');
     }
   };
 }
