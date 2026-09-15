@@ -328,12 +328,12 @@ export default function LoginPage() {
 </div>
 </div>
 <div className="grid grid-cols-6 gap-2 sm:gap-3">
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength="1" type="text" value="8"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength="1" type="text" value="4"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength="1" type="text" value="1"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength="1" type="text" value="9"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength="1" placeholder="•" type="text"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength="1" placeholder="•" type="text"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="8"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="4"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="1"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="9"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} placeholder="•" type="text"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} placeholder="•" type="text"/>
 </div>
 <div className="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-1">
 <span>Didn&apos;t receive code?</span>
