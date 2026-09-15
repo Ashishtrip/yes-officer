@@ -11,7 +11,7 @@ export default function TenderDetail() {
   const router = useRouter();
   const params = useParams();
   const { user, logout } = useAuth();
-  const [tender, setTender] = useState<Record<string, any>>(null);
+  const [tender, setTender] = useState<Record<string, any> | null>(null);
   const [loadingTender, setLoadingTender] = useState(true);
 
   useEffect(() => {
