@@ -33,7 +33,8 @@ export class TenderController extends BaseController {
         include: {
           bids: {
             include: {
-              bidder: true
+              bidder: true,
+              verificationChecks: true
             }
           }
         }

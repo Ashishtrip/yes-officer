@@ -399,23 +399,23 @@ export default function Dashboard() {
 </td>
 <td className="py-space-md px-space-md align-top text-right pr-space-lg">
 <div className="flex flex-col items-end gap-1.5">
-<Link href={"/bid-ingestion"} className="h-8 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<Link href={`/tender/${tender.id}/ingestion`} className="h-8 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
 <span className="material-symbols-outlined text-[16px]">cloud_sync</span>
 <span>Ingestion Queue</span>
 </Link>
-<Link href={"/bidder-compliance"} className="h-8 px-3 rounded-lg bg-primary-container hover:bg-primary hover:text-on-primary text-primary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<Link href={`/tender/${tender.id}/compliance`} className="h-8 px-3 rounded-lg bg-primary-container hover:bg-primary hover:text-on-primary text-primary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
 <span className="material-symbols-outlined text-[16px]">gavel</span>
 <span>Compliance Desk</span>
 </Link>
-<Link href={"/tec-evaluation"} className="h-8 px-3 rounded-lg bg-secondary-container hover:bg-secondary hover:text-on-secondary text-secondary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<Link href={`/tender/${tender.id}/tec`} className="h-8 px-3 rounded-lg bg-secondary-container hover:bg-secondary hover:text-on-secondary text-secondary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
 <span className="material-symbols-outlined text-[16px]">fact_check</span>
 <span>TEC Matrix</span>
 </Link>
-<Link href={"/financial-bid-opening"} className="h-8 px-3 rounded-lg bg-tertiary-container hover:bg-tertiary hover:text-on-tertiary text-tertiary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<Link href={`/tender/${tender.id}/financial`} className="h-8 px-3 rounded-lg bg-tertiary-container hover:bg-tertiary hover:text-on-tertiary text-tertiary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
 <span className="material-symbols-outlined text-[16px]">price_check</span>
 <span>Financial Bid</span>
 </Link>
-<Link href={"/contract-award"} className="h-8 px-3 rounded-lg bg-surface-container-highest hover:bg-surface-container hover:text-primary text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<Link href={`/tender/${tender.id}/award`} className="h-8 px-3 rounded-lg bg-surface-container-highest hover:bg-surface-container hover:text-primary text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
 <span className="material-symbols-outlined text-[16px]">workspace_premium</span>
 <span>Contract Award</span>
 </Link>
