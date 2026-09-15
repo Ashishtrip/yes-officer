@@ -61,9 +61,10 @@ export class BidController extends BaseController {
       // Log action to audit service
       await auditService.logAction({
         action: `PO_DECISION_${decision}`,
-        bid_id: id as string,
-        tender_id: bid.tender_id,
-        details: { comments, decision }
+        user_email: (req as any).user?.email || 'SYSTEM',
+        target: `Bid: ${id}`,
+        status: 'SUCCESS',
+        details: { comments, decision, tender_id: bid.tender_id }
       });
       
       this.handleSuccess(res, { bid, message: 'Decision submitted successfully' });
@@ -124,9 +125,10 @@ export class BidController extends BaseController {
       // Log the bid ingestion action
       await auditService.logAction({
         action: 'BID_INGESTED',
-        bid_id: savedBid.id,
-        tender_id: tenderId,
-        details: { bidder, complianceScore: scoringResult.score, riskLevel: scoringResult.riskLevel },
+        user_email: (req as any).user?.email || 'SYSTEM',
+        target: `Bid: ${savedBid.id}`,
+        status: 'SUCCESS',
+        details: { bidder, complianceScore: scoringResult.score, riskLevel: scoringResult.riskLevel, tender_id: tenderId },
       });
 
       this.handleSuccess(res, {

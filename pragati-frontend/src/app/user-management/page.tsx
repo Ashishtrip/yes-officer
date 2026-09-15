@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Link from "next/link";
 
 const USERS = [
@@ -92,6 +93,46 @@ const USERS = [
 
 export default function UserManagementPage() {
   const [selectedUser, setSelectedUser] = useState<string | null>("rajesh");
+  // @ts-nocheck
+  const [users, setUsers] = useState<any[]>(USERS);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        // MOCK AUTH for testing backend if needed, or just fetch
+        const res = await axios.get("http://localhost:4000/api/v1/users");
+        if (res.data && res.data.success) {
+          // Merge API users with static USERS for demo purposes, or replace
+          // For now, let's just replace if we have data, or map API fields to UI fields
+          const apiUsers = res.data.data.users.map((u: any) => ({
+            id: u.id,
+            name: u.name,
+            initials: u.name.substring(0, 2).toUpperCase(),
+            initialsTheme: "bg-primary/10 text-primary border-primary/20",
+            verified: true,
+            empId: `GOI-${u.id.substring(0, 5)}`,
+            email: u.email,
+            department: "Dynamic Department",
+            role: u.role,
+            roleDesc: "Dynamic Role",
+            clearance: "Level-1",
+            clearanceIcon: "shield",
+            clearanceTheme: "bg-surface-container text-primary",
+            dsc: "Class-3",
+            dscExp: "Exp: 2027",
+            status: "Active",
+            statusTheme: "bg-secondary-container/40 text-on-secondary-container",
+            statusDot: "bg-secondary",
+            selected: false,
+          }));
+          setUsers(apiUsers.length > 0 ? apiUsers : USERS);
+        }
+      } catch (err) {
+        console.error("Failed to fetch users", err);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   return (
     <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
@@ -342,7 +383,7 @@ export default function UserManagementPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-surface-container text-body-sm">
-                        {USERS.map((user) => (
+                        {users.map((user) => (
                           <tr key={user.id} className={`hover:bg-surface-container-low transition-colors group cursor-pointer ${selectedUser === user.id ? 'bg-surface-container-low/40 border-l-4 border-l-primary' : ''}`} onClick={() => setSelectedUser(user.id)}>
                             <td className="py-3.5 px-space-base text-center">
                               <input type="checkbox" className="rounded border-outline-variant text-primary focus:ring-0 cursor-pointer" checked={selectedUser === user.id} readOnly />

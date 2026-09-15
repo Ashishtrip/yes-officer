@@ -7,5 +7,6 @@ const auditController = new AuditController();
 
 // Restrict search to AUDITOR and ADMIN roles
 router.get('/search', authenticateJWT, requireRole(['AUDITOR', 'ADMIN']), auditController.searchLogs);
+router.get('/', auditController.getLogs);
 
 export default router;

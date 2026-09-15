@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -49,8 +50,43 @@ export default function AuditLogs() {
   const [isMerkleModalOpen, setIsMerkleModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // @ts-nocheck
+  const [logs, setLogs] = useState<any[]>([]);
 
-  const currentRecord = auditData[selectedRecord];
+  useEffect(() => {
+    const fetchLogs = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/audit");
+        if (res.data && res.data.success) {
+          const apiLogs = res.data.data.logs.map((log: any, idx: number) => ({
+            id: `row${idx + 1}`,
+            realId: log.id,
+            officer: log.user_email,
+            role: "System Check",
+            hash: "7f3b89a01f964032d849a64720980c6551b81ee0a905a5a1f292c2a048a19a01", // Fake hash for demo
+            justification: log.action + " - " + (log.details ? JSON.stringify(log.details) : log.target),
+            timestamp: new Date(log.timestamp).toLocaleString(),
+            action: log.action,
+            target: log.target,
+            status: log.status
+          }));
+          setLogs(apiLogs);
+          if (apiLogs.length > 0) {
+            setSelectedRecord('row1');
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch audit logs", err);
+      }
+    };
+    fetchLogs();
+  }, []);
+
+  // Use dynamic logs if available, fallback to static auditData
+  const displayLogs = logs.length > 0 ? logs : Object.keys(auditData).map(k => ({ ...auditData[k], originalKey: k }));
+  const currentRecord = logs.length > 0 ? logs.find(l => l.id === selectedRecord) || logs[0] : auditData[selectedRecord];
+
 
   const handleCopy = () => {
     navigator.clipboard.writeText(JSON.stringify(currentRecord, null, 2));
@@ -333,99 +369,35 @@ export default function AuditLogs() {
                     </tr>
                   </thead>
                   <tbody className="divide-none text-on-surface">
-                    
-                    <tr className={`hover:bg-surface-container-low cursor-pointer transition-colors ${selectedRecord === 'row1' ? 'bg-surface-container-low' : 'bg-surface-container-lowest'}`} onClick={() => setSelectedRecord('row1')}>
-                      <td className="py-3 px-space-base whitespace-nowrap align-top">
-                        <span className="font-tabular-num font-semibold text-on-surface block">14-Oct-2026</span>
-                        <span className="font-tabular-num text-[11px] text-on-surface-variant">11:42:08 IST</span>
-                      </td>
-                      <td className="py-3 px-space-base whitespace-nowrap align-top">
-                        <div className="flex items-center gap-1">
-                          <span className="font-semibold text-primary font-mono text-[12px]">#AUD-98214</span>
-                          <span className="material-symbols-outlined text-[14px] text-secondary">verified</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-on-surface-variant block">7f3b89a01f...</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top whitespace-nowrap">
-                        <span className="font-semibold text-on-surface block">Rajesh Kumar, IAS</span>
-                        <span className="text-[10px] text-on-surface-variant">Sr. Procurement Officer</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top">
-                        <span className="font-mono text-[11px] font-semibold text-primary block">GEM/2026/B/489201</span>
-                        <span className="font-body-sm text-[12px] block">ABC Industries Ltd.</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top">
-                        <span className="font-semibold block text-[13px]">PO Final Approval</span>
-                        <span className="text-[11px] text-on-surface-variant block">Class-I MII Review</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed text-label-sm font-bold uppercase">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span> APPROVED (L-1)
-                        </span>
-                      </td>
-                    </tr>
-
-                    <tr className={`hover:bg-surface-container-low cursor-pointer transition-colors ${selectedRecord === 'row2' ? 'bg-surface-container-low' : 'bg-surface-container-lowest'}`} onClick={() => setSelectedRecord('row2')}>
-                      <td className="py-3 px-space-base whitespace-nowrap align-top">
-                        <span className="font-tabular-num font-semibold text-on-surface block">14-Oct-2026</span>
-                        <span className="font-tabular-num text-[11px] text-on-surface-variant">10:15:33 IST</span>
-                      </td>
-                      <td className="py-3 px-space-base whitespace-nowrap align-top">
-                        <div className="flex items-center gap-1">
-                          <span className="font-semibold text-primary font-mono text-[12px]">#AUD-98205</span>
-                          <span className="material-symbols-outlined text-[14px] text-secondary">verified</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-on-surface-variant block">3c2d44e8c1...</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top whitespace-nowrap">
-                        <span className="font-semibold text-on-surface block">AI Engine Daemon</span>
-                        <span className="text-[10px] text-on-surface-variant">LayoutLMv3</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top">
-                        <span className="font-mono text-[11px] font-semibold text-primary block">GEM/2026/B/489201</span>
-                        <span className="font-body-sm text-[12px] block">ABC Industries Ltd.</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top">
-                        <span className="font-semibold block text-[13px]">GSTN Verification</span>
-                        <span className="text-[11px] text-on-surface-variant block">36 Periods Analyzed</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed text-label-sm font-bold uppercase">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span> COMPLIANT
-                        </span>
-                      </td>
-                    </tr>
-                    
-                    <tr className={`hover:bg-surface-container-low cursor-pointer transition-colors ${selectedRecord === 'row3' ? 'bg-surface-container-low' : 'bg-surface-container-lowest'}`} onClick={() => setSelectedRecord('row3')}>
-                      <td className="py-3 px-space-base whitespace-nowrap align-top">
-                        <span className="font-tabular-num font-semibold text-on-surface block">13-Oct-2026</span>
-                        <span className="font-tabular-num text-[11px] text-on-surface-variant">17:08:12 IST</span>
-                      </td>
-                      <td className="py-3 px-space-base whitespace-nowrap align-top">
-                        <div className="flex items-center gap-1">
-                          <span className="font-semibold text-error font-mono text-[12px]">#AUD-98189</span>
-                          <span className="material-symbols-outlined text-[14px] text-error">flag</span>
-                        </div>
-                        <span className="font-mono text-[10px] text-on-surface-variant block">9a8c11f0a2...</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top whitespace-nowrap">
-                        <span className="font-semibold text-on-surface block">Rajesh Kumar, IAS</span>
-                        <span className="text-[10px] text-on-surface-variant">Sr. Procurement Officer</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top">
-                        <span className="font-mono text-[11px] font-semibold text-primary block">GEM/2026/B/478120</span>
-                        <span className="font-body-sm text-[12px] block">Global Rail Dynamics</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top">
-                        <span className="font-semibold text-error block text-[13px]">Disqualification Gate</span>
-                        <span className="text-[11px] text-on-surface-variant block">Land-Border Check</span>
-                      </td>
-                      <td className="py-3 px-space-base align-top whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-error-container text-on-error-container text-label-sm font-bold uppercase">
-                          <span className="w-1.5 h-1.5 rounded-full bg-error"></span> DISQUALIFIED
-                        </span>
-                      </td>
-                    </tr>
+                    {displayLogs.map((log: any, idx: number) => (
+                      <tr key={log.id || idx} className={`hover:bg-surface-container-low cursor-pointer transition-colors ${selectedRecord === (log.id || log.originalKey) ? 'bg-surface-container-low' : 'bg-surface-container-lowest'}`} onClick={() => setSelectedRecord(log.id || log.originalKey)}>
+                        <td className="py-3 px-space-base whitespace-nowrap align-top">
+                          <span className="font-tabular-num font-semibold text-on-surface block">{log.timestamp || '14-Oct-2026'}</span>
+                        </td>
+                        <td className="py-3 px-space-base whitespace-nowrap align-top">
+                          <div className="flex items-center gap-1">
+                            <span className="font-semibold text-primary font-mono text-[12px]">{log.realId ? `#AUD-${log.realId.substring(0,6)}` : log.id}</span>
+                            <span className="material-symbols-outlined text-[14px] text-secondary">verified</span>
+                          </div>
+                          <span className="font-mono text-[10px] text-on-surface-variant block">{log.hash?.substring(0, 10)}...</span>
+                        </td>
+                        <td className="py-3 px-space-base align-top whitespace-nowrap">
+                          <span className="font-semibold text-on-surface block">{log.officer}</span>
+                          <span className="text-[10px] text-on-surface-variant">{log.role}</span>
+                        </td>
+                        <td className="py-3 px-space-base align-top">
+                          <span className="font-mono text-[11px] font-semibold text-primary block">{log.target || 'System'}</span>
+                        </td>
+                        <td className="py-3 px-space-base align-top">
+                          <span className="font-semibold block text-[13px]">{log.action || 'Check'}</span>
+                        </td>
+                        <td className="py-3 px-space-base align-top whitespace-nowrap">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded ${log.status === 'SUCCESS' ? 'bg-secondary-fixed text-on-secondary-fixed' : 'bg-error-container text-on-error-container'} text-label-sm font-bold uppercase`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${log.status === 'SUCCESS' ? 'bg-secondary' : 'bg-error'}`}></span> {log.status || 'APPROVED'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

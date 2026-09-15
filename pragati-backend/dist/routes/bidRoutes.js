@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.bidRoutes = void 0;
+const express_1 = require("express");
+const BidController_1 = require("../controllers/BidController");
+const validateRequest_1 = require("../middlewares/validateRequest");
+const bidValidators_1 = require("../validators/bidValidators");
+const asyncErrorWrapper_1 = require("../utils/asyncErrorWrapper");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const router = (0, express_1.Router)();
+exports.bidRoutes = router;
+const bidController = new BidController_1.BidController();
+router.post('/ingest', authMiddleware_1.authenticateJWT, (0, authMiddleware_1.requireRole)(['PROCUREMENT_OFFICER', 'ADMIN']), (0, validateRequest_1.validateRequest)(bidValidators_1.ingestBidSchema), (0, asyncErrorWrapper_1.asyncErrorWrapper)(bidController.ingestBid));
+router.get('/:id', authMiddleware_1.authenticateJWT, (0, asyncErrorWrapper_1.asyncErrorWrapper)(bidController.getBidById));
+router.post('/:id/decision', authMiddleware_1.authenticateJWT, (0, authMiddleware_1.requireRole)(['PROCUREMENT_OFFICER', 'ADMIN']), (0, asyncErrorWrapper_1.asyncErrorWrapper)(bidController.submitDecision));

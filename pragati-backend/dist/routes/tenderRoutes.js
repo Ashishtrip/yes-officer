@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.tenderRoutes = void 0;
+const express_1 = require("express");
+const TenderController_1 = require("../controllers/TenderController");
+const asyncErrorWrapper_1 = require("../utils/asyncErrorWrapper");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const router = (0, express_1.Router)();
+exports.tenderRoutes = router;
+const tenderController = new TenderController_1.TenderController();
+router.get('/', authMiddleware_1.authenticateJWT, (0, asyncErrorWrapper_1.asyncErrorWrapper)(tenderController.getTenders));
+router.get('/:id', authMiddleware_1.authenticateJWT, (0, asyncErrorWrapper_1.asyncErrorWrapper)(tenderController.getTenderById));

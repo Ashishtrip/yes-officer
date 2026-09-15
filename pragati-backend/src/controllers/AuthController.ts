@@ -11,9 +11,11 @@ export class AuthController extends BaseController {
       // Log registration
       await auditService.logAction({
         action: 'USER_REGISTER',
-        user_id: result.user.id,
-        details: { email: result.user.email, role: result.user.role },
-        ip_address: req.ip,
+        user_email: result.user.email,
+        target: 'System',
+        status: 'SUCCESS',
+        details: { role: result.user.role },
+        ip_address: req.ip || '',
       });
 
       this.handleSuccess(res, result, 201);
@@ -29,9 +31,10 @@ export class AuthController extends BaseController {
       // Log login
       await auditService.logAction({
         action: 'USER_LOGIN',
-        user_id: result.user.id,
-        details: { email: result.user.email },
-        ip_address: req.ip,
+        user_email: result.user.email,
+        target: 'System',
+        status: 'SUCCESS',
+        ip_address: req.ip || '',
       });
 
       this.handleSuccess(res, result);
