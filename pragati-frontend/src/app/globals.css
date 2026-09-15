@@ -10,6 +10,8 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+  
+  /* Original Shadcn Variables */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +41,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -46,6 +49,122 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Stitch Design Variables */
+  --color-tertiary-fixed: #ffddb8;
+  --color-tertiary: #3e2400;
+  --color-surface: #faf8ff;
+  --color-primary-fixed-dim: #b6c4ff;
+  --color-secondary-fixed: #6ffbbe;
+  --color-primary-container: #1e3a8a;
+  --color-inverse-surface: #283044;
+  --color-inverse-on-surface: #eef0ff;
+  --color-inverse-primary: #b6c4ff;
+  --color-on-primary-fixed: #00164e;
+  --color-on-primary-fixed-variant: #264191;
+  --color-secondary-fixed-dim: #4edea3;
+  --color-on-secondary-container: #00714d;
+  --color-on-surface-variant: #444651;
+  --color-surface-container-low: #f2f3ff;
+  --color-on-primary: #ffffff;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-fixed: #2a1700;
+  --color-on-tertiary-fixed-variant: #653e00;
+  --color-on-surface: #131b2e;
+  --color-outline: #757682;
+  --color-surface-dim: #d2d9f4;
+  --color-surface-container-high: #e2e7ff;
+  --color-on-tertiary-container: #ef9900;
+  --color-on-secondary-fixed: #002113;
+  --color-tertiary-fixed-dim: #ffb95f;
+  --color-outline-variant: #c5c5d3;
+  --color-error: #ba1a1a;
+  --color-surface-container-highest: #dae2fd;
+  --color-on-background: #131b2e;
+  --color-error-container: #ffdad6;
+  --color-tertiary-container: #5c3800;
+  --color-on-error-container: #93000a;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-primary-container: #90a8ff;
+  --color-on-secondary-fixed-variant: #005236;
+  --color-on-secondary: #ffffff;
+  --color-surface-container: #eaedff;
+  --color-surface-tint: #4059aa;
+  --color-surface-variant: #dae2fd;
+  --color-secondary-container: #6cf8bb;
+  --color-surface-bright: #faf8ff;
+  --color-primary-fixed: #dce1ff;
+  --color-on-error: #ffffff;
+
+  --spacing-space-xl: 2rem;
+  --spacing-space-md: 0.75rem;
+  --spacing-layout-gutter: 1.5rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-2xs: 0.125rem;
+  --spacing-sidebar-width: 16rem;
+  --spacing-drawer-width: 28rem;
+  --spacing-header-height: 3.5rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-layout-margin: 2rem;
+  --spacing-space-2xl: 3rem;
+  --spacing-space-base: 1rem;
+
+  --font-inter: var(--font-inter);
+  --font-headline-lg: var(--font-inter);
+  --font-headline-md: var(--font-inter);
+  --font-tabular-num: var(--font-inter);
+  --font-display-lg: var(--font-inter);
+  --font-body-md: var(--font-inter);
+  --font-title-sm: var(--font-inter);
+  --font-body-sm: var(--font-inter);
+  --font-label-sm: var(--font-inter);
+  --font-label-md: var(--font-inter);
+
+  --text-headline-lg: 24px;
+  --text-headline-lg--line-height: 32px;
+  --text-headline-lg--letter-spacing: -0.015em;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-md: 20px;
+  --text-headline-md--line-height: 28px;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 600;
+
+  --text-tabular-num: 13px;
+  --text-tabular-num--line-height: 18px;
+  --text-tabular-num--letter-spacing: 0em;
+  --text-tabular-num--font-weight: 500;
+
+  --text-display-lg: 30px;
+  --text-display-lg--line-height: 38px;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+
+  --text-body-md: 14px;
+  --text-body-md--line-height: 20px;
+  --text-body-md--letter-spacing: 0em;
+  --text-body-md--font-weight: 400;
+
+  --text-title-sm: 16px;
+  --text-title-sm--line-height: 24px;
+  --text-title-sm--letter-spacing: -0.005em;
+  --text-title-sm--font-weight: 600;
+
+  --text-body-sm: 13px;
+  --text-body-sm--line-height: 18px;
+  --text-body-sm--letter-spacing: 0em;
+  --text-body-sm--font-weight: 400;
+
+  --text-label-sm: 11px;
+  --text-label-sm--line-height: 14px;
+  --text-label-sm--letter-spacing: 0.04em;
+  --text-label-sm--font-weight: 600;
+
+  --text-label-md: 12px;
+  --text-label-md--line-height: 16px;
+  --text-label-md--letter-spacing: 0.02em;
+  --text-label-md--font-weight: 600;
 }
 
 :root {
@@ -55,7 +174,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.205 0 0); /* 00236f approximate */
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);

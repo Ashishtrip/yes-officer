@@ -17,7 +17,7 @@ export default function OfficerLogin() {
       setLoginSuccess(true);
       setTimeout(() => {
         setLoginSuccess(false);
-        // Redirect logic would go here
+        window.location.href = '/dashboard';
       }, 1500);
     }, 1200);
   };
@@ -497,32 +497,30 @@ export default function OfficerLogin() {
                       </label>
                     </div>
                     
-                    <Link href="/dashboard" passHref legacyBehavior>
-                      <button
-                        className="w-full py-3 px-space-lg rounded-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold tracking-wide flex items-center justify-center gap-space-sm transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                        type="button"
-                        disabled={isLoggingIn}
-                        onClick={simulateLoginSuccess}
-                      >
-                        {isLoggingIn ? (
-                          <>
-                            <span className="material-symbols-outlined animate-spin text-[20px]">refresh</span>
-                            <span>Validating Sovereign Credentials...</span>
-                          </>
-                        ) : loginSuccess ? (
-                          <>
-                            <span className="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
-                            <span>Session Initiated &bull; Redirecting...</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="material-symbols-outlined text-[20px]">encrypted</span>
-                            <span>Authenticate & Launch Scrutiny Desk</span>
-                            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                          </>
-                        )}
-                      </button>
-                    </Link>
+                    <button
+                      className="w-full py-3 px-space-lg rounded-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold tracking-wide flex items-center justify-center gap-space-sm transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                      type="button"
+                      disabled={isLoggingIn}
+                      onClick={simulateLoginSuccess}
+                    >
+                      {isLoggingIn ? (
+                        <>
+                          <span className="material-symbols-outlined animate-spin text-[20px]">refresh</span>
+                          <span>Validating Sovereign Credentials...</span>
+                        </>
+                      ) : loginSuccess ? (
+                        <>
+                          <span className="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                          <span>Session Initiated &bull; Redirecting...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="material-symbols-outlined text-[20px]">encrypted</span>
+                          <span>Authenticate & Launch Scrutiny Desk</span>
+                          <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </>
+                      )}
+                    </button>
                   </div>
                 )}
 
@@ -536,11 +534,9 @@ export default function OfficerLogin() {
                       <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md mt-1 mb-space-lg">
                         Authenticate via the unified sovereign identity engine supporting Central Government, State Nodal Officers, and Public Sector Enterprises with mapped role rights.
                       </p>
-                      <Link href="/dashboard" passHref legacyBehavior>
-                        <button className="w-full max-w-sm py-3 px-space-md rounded bg-[#1e3a8a] hover:bg-[#172554] text-white font-label-md text-label-md font-bold flex items-center justify-center gap-space-sm transition-colors" type="button">
-                          <span className="material-symbols-outlined text-[20px]">login</span>
-                          <span>Proceed to Jan Parichay Sovereign Portal</span>
-                        </button>
+                      <Link href="/dashboard" className="w-full max-w-sm py-3 px-space-md rounded bg-[#1e3a8a] hover:bg-[#172554] text-white font-label-md text-label-md font-bold flex items-center justify-center gap-space-sm transition-colors">
+                        <span className="material-symbols-outlined text-[20px]">login</span>
+                        <span>Proceed to Jan Parichay Sovereign Portal</span>
                       </Link>
                       <span className="font-label-sm text-label-sm text-on-surface-variant mt-space-sm">Redirects to auth.meripehchan.gov.in (TLS 1.3 Certified)</span>
                     </div>
@@ -599,11 +595,9 @@ export default function OfficerLogin() {
                         <input className="w-full pl-10 pr-space-md py-2.5 rounded bg-surface-container-lowest border border-outline text-on-surface font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" id="token-pin" placeholder="Enter 6-8 digit crypto token PIN" type="password" />
                       </div>
                     </div>
-                    <Link href="/dashboard" passHref legacyBehavior>
-                      <button className="w-full py-3 px-space-lg rounded-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold tracking-wide flex items-center justify-center gap-space-sm transition-colors" type="button">
-                        <span className="material-symbols-outlined text-[20px]">fingerprint</span>
-                        <span>Sign Challenge & Open Secured Session</span>
-                      </button>
+                    <Link href="/dashboard" className="w-full py-3 px-space-lg rounded-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold tracking-wide flex items-center justify-center gap-space-sm transition-colors">
+                      <span className="material-symbols-outlined text-[20px]">fingerprint</span>
+                      <span>Sign Challenge & Open Secured Session</span>
                     </Link>
                   </div>
                 )}
