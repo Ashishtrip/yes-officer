@@ -182,7 +182,7 @@ export default function Page() {
 <span className="material-symbols-outlined text-[18px] text-secondary">insights</span>
 <span>GeM e-RA Telemetry</span>
 </button>
-<button className="flex items-center gap-1.5 px-space-lg py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-all font-label-md text-label-md shadow-sm" type="button">
+<button onClick={() => router.push(`/tender/${tender.id}/award`)} className="flex items-center gap-1.5 px-space-lg py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-all font-label-md text-label-md shadow-sm" type="button">
 <span className="material-symbols-outlined text-[18px]">gavel</span>
 <span>Draft Statutory LoA</span>
 </button>

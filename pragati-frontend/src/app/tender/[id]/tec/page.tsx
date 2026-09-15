@@ -129,7 +129,7 @@ export default function Page() {
 <span className="material-symbols-outlined text-[17px] text-secondary">sync</span>
           Sync GeM Technical Stage
         </button>
-<button className="h-9 px-space-md inline-flex items-center gap-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-label-md font-label-md transition-colors shadow-md" type="button">
+<button onClick={() => router.push(`/tender/${tender.id}/financial`)} className="h-9 px-space-md inline-flex items-center gap-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-label-md font-label-md transition-colors shadow-md" type="button">
 <span className="material-symbols-outlined text-[17px]">lock_open</span>
           Authorize Financial Envelope Decryption
         </button>

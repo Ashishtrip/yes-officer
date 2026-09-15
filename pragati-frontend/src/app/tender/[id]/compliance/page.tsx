@@ -161,7 +161,7 @@ export default function BidderCompliance() {
 <span className="material-symbols-outlined text-[18px]">download</span>
           Export to PDF
         </button>
-<button className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-space-lg py-2 h-10 rounded-xl bg-primary-container text-on-primary hover:bg-primary transition-all font-label-md text-label-md shadow-sm active:scale-[0.98]" type="button">
+<button onClick={() => router.push(`/tender/${tender.id}/tec`)} className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-space-lg py-2 h-10 rounded-xl bg-primary-container text-on-primary hover:bg-primary transition-all font-label-md text-label-md shadow-sm active:scale-[0.98]" type="button">
 <span className="material-symbols-outlined text-[18px]">check_circle</span>
           Finalize Evaluation
         </button>

@@ -44,7 +44,7 @@ export default function Dashboard() {
           <nav className="hidden xl:flex items-center h-full gap-space-lg" aria-label="Main Navigation">
             <Link href="/" className="h-full flex items-center px-space-xs font-title-sm text-title-sm text-primary border-b-2 border-primary transition-colors">Tenders &amp; Bids</Link>
             <Link href="/vigilance-analytics" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Vigilance &amp; Analytics</Link>
-            <Link href="/statutory-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
+            <Link href="/compliance-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
             <Link href="/portal-connectors" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Portal Connectors</Link>
             <Link href="/audit-logs" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Audit Logs</Link>
             <Link href="/user-management" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">User &amp; Access / Admin</Link>
@@ -327,7 +327,7 @@ export default function Dashboard() {
 <td className="py-space-md px-space-md align-top">
 <div className="flex flex-col gap-1">
 <div className="flex items-center gap-space-xs flex-wrap">
-<span className="font-tabular-num font-semibold text-primary text-title-sm">{tender.gem_tender_id}</span>
+<Link href={`/tender/${tender.id}/ingestion`} className="font-tabular-num font-semibold text-primary text-title-sm hover:underline">{tender.gem_tender_id}</Link>
 <span className="bg-primary-fixed text-on-primary-fixed font-label-sm text-[10px] px-1.5 py-0.2 rounded uppercase font-bold tracking-wider">High-Value EPC</span>
 <span className="bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-[10px] px-1.5 py-0.2 rounded uppercase font-bold">PPO MII: Cl-I (50%)</span>
 </div>
