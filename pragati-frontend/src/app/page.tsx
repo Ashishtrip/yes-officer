@@ -30,30 +30,41 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <header className="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b border-surface-container-high">
+            <header className="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b border-surface-container-high shadow-sm">
         <div className="h-14 w-full px-layout-gutter flex items-center justify-between gap-space-lg">
           <div className="flex items-center gap-space-md min-w-[280px]">
-            <img alt="Yes Officer Logo" className="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XF1PZsUoMowWpDMDKHX4d0Uh2TzyN0ieKoXRAg9eWo0KUOJEYX9ay-0FikqKi6SCy-s2qdnXKKSVBN1U3cGfFxFZF0ukpbfXY2DXXHGRuTayL8HUzuRTRsVXDXLBNUvCkLJ45-5sgvvJPij2xXTdFwemSujw5XjPH5QUdV8NmgQmyup3OjnHPFKO06ETugegA2e_yc3BJ49NnxvbQ_j3UdtcbgijRrC1sPHCXBUxBBvQe1hRNlh5IrYBas" />
             <div className="flex flex-col">
-              <span className="font-title-sm text-title-sm text-primary leading-none">Yes Officer</span>
-              <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight mt-0.5">GeM Integrated Compliance Suite</span>
+              <div className="flex items-center gap-space-xs">
+                <span className="font-title-sm text-title-sm text-primary leading-none font-bold">Yes Officer</span>
+                <span className="px-1.5 py-0.5 rounded bg-surface-container text-primary font-label-sm text-[10px] uppercase font-bold tracking-wider">Gov Portal</span>
+              </div>
+              <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight mt-0.5">GeM Integrated Compliance & Statutory Audit</span>
             </div>
           </div>
-          <nav className="hidden xl:flex items-center h-full gap-space-lg" data-active-classes="text-primary font-title-sm border-b-2 border-primary">
-            <a className="h-full flex items-center px-space-xs font-body-md text-body-md text-primary font-title-sm border-b-2 border-primary transition-colors" href="#">Tenders & Bids</a>
-            <a className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Compliance Rules</a>
-            <a className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Portal Connectors</a>
-            <a className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Audit Logs</a>
+          <nav className="hidden xl:flex items-center h-full gap-space-lg" aria-label="Main Navigation">
+            <Link href="/" className="h-full flex items-center px-space-xs font-title-sm text-title-sm text-primary border-b-2 border-primary transition-colors">Tenders &amp; Bids</Link>
+            <Link href="/vigilance-analytics" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Vigilance &amp; Analytics</Link>
+            <Link href="/statutory-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
+            <Link href="/portal-connectors" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Portal Connectors</Link>
+            <Link href="/audit-logs" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Audit Logs</Link>
+            <Link href="/user-management" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">User &amp; Access / Admin</Link>
           </nav>
           <div className="flex items-center gap-space-md ml-auto">
-            <button onClick={logout} className="text-on-surface-variant hover:text-primary font-label-md">Logout</button>
+            <div className="hidden md:flex items-center bg-surface-container-low rounded-xl px-space-md py-1 border border-outline-variant focus-within:border-primary focus-within:bg-surface-container-lowest transition-colors w-64">
+              <span className="material-symbols-outlined text-on-surface-variant text-[18px] mr-space-xs">search</span>
+              <input type="text" className="bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder-on-surface-variant w-full" placeholder="Search tenders, GSTIN, PAN..." />
+            </div>
+            <button type="button" className="relative p-space-xs rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" aria-label="Notifications">
+              <span className="material-symbols-outlined text-[20px]">notifications</span>
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span>
+            </button>
             <div className="h-6 w-px bg-surface-container-high mx-space-2xs"></div>
             <div className="flex items-center gap-space-sm pl-space-xs cursor-pointer group">
-              <img alt="Profile" className="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0gElgbgal4gd4SIMy3OwrKEcZe588flOOdKLPMe4KQ8SoeCQsdkrar6ypZ2bugDnd-W1CEEwh6fZA0UeQvpJYK4xZQmhS5NS9VGrL2hCUUlpfTD9A4ONwukYNR9GdwE_uDTQ7SBkE4ZFxXZMguxQxl-QG5ChJzn0KbJqTwPV0WnU1JFroUwLdTwGYDpAy41oufwfBXZlsuDZK3oN7EQKVs24q22rliyszAmfiQaCV5xMLweN3IuNKsQ" />
               <div className="hidden lg:flex flex-col text-left">
-                <span className="font-label-md text-label-md text-on-surface leading-tight font-semibold">{user?.name || 'Rajesh Kumar'}</span>
-                <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight">{user?.role || 'Procurement Officer'}</span>
+                <span className="font-label-md text-label-md text-on-surface leading-tight font-semibold">Rajesh Kumar, IAS</span>
+                <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight">Senior Procurement Officer</span>
               </div>
+              <span className="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface text-[18px]">expand_more</span>
             </div>
           </div>
         </div>
@@ -388,14 +399,26 @@ export default function Dashboard() {
 </td>
 <td className="py-space-md px-space-md align-top text-right pr-space-lg">
 <div className="flex flex-col items-end gap-1.5">
-<button onClick={() => router.push(`/tender/${tender.id}`)} className="h-8 px-3 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs" type="button">
-<span><Link href={`/tender/${tender.id}`}>Open Compliance Desk</Link></span>
-<span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-</button>
-<button className="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1" type="button">
-<span className="material-symbols-outlined text-[14px]">description</span>
-                    View GeM Packet
-                  </button>
+<Link href={"/bid-ingestion"} className="h-8 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<span className="material-symbols-outlined text-[16px]">cloud_sync</span>
+<span>Ingestion Queue</span>
+</Link>
+<Link href={"/bidder-compliance"} className="h-8 px-3 rounded-lg bg-primary-container hover:bg-primary hover:text-on-primary text-primary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<span className="material-symbols-outlined text-[16px]">gavel</span>
+<span>Compliance Desk</span>
+</Link>
+<Link href={"/tec-evaluation"} className="h-8 px-3 rounded-lg bg-secondary-container hover:bg-secondary hover:text-on-secondary text-secondary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<span className="material-symbols-outlined text-[16px]">fact_check</span>
+<span>TEC Matrix</span>
+</Link>
+<Link href={"/financial-bid-opening"} className="h-8 px-3 rounded-lg bg-tertiary-container hover:bg-tertiary hover:text-on-tertiary text-tertiary-fixed font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<span className="material-symbols-outlined text-[16px]">price_check</span>
+<span>Financial Bid</span>
+</Link>
+<Link href={"/contract-award"} className="h-8 px-3 rounded-lg bg-surface-container-highest hover:bg-surface-container hover:text-primary text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors shadow-xs">
+<span className="material-symbols-outlined text-[16px]">workspace_premium</span>
+<span>Contract Award</span>
+</Link>
 </div>
 </td>
 </tr>
