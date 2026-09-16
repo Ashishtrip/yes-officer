@@ -29,7 +29,7 @@ export default function VigilanceAnalyticsPage() {
           <div className="flex items-center gap-space-md min-w-[280px]">
             <div className="flex flex-col">
               <div className="flex items-center gap-space-xs">
-                <span className="font-title-sm text-title-sm text-primary leading-none font-bold">Yes Officer</span>
+                <span className="font-title-sm text-title-sm text-primary leading-none font-bold">Pragati</span>
                 <span className="px-1.5 py-0.5 rounded bg-surface-container text-primary font-label-sm text-[10px] uppercase font-bold tracking-wider">Gov Portal</span>
               </div>
               <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight mt-0.5">GeM Integrated Compliance & Statutory Audit</span>
@@ -536,7 +536,7 @@ export default function VigilanceAnalyticsPage() {
 </div>
 <span className="material-symbols-outlined text-primary text-[24px]">electric_bolt</span>
 <div className="flex flex-col text-right">
-<span className="font-body-sm text-body-sm text-secondary font-semibold">Yes Officer AI Suite</span>
+<span className="font-body-sm text-body-sm text-secondary font-semibold">Pragati AI Suite</span>
 <span className="font-title-sm text-title-sm font-bold text-secondary">3.4 Minutes</span>
 </div>
 </div>

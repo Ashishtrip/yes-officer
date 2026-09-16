@@ -1,8 +1,26 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Link from "next/link";
 
 export default function Page() {
+  // @ts-nocheck
+  const [grievances, setGrievances] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchGrievances = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/interactions/grievances");
+        if (res.data && res.data.success) {
+          setGrievances(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch grievances", err);
+      }
+    };
+    fetchGrievances();
+  }, []);
+
   return (
     <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
 
@@ -11,7 +29,7 @@ export default function Page() {
           <div className="flex items-center gap-space-md min-w-[280px]">
             <div className="flex flex-col">
               <div className="flex items-center gap-space-xs">
-                <span className="font-title-sm text-title-sm text-primary leading-none font-bold">Yes Officer</span>
+                <span className="font-title-sm text-title-sm text-primary leading-none font-bold">Pragati</span>
                 <span className="px-1.5 py-0.5 rounded bg-surface-container text-primary font-label-sm text-[10px] uppercase font-bold tracking-wider">Gov Portal</span>
               </div>
               <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight mt-0.5">GeM Integrated Compliance & Statutory Audit</span>

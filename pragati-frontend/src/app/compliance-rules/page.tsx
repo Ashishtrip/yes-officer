@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -10,14 +11,34 @@ export default function ComplianceRules() {
   const [selectedRule, setSelectedRule] = useState<string>('FIN-TURNOVER');
   const [tolerance, setTolerance] = useState<number>(1.0);
 
+  const [rules, setRules] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchRules = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/config/compliance-rules");
+        if (res.data && res.data.success) {
+          setRules(res.data.data);
+          if (res.data.data.length > 0) {
+            setSelectedRule(res.data.data[0].rule_id);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch compliance rules", err);
+      }
+    };
+    fetchRules();
+  }, []);
+
+
   return (
     <ProtectedRoute>
       <header className="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b border-surface-container-high">
         <div className="h-14 w-full px-layout-gutter flex items-center justify-between gap-space-lg">
           <div className="flex items-center gap-space-md min-w-[280px]">
-            <img alt="Yes Officer Logo" className="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XF1PZsUoMowWpDMDKHX4d0Uh2TzyN0ieKoXRAg9eWo0KUOJEYX9ay-0FikqKi6SCy-s2qdnXKKSVBN1U3cGfFxFZF0ukpbfXY2DXXHGRuTayL8HUzuRTRsVXDXLBNUvCkLJ45-5sgvvJPij2xXTdFwemSujw5XjPH5QUdV8NmgQmyup3OjnHPFKO06ETugegA2e_yc3BJ49NnxvbQ_j3UdtcbgijRrC1sPHCXBUxBBvQe1hRNlh5IrYBas" />
+            <img alt="Pragati Logo" className="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XF1PZsUoMowWpDMDKHX4d0Uh2TzyN0ieKoXRAg9eWo0KUOJEYX9ay-0FikqKi6SCy-s2qdnXKKSVBN1U3cGfFxFZF0ukpbfXY2DXXHGRuTayL8HUzuRTRsVXDXLBNUvCkLJ45-5sgvvJPij2xXTdFwemSujw5XjPH5QUdV8NmgQmyup3OjnHPFKO06ETugegA2e_yc3BJ49NnxvbQ_j3UdtcbgijRrC1sPHCXBUxBBvQe1hRNlh5IrYBas" />
             <div className="flex flex-col">
-              <span className="font-title-sm text-title-sm text-primary leading-none">Yes Officer</span>
+              <span className="font-title-sm text-title-sm text-primary leading-none">Pragati</span>
               <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight mt-0.5">GeM Integrated Compliance Suite</span>
             </div>
           </div>
@@ -252,122 +273,51 @@ export default function ComplianceRules() {
                         </tr>
                       </thead>
                       <tbody className="text-body-sm font-body-sm divide-y divide-surface-container">
-                        
-                        <tr className={`${selectedRule === 'R-144-XI' ? 'bg-surface-container-low' : 'hover:bg-surface-container-low/60 bg-surface-container-lowest'} transition-colors group cursor-pointer`} onClick={() => setSelectedRule('R-144-XI')}>
-                          <td className="py-space-md px-space-lg">
-                            <div className="flex items-start gap-space-sm">
-                              <span className="mt-0.5 text-error material-symbols-outlined text-[18px]">security</span>
-                              <div className="flex flex-col">
-                                <div className="flex items-center gap-2">
-                                  <span className={`font-title-sm text-body-md font-semibold transition-colors ${selectedRule === 'R-144-XI' ? 'text-primary font-bold' : 'text-on-surface group-hover:text-primary'}`}>
-                                    GFR Rule 144(xi) - Land Border Security Mandate
+                        {rules.length > 0 ? rules.map((rule: any) => (
+                          <tr key={rule.id} className={`${selectedRule === rule.rule_id ? 'bg-surface-container-low' : 'hover:bg-surface-container-low/60 bg-surface-container-lowest'} transition-colors group cursor-pointer`} onClick={() => setSelectedRule(rule.rule_id)}>
+                            <td className="py-space-md px-space-lg">
+                              <div className="flex items-start gap-space-sm">
+                                <span className={`mt-0.5 material-symbols-outlined text-[18px] ${rule.gate_type.includes('Hard') ? 'text-error' : 'text-primary'}`}>security</span>
+                                <div className="flex flex-col">
+                                  <div className="flex items-center gap-2">
+                                    <span className={`font-title-sm text-body-md font-semibold transition-colors ${selectedRule === rule.rule_id ? 'text-primary font-bold' : 'text-on-surface group-hover:text-primary'}`}>
+                                      {rule.name}
+                                    </span>
+                                    {selectedRule === rule.rule_id && <span className="px-1.5 py-0.2 rounded bg-primary-container text-on-primary font-label-sm text-[10px] uppercase">Selected</span>}
+                                  </div>
+                                  <span className="text-on-surface-variant font-body-sm text-[12px] line-clamp-1">
+                                    {rule.description}
                                   </span>
-                                  {selectedRule === 'R-144-XI' && <span className="px-1.5 py-0.2 rounded bg-primary-container text-on-primary font-label-sm text-[10px] uppercase">Selected</span>}
                                 </div>
-                                <span className="text-on-surface-variant font-body-sm text-[12px] line-clamp-1">
-                                  Mandatory registration with competent authority for bidders sharing land border with India.
-                                </span>
                               </div>
-                            </div>
-                          </td>
-                          <td className="py-space-md px-space-md whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">
-                              <span className="material-symbols-outlined text-[13px] text-primary">account_balance</span> MoF / MEA Validated
-                            </span>
-                          </td>
-                          <td className="py-space-md px-space-md whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-error"></span> Hard Disqualification
-                            </span>
-                          </td>
-                          <td className="py-space-md px-space-md">
-                            <span className="font-tabular-num text-tabular-num text-on-surface font-medium">0% Tolerance Strict</span>
-                          </td>
-                          <td className="py-space-md px-space-md text-right font-tabular-num text-tabular-num font-semibold text-error">Mandatory Fail</td>
-                          <td className="py-space-md px-space-lg text-center whitespace-nowrap">
-                            <button aria-defaultChecked={true} className="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full bg-primary-container p-0.5 transition-colors duration-200 ease-in-out focus:outline-none">
-                              <span className="translate-x-4 pointer-events-none inline-block h-4 w-4 transform rounded-full bg-surface shadow ring-0 transition duration-200 ease-in-out"></span>
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr className={`${selectedRule === 'GSTN-ACT' ? 'bg-surface-container-low' : 'hover:bg-surface-container-low/60 bg-surface-container-lowest'} transition-colors group cursor-pointer`} onClick={() => setSelectedRule('GSTN-ACT')}>
-                          <td className="py-space-md px-space-lg">
-                            <div className="flex items-start gap-space-sm">
-                              <span className="mt-0.5 text-primary material-symbols-outlined text-[18px]">domain_verification</span>
-                              <div className="flex flex-col">
-                                <div className="flex items-center gap-2">
-                                  <span className={`font-title-sm text-body-md font-semibold transition-colors ${selectedRule === 'GSTN-ACT' ? 'text-primary font-bold' : 'text-on-surface group-hover:text-primary'}`}>
-                                    GSTN Active Status & Return Regularity
-                                  </span>
-                                  {selectedRule === 'GSTN-ACT' && <span className="px-1.5 py-0.2 rounded bg-primary-container text-on-primary font-label-sm text-[10px] uppercase">Selected</span>}
-                                </div>
-                                <span className="text-on-surface-variant font-body-sm text-[12px] line-clamp-1">
-                                  Validates GST status is Active and GSTR-3B filed continuously for preceding 3 calendar quarters.
-                                </span>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="py-space-md px-space-md whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">
-                              <span className="material-symbols-outlined text-[13px] text-secondary">sync</span> GSTN Direct API
-                            </span>
-                          </td>
-                          <td className="py-space-md px-space-md whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-error"></span> Hard Disqualification
-                            </span>
-                          </td>
-                          <td className="py-space-md px-space-md">
-                            <span className="font-tabular-num text-tabular-num text-on-surface font-medium">≤ 0 Defaults (3 Mo)</span>
-                          </td>
-                          <td className="py-space-md px-space-md text-right font-tabular-num text-tabular-num font-semibold text-error">Mandatory Fail</td>
-                          <td className="py-space-md px-space-lg text-center whitespace-nowrap">
-                            <button aria-defaultChecked={true} className="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full bg-primary-container p-0.5 transition-colors duration-200 ease-in-out focus:outline-none">
-                              <span className="translate-x-4 pointer-events-none inline-block h-4 w-4 transform rounded-full bg-surface shadow ring-0 transition duration-200 ease-in-out"></span>
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr className={`${selectedRule === 'FIN-TURNOVER' ? 'bg-surface-container-low' : 'hover:bg-surface-container-low/60 bg-surface-container-lowest'} transition-colors group cursor-pointer`} onClick={() => setSelectedRule('FIN-TURNOVER')}>
-                          <td className="py-space-md px-space-lg">
-                            <div className="flex items-start gap-space-sm">
-                              <span className="mt-0.5 text-on-tertiary-container material-symbols-outlined text-[18px]">query_stats</span>
-                              <div className="flex flex-col">
-                                <div className="flex items-center gap-2">
-                                  <span className={`font-title-sm text-body-md font-semibold transition-colors ${selectedRule === 'FIN-TURNOVER' ? 'text-primary font-bold' : 'text-on-surface group-hover:text-primary'}`}>
-                                    Turnover Variance vs. Audited ITR/MCA
-                                  </span>
-                                  {selectedRule === 'FIN-TURNOVER' && <span className="px-1.5 py-0.2 rounded bg-primary-container text-on-primary font-label-sm text-[10px] uppercase">Selected</span>}
-                                </div>
-                                <span className="text-on-surface-variant font-body-sm text-[12px] line-clamp-1">
-                                  Audited 3-year turnover declared in CA certificate against MCA-21 XBRL e-filings.
-                                </span>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="py-space-md px-space-md whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">
-                              <span className="material-symbols-outlined text-[13px] text-primary">analytics</span> ITR-6 & MCA XBRL
-                            </span>
-                          </td>
-                          <td className="py-space-md px-space-md whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-semibold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span> Weighted Point Gate
-                            </span>
-                          </td>
-                          <td className="py-space-md px-space-md">
-                            <span className="font-tabular-num text-tabular-num text-primary font-bold">≤ {tolerance.toFixed(1)}% Delta</span>
-                          </td>
-                          <td className="py-space-md px-space-md text-right font-tabular-num text-tabular-num font-bold text-on-surface">25 pts</td>
-                          <td className="py-space-md px-space-lg text-center whitespace-nowrap">
-                            <button aria-defaultChecked={true} className="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full bg-primary-container p-0.5 transition-colors duration-200 ease-in-out focus:outline-none">
-                              <span className="translate-x-4 pointer-events-none inline-block h-4 w-4 transform rounded-full bg-surface shadow ring-0 transition duration-200 ease-in-out"></span>
-                            </button>
-                          </td>
-                        </tr>
-
-                        {/* Additional rules ... */}
+                            </td>
+                            <td className="py-space-md px-space-md whitespace-nowrap">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">
+                                <span className="material-symbols-outlined text-[13px] text-primary">account_balance</span> {rule.verification_source}
+                              </span>
+                            </td>
+                            <td className="py-space-md px-space-md whitespace-nowrap">
+                              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded font-label-sm text-label-sm font-semibold ${rule.gate_type.includes('Hard') ? 'bg-error-container text-on-error-container' : 'bg-surface-container-highest text-on-surface'}`}>
+                                <span className={`w-1.5 h-1.5 rounded-full ${rule.gate_type.includes('Hard') ? 'bg-error' : 'bg-secondary'}`}></span> {rule.gate_type}
+                              </span>
+                            </td>
+                            <td className="py-space-md px-space-md">
+                              <span className="font-tabular-num text-tabular-num text-on-surface font-medium">{rule.tolerance}</span>
+                            </td>
+                            <td className={`py-space-md px-space-md text-right font-tabular-num text-tabular-num font-semibold ${rule.weight.includes('Fail') ? 'text-error' : 'text-on-surface font-bold'}`}>{rule.weight}</td>
+                            <td className="py-space-md px-space-lg text-center whitespace-nowrap">
+                              <button aria-defaultChecked={rule.status} className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none ${rule.status ? 'bg-primary-container' : 'bg-surface-container-high'}`}>
+                                <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-surface shadow ring-0 transition duration-200 ease-in-out ${rule.status ? 'translate-x-4' : 'translate-x-0'}`}></span>
+                              </button>
+                            </td>
+                          </tr>
+                        )) : (
+                          <tr>
+                            <td colSpan={6} className="py-4 text-center text-on-surface-variant text-body-sm">
+                              No compliance rules found.
+                            </td>
+                          </tr>
+                        )}
                       </tbody>
                     </table>
                   </div>

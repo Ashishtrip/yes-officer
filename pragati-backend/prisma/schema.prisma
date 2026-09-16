@@ -51,6 +51,8 @@ model Bid {
   documents         Document[]
   verificationChecks VerificationCheck[]
   vigilanceFlags    VigilanceFlag[]
+  clarifications    Clarification[]
+  grievances        Grievance[]
 }
 
 model Document {
@@ -110,4 +112,56 @@ model VigilanceFlag {
   detected_at DateTime @default(now())
 
   bid         Bid      @relation(fields: [bid_id], references: [id])
+}
+
+model Clarification {
+  id          String   @id @default(uuid())
+  bid_id      String
+  subject     String
+  message     String
+  status      String   // 'PENDING', 'RESPONDED', 'CLOSED'
+  created_at  DateTime @default(now())
+
+  bid         Bid      @relation(fields: [bid_id], references: [id])
+}
+
+model Grievance {
+  id          String   @id @default(uuid())
+  bid_id      String
+  subject     String
+  description String
+  status      String   // 'OPEN', 'INVESTIGATING', 'RESOLVED', 'REJECTED'
+  created_at  DateTime @default(now())
+
+  bid         Bid      @relation(fields: [bid_id], references: [id])
+}
+
+
+model ComplianceRule {
+  id                  Int      @id @default(autoincrement())
+  rule_id             String   @unique
+  name                String
+  description         String
+  verification_source String
+  gate_type           String
+  tolerance           String
+  weight              String
+  status              Boolean  @default(true)
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
+
+model PortalConnector {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  type                  String
+  department            String
+  status                String
+  latency_ms            Int
+  quota_usage           Int
+  quota_limit           Int
+  resilience            String
+  verification_protocol String
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
 }
