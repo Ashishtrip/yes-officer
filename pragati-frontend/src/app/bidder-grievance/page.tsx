@@ -1,8 +1,26 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Link from "next/link";
 
 export default function Page() {
+  // @ts-nocheck
+  const [grievances, setGrievances] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchGrievances = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/interactions/grievances");
+        if (res.data && res.data.success) {
+          setGrievances(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch grievances", err);
+      }
+    };
+    fetchGrievances();
+  }, []);
+
   return (
     <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
 

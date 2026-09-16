@@ -51,6 +51,8 @@ model Bid {
   documents         Document[]
   verificationChecks VerificationCheck[]
   vigilanceFlags    VigilanceFlag[]
+  clarifications    Clarification[]
+  grievances        Grievance[]
 }
 
 model Document {
@@ -108,6 +110,28 @@ model VigilanceFlag {
   severity    String   // 'HIGH', 'MEDIUM', 'LOW'
   description String
   detected_at DateTime @default(now())
+
+  bid         Bid      @relation(fields: [bid_id], references: [id])
+}
+
+model Clarification {
+  id          String   @id @default(uuid())
+  bid_id      String
+  subject     String
+  message     String
+  status      String   // 'PENDING', 'RESPONDED', 'CLOSED'
+  created_at  DateTime @default(now())
+
+  bid         Bid      @relation(fields: [bid_id], references: [id])
+}
+
+model Grievance {
+  id          String   @id @default(uuid())
+  bid_id      String
+  subject     String
+  description String
+  status      String   // 'OPEN', 'INVESTIGATING', 'RESOLVED', 'REJECTED'
+  created_at  DateTime @default(now())
 
   bid         Bid      @relation(fields: [bid_id], references: [id])
 }

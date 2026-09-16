@@ -137,6 +137,35 @@ async function main() {
     }
   });
 
+  // Create Clarifications
+  await prisma.clarification.create({
+    data: {
+      bid_id: bid1.id,
+      subject: 'Clarification on ISO requirement',
+      message: 'Does our ISO 9001:2015 certificate from an international body meet the local criteria?',
+      status: 'RESPONDED'
+    }
+  });
+  
+  await prisma.clarification.create({
+    data: {
+      bid_id: bid1.id,
+      subject: 'Financial Turnover Extension',
+      message: 'We request an extension for submitting our Q4 audited financials due to a delay by our chartered accountant.',
+      status: 'PENDING'
+    }
+  });
+
+  // Create Grievances
+  await prisma.grievance.create({
+    data: {
+      bid_id: bid1.id,
+      subject: 'Unfair Evaluation of Experience',
+      description: 'Our previous project experience was unfairly rejected because the client was a semi-government entity rather than a fully state-owned enterprise.',
+      status: 'INVESTIGATING'
+    }
+  });
+
   // Create Audit Logs
   await prisma.auditLog.createMany({
     data: [

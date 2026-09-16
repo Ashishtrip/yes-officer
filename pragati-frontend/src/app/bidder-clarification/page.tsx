@@ -1,8 +1,26 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Link from "next/link";
 
 export default function Page() {
+  // @ts-nocheck
+  const [clarifications, setClarifications] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchClarifications = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/interactions/clarifications");
+        if (res.data && res.data.success) {
+          setClarifications(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch clarifications", err);
+      }
+    };
+    fetchClarifications();
+  }, []);
+
   return (
     <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
 
@@ -231,180 +249,50 @@ export default function Page() {
 </tr>
 </thead>
 <tbody className="divide-y divide-outline-variant/20 font-body-sm text-on-surface">
-{/* Active Selected Row (#CLN-4892-03) */}
-<tr className="bg-primary-fixed/20 transition-colors cursor-pointer" onClick={() => console.log('selectClarificationRow', 'CLN-4892-03')}>
-<td className="py-3 px-3 align-top">
-<div className="flex items-center gap-1.5">
-<span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
-<span className="font-tabular-num font-bold text-primary">#CLN-4892-03</span>
-</div>
-<div className="font-label-md font-semibold text-on-surface mt-0.5">ABC Industries Ltd.</div>
-<div className="font-tabular-num text-[11px] text-outline">GSTIN: 07AABCU9603R1ZM</div>
-</td>
-<td className="py-3 px-3 align-top max-w-[200px]">
-<span className="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm block truncate" title="Non-Fatal Deviation: Discrepancy in ISO 13485 Calibration Expiry Date">Non-Fatal Deviation</span>
-<p className="text-body-sm text-on-surface-variant text-[12px] mt-1 line-clamp-2">Discrepancy in ISO 13485 Calibration Expiry Date vs. NABL Registry</p>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm font-semibold flex items-center gap-1 w-fit">
-<span className="material-symbols-outlined text-[14px]">timer</span> 34h 12m left
-                </span>
-<span className="font-tabular-num text-[11px] text-outline block mt-1">Reply Recv: Today, 09:14 IST</span>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="flex items-center gap-1 text-[12px] text-secondary font-medium">
-<span className="material-symbols-outlined text-[16px]">verified</span> 99.4% Match
-                </div>
-<span className="text-[11px] text-outline block">No tampering detected</span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed flex items-center gap-1 w-fit">
-<span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Under AI Scrutiny
-                </span>
-<span className="text-[10px] text-outline block mt-1">Assigned: Rajesh Kumar</span>
-</td>
-<td className="py-3 px-3 align-top text-right">
-<button className="px-2 py-1 rounded bg-primary text-on-primary text-label-sm font-medium hover:bg-primary-container inline-flex items-center gap-0.5">
-<span>Inspect</span>
-<span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-</button>
-</td>
-</tr>
-{/* Row 2 (#CLN-4892-02) */}
-<tr className="hover:bg-surface-container-low transition-colors cursor-pointer" onClick={() => console.log('selectClarificationRow', 'CLN-4892-02')}>
-<td className="py-3 px-3 align-top">
-<span className="font-tabular-num font-bold text-on-surface">#CLN-4892-02</span>
-<div className="font-label-md font-semibold text-on-surface mt-0.5">Bharat Imaging Devices Pvt Ltd</div>
-<div className="font-tabular-num text-[11px] text-outline">GSTIN: 27AABCB8912P1ZN</div>
-</td>
-<td className="py-3 px-3 align-top max-w-[200px]">
-<span className="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm block truncate">Financial Verification</span>
-<p className="text-body-sm text-on-surface-variant text-[12px] mt-1 line-clamp-2">CA Net Worth Schedule Missing UDIN &amp; Physical Stamp</p>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="font-label-sm text-secondary flex items-center gap-1 font-medium">
-<span className="material-symbols-outlined text-[14px]">check</span> Resolved
-                </span>
-<span className="font-tabular-num text-[11px] text-outline block mt-1">Cleared on 14-Oct-2026</span>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="flex items-center gap-1 text-[12px] text-secondary font-medium">
-<span className="material-symbols-outlined text-[16px]">verified</span> 100% UDIN
-                </div>
-<span className="text-[11px] text-outline block">ICAI Database Validated</span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-secondary/10 text-secondary flex items-center gap-1 w-fit">
-<span className="w-1.5 h-1.5 rounded-full bg-secondary"></span> Deviation Cured
-                </span>
-<span className="text-[10px] text-outline block mt-1">By TEC Chair</span>
-</td>
-<td className="py-3 px-3 align-top text-right">
-<button className="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-sm font-medium">
-                  Ledger View
-                </button>
-</td>
-</tr>
-{/* Row 3 (#CLN-4892-01) */}
-<tr className="hover:bg-surface-container-low transition-colors cursor-pointer" onClick={() => console.log('selectClarificationRow', 'CLN-4892-01')}>
-<td className="py-3 px-3 align-top">
-<span className="font-tabular-num font-bold text-on-surface">#CLN-4892-01</span>
-<div className="font-label-md font-semibold text-on-surface mt-0.5">Siddhartha MedTech Systems</div>
-<div className="font-tabular-num text-[11px] text-outline">GSTIN: 06AAACS5432K1ZP</div>
-</td>
-<td className="py-3 px-3 align-top max-w-[200px]">
-<span className="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm block truncate">OEM Authorization</span>
-<p className="text-body-sm text-on-surface-variant text-[12px] mt-1 line-clamp-2">Manufacturer Authorization Format Clause 4 Ambiguity</p>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm font-semibold flex items-center gap-1 w-fit">
-<span className="material-symbols-outlined text-[14px]">timer</span> 11h 04m left
-                </span>
-<span className="font-tabular-num text-[11px] text-outline block mt-1">Awaiting Upload</span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="text-[12px] text-outline">Pending Bidder</span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-surface-container-high text-on-surface-variant flex items-center gap-1 w-fit">
-<span className="w-1.5 h-1.5 rounded-full bg-outline"></span> Awaiting Reply
-                </span>
-<span className="text-[10px] text-outline block mt-1">Auto-reminder sent</span>
-</td>
-<td className="py-3 px-3 align-top text-right">
-<button className="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-sm font-medium">
-                  Send Nudge
-                </button>
-</td>
-</tr>
-{/* Row 4 (#CLN-4892-04) */}
-<tr className="hover:bg-surface-container-low transition-colors cursor-pointer">
-<td className="py-3 px-3 align-top">
-<span className="font-tabular-num font-bold text-on-surface">#CLN-4892-04</span>
-<div className="font-label-md font-semibold text-on-surface mt-0.5">Zenith Diagnostic Importers</div>
-<div className="font-tabular-num text-[11px] text-outline">GSTIN: 33AAACZ9841N1Z0</div>
-</td>
-<td className="py-3 px-3 align-top max-w-[200px]">
-<span className="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm block truncate">Make in India (MII)</span>
-<p className="text-body-sm text-on-surface-variant text-[12px] mt-1 line-clamp-2">Local Content Calculation Discrepancy (Class I vs Class II)</p>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="font-label-sm text-error font-semibold flex items-center gap-1">
-<span className="material-symbols-outlined text-[14px]">cancel</span> Expired (0h)
-                </span>
-<span className="font-tabular-num text-[11px] text-outline block mt-1">No Response within 72h</span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="text-[12px] text-error font-medium">No Document</span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-error/10 text-error flex items-center gap-1 w-fit">
-<span className="w-1.5 h-1.5 rounded-full bg-error"></span> Disqualified
-                </span>
-<span className="text-[10px] text-outline block mt-1">Rule 173 Default</span>
-</td>
-<td className="py-3 px-3 align-top text-right">
-<button className="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-sm font-medium">
-                  Summary
-                </button>
-</td>
-</tr>
-{/* Row 5 (#CLN-4892-05) */}
-<tr className="hover:bg-surface-container-low transition-colors cursor-pointer">
-<td className="py-3 px-3 align-top">
-<span className="font-tabular-num font-bold text-on-surface">#CLN-4892-05</span>
-<div className="font-label-md font-semibold text-on-surface mt-0.5">Nova BioCare Corp</div>
-<div className="font-tabular-num text-[11px] text-outline">GSTIN: 19AAACN8820M1ZG</div>
-</td>
-<td className="py-3 px-3 align-top max-w-[200px]">
-<span className="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm block truncate">Past Experience</span>
-<p className="text-body-sm text-on-surface-variant text-[12px] mt-1 line-clamp-2">Client End-User Satisfaction Certificate Signature Validation</p>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="font-label-sm text-secondary flex items-center gap-1 font-medium">
-<span className="material-symbols-outlined text-[14px]">check</span> Resolved
-                </span>
-<span className="font-tabular-num text-[11px] text-outline block mt-1">Cleared on 13-Oct-2026</span>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="flex items-center gap-1 text-[12px] text-secondary font-medium">
-<span className="material-symbols-outlined text-[16px]">verified</span> Validated
-                </div>
-<span className="text-[11px] text-outline block">e-Sign Verified</span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-secondary/10 text-secondary flex items-center gap-1 w-fit">
-<span className="w-1.5 h-1.5 rounded-full bg-secondary"></span> Deviation Cured
-                </span>
-<span className="text-[10px] text-outline block mt-1">By Rajesh Kumar</span>
-</td>
-<td className="py-3 px-3 align-top text-right">
-<button className="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-label-sm font-medium">
-                  Ledger View
-                </button>
-</td>
-</tr>
-</tbody>
+              {clarifications.length > 0 ? clarifications.map((clarif: any) => (
+                <tr key={clarif.id} className="hover:bg-surface-container-low transition-colors cursor-pointer" onClick={() => console.log('selectClarificationRow', clarif.id)}>
+                  <td className="py-3 px-3 align-top">
+                    <div className="flex items-center gap-1.5">
+                      {clarif.status === 'PENDING' && <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>}
+                      <span className="font-tabular-num font-bold text-primary">#CLN-{clarif.id.substring(0,6)}</span>
+                    </div>
+                    <div className="font-label-md font-semibold text-on-surface mt-0.5">{clarif.bid?.bidder?.entity_name || 'Unknown'}</div>
+                  </td>
+                  <td className="py-3 px-3 align-top max-w-[200px]">
+                    <span className="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm block truncate">Clarification</span>
+                    <p className="text-body-sm text-on-surface-variant text-[12px] mt-1 line-clamp-2">{clarif.subject}</p>
+                  </td>
+                  <td className="py-3 px-3 align-top">
+                    <span className={`px-2 py-0.5 rounded font-label-sm font-semibold flex items-center gap-1 w-fit ${clarif.status === 'PENDING' ? 'bg-error-container text-on-error-container' : 'bg-surface-container text-on-surface'}`}>
+                      <span className="material-symbols-outlined text-[14px]">timer</span> {clarif.status === 'PENDING' ? '34h 12m left' : 'Closed'}
+                    </span>
+                  </td>
+                  <td className="py-3 px-3 align-top">
+                    <div className="flex items-center gap-1 bg-surface-container-low px-1.5 py-0.5 rounded w-fit text-[11px] font-mono text-on-surface-variant">
+                      <span className="text-error">-12.4%</span>
+                      <span className="material-symbols-outlined text-[12px]">compare_arrows</span>
+                      <span className="text-secondary">+98% Match</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-3 align-top">
+                    <span className={`px-2 py-0.5 rounded font-label-sm text-[11px] uppercase tracking-wider font-semibold ${clarif.status === 'PENDING' ? 'bg-error-container text-on-error-container' : 'bg-secondary/20 text-secondary'}`}>
+                      {clarif.status}
+                    </span>
+                  </td>
+                  <td className="py-3 px-3 align-top text-right">
+                    <button className="p-1 rounded hover:bg-surface-container-high text-on-surface transition-colors" title="Review Document Artifacts" type="button">
+                      <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                    </button>
+                  </td>
+                </tr>
+              )) : (
+                <tr>
+                  <td colSpan={6} className="py-4 text-center text-on-surface-variant text-body-sm">
+                    No active clarifications found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
 </table>
 </div>
 {/* Footer Action & Notice Status */}
