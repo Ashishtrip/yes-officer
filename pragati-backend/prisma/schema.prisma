@@ -135,3 +135,33 @@ model Grievance {
 
   bid         Bid      @relation(fields: [bid_id], references: [id])
 }
+
+
+model ComplianceRule {
+  id                  Int      @id @default(autoincrement())
+  rule_id             String   @unique
+  name                String
+  description         String
+  verification_source String
+  gate_type           String
+  tolerance           String
+  weight              String
+  status              Boolean  @default(true)
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
+
+model PortalConnector {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  type                  String
+  department            String
+  status                String
+  latency_ms            Int
+  quota_usage           Int
+  quota_limit           Int
+  resilience            String
+  verification_protocol String
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+}

@@ -166,6 +166,8 @@ async function main() {
     }
   });
 
+  
+  
   // Create Audit Logs
   await prisma.auditLog.createMany({
     data: [
@@ -202,7 +204,71 @@ async function main() {
     ]
   });
 
-  console.log('Database seeded successfully!');
+  // Phase 4: Create Compliance Rules
+  await prisma.complianceRule.createMany({
+    data: [
+      {
+        rule_id: 'R-144-XI',
+        name: 'GFR Rule 144(xi) - Land Border Security Mandate',
+        description: 'Mandatory registration with competent authority for bidders sharing land border with India.',
+        verification_source: 'MoF / MEA Validated',
+        gate_type: 'Hard Disqualification',
+        tolerance: '0% Tolerance Strict',
+        weight: 'Mandatory Fail',
+        status: true
+      },
+      {
+        rule_id: 'GSTN-ACT',
+        name: 'GSTN Active Status & Return Regularity',
+        description: 'Validates GST status is Active and GSTR-3B filed continuously for preceding 3 calendar quarters.',
+        verification_source: 'GSTN Direct API',
+        gate_type: 'Hard Disqualification',
+        tolerance: '≤ 0 Defaults (3 Mo)',
+        weight: 'Mandatory Fail',
+        status: true
+      },
+      {
+        rule_id: 'FIN-TURNOVER',
+        name: 'Turnover Variance vs. Audited ITR/MCA',
+        description: 'Audited 3-year turnover declared in CA certificate against MCA-21 XBRL e-filings.',
+        verification_source: 'ITR-6 & MCA XBRL',
+        gate_type: 'Weighted Point Gate',
+        tolerance: '≤ 1.0% Delta',
+        weight: '25 pts',
+        status: true
+      }
+    ]
+  });
+
+  // Phase 4: Create Portal Connectors
+  await prisma.portalConnector.createMany({
+    data: [
+      {
+        name: 'GSTN Direct Sovereign Pipeline',
+        type: 'REST / mTLS',
+        department: 'Goods and Services Tax Network · Department of Revenue, Ministry of Finance',
+        status: 'CONNECTED',
+        latency_ms: 142,
+        quota_usage: 42,
+        quota_limit: 100,
+        resilience: 'Circuit Closed (0 err/1h) · Redis 12h TTL',
+        verification_protocol: 'GSTR-3B, GSTR-1, Active Status, Legal Name'
+      },
+      {
+        name: 'Udyam MSME National Registry',
+        type: 'SOAP / REST Gateway',
+        department: 'Ministry of Micro, Small and Medium Enterprises (MSME)',
+        status: 'HIGH LOAD',
+        latency_ms: 210,
+        quota_usage: 95,
+        quota_limit: 100,
+        resilience: 'Auto-Throttle Active · Backoff 2.4s',
+        verification_protocol: '19-digit URN, NIC 4-Digit, Class (Micro/Small)'
+      }
+    ]
+  });
+
+console.log('Database seeded successfully!');
 }
 
 main()

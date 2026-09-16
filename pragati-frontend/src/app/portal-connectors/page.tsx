@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -18,6 +19,23 @@ export default function PortalConnectors() {
   
   const [pinging, setPinging] = useState(false);
   const [pinged, setPinged] = useState(false);
+
+  const [connectors, setConnectors] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchConnectors = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/config/portal-connectors");
+        if (res.data && res.data.success) {
+          setConnectors(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch portal connectors", err);
+      }
+    };
+    fetchConnectors();
+  }, []);
+
 
   const triggerSyncAll = () => {
     setSyncing(true);
@@ -265,126 +283,68 @@ export default function PortalConnectors() {
                   </div>
                 </div>
 
-                {/* 1. GSTN */}
-                <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all flex flex-col gap-space-md">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
-                    <div className="flex items-start gap-space-md">
-                      <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary font-bold">
-                        <span className="material-symbols-outlined text-[24px]">receipt_long</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-space-xs">
-                          <h3 className="font-title-sm text-title-sm text-on-surface font-semibold">GSTN Direct Sovereign Pipeline</h3>
-                          <span className="px-space-xs py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant">REST / mTLS</span>
+                
+                {connectors.map((connector: any) => (
+                  <div key={connector.id} className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all flex flex-col gap-space-md">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+                      <div className="flex items-start gap-space-md">
+                        <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary font-bold">
+                          <span className="material-symbols-outlined text-[24px]">api</span>
                         </div>
-                        <span className="font-body-sm text-body-sm text-on-surface-variant">Goods and Services Tax Network · Department of Revenue, Ministry of Finance</span>
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-space-xs">
+                            <h3 className="font-title-sm text-title-sm text-on-surface font-semibold">{connector.name}</h3>
+                            <span className="px-space-xs py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant">{connector.type}</span>
+                          </div>
+                          <span className="font-body-sm text-body-sm text-on-surface-variant">{connector.department}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-space-md self-end md:self-auto">
+                        <div className={`flex items-center gap-1.5 px-space-sm py-1 rounded-full font-label-sm text-label-sm font-semibold ${connector.status === 'CONNECTED' ? 'bg-surface-container-low text-secondary' : 'bg-surface-container-low text-tertiary'}`}>
+                          <span className={`w-2 h-2 rounded-full ${connector.status === 'CONNECTED' ? 'bg-secondary' : 'bg-on-tertiary-container animate-ping'}`}></span>
+                          {connector.status}
+                        </div>
+                        <div className="text-right">
+                          <span className="font-label-sm text-label-sm text-on-surface-variant block">Latency</span>
+                          <span className="font-tabular-num text-tabular-num text-on-surface font-semibold text-secondary">{connector.latency_ms} ms</span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-space-md self-end md:self-auto">
-                      <div className="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-low text-secondary font-label-sm text-label-sm font-semibold">
-                        <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                        CONNECTED
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md bg-surface-container-low p-space-md rounded-xl">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm">
+                          <span className={connector.quota_usage > 90 ? 'text-error font-semibold' : ''}>API Rate Quota</span>
+                          <span className={`font-tabular-num font-semibold ${connector.quota_usage > 90 ? 'text-error' : 'text-on-surface'}`}>{connector.quota_usage} / {connector.quota_limit} req/min ({connector.quota_usage}%)</span>
+                        </div>
+                        <div className="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${connector.quota_usage > 90 ? 'bg-error' : 'bg-primary'}`} style={{ width: `${connector.quota_usage}%` }}></div>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <span className="font-label-sm text-label-sm text-on-surface-variant block">Latency</span>
-                        <span className="font-tabular-num text-tabular-num text-on-surface font-semibold text-secondary">142 ms</span>
+                      <div className="flex flex-col justify-center">
+                        <span className="font-label-sm text-label-sm text-on-surface-variant">Resilience & Circuit</span>
+                        <span className={`font-body-sm text-body-sm font-semibold ${connector.quota_usage > 90 ? 'text-error' : 'text-on-surface'}`}>{connector.resilience}</span>
+                      </div>
+                      <div className="flex flex-col justify-center">
+                        <span className="font-label-sm text-label-sm text-on-surface-variant">Verification Protocol</span>
+                        <span className="font-body-sm text-body-sm text-on-surface font-semibold">{connector.verification_protocol}</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-space-xs">
+                      <div className="flex flex-wrap gap-space-2xs text-on-surface-variant font-label-sm text-label-sm">
+                        <span className="px-space-xs py-0.5 rounded bg-surface-container">Dynamic Check</span>
+                      </div>
+                      <div className="flex items-center gap-space-xs">
+                        <button onClick={() => inspectPayload(connector.name, 'API Endpoint', 'Payload Validated')} className="px-space-sm py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold transition-colors">
+                          Inspect Payload
+                        </button>
                       </div>
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md bg-surface-container-low p-space-md rounded-xl">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm">
-                        <span>API Rate Quota</span>
-                        <span className="font-tabular-num font-semibold text-on-surface">42 / 100 req/min (42%)</span>
-                      </div>
-                      <div className="w-full h-2 bg-surface-container rounded-full overflow-hidden">
-                        <div className="bg-primary h-full rounded-full" style={{ width: "42%" }}></div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <span className="font-label-sm text-label-sm text-on-surface-variant">Resilience & Cache</span>
-                      <span className="font-body-sm text-body-sm text-on-surface font-semibold">Circuit Closed (0 err/1h) · Redis 12h TTL</span>
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <span className="font-label-sm text-label-sm text-on-surface-variant">Verification Protocol</span>
-                      <span className="font-body-sm text-body-sm text-on-surface font-semibold">GSTR-3B, GSTR-1, Active Status, Legal Name</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-space-xs">
-                    <div className="flex flex-wrap gap-space-2xs text-on-surface-variant font-label-sm text-label-sm">
-                      <span className="px-space-xs py-0.5 rounded bg-surface-container">GSTIN Regex V2</span>
-                      <span className="px-space-xs py-0.5 rounded bg-surface-container">HSN Mapping</span>
-                      <span className="px-space-xs py-0.5 rounded bg-surface-container">Filing Regularity Check</span>
-                    </div>
-                    <div className="flex items-center gap-space-xs">
-                      <button onClick={() => inspectPayload('GSTN Direct Pipeline', 'GSTIN: 07AAACH7409R1ZZ', 'Payload validated: GSTR-3B current for FY 2024-25 Q3, turnover certified ₹14.8 Cr')} className="px-space-sm py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold transition-colors">
-                        Inspect Payload
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                ))}
 
-                {/* 2. Udyam MSME */}
-                <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all flex flex-col gap-space-md">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
-                    <div className="flex items-start gap-space-md">
-                      <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary font-bold">
-                        <span className="material-symbols-outlined text-[24px]">domain</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-space-xs">
-                          <h3 className="font-title-sm text-title-sm text-on-surface font-semibold">Udyam MSME National Registry</h3>
-                          <span className="px-space-xs py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant">SOAP / REST Gateway</span>
-                        </div>
-                        <span className="font-body-sm text-body-sm text-on-surface-variant">Ministry of Micro, Small and Medium Enterprises (MSME)</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-space-md self-end md:self-auto">
-                      <div className="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-low text-tertiary font-label-sm text-label-sm font-semibold">
-                        <span className="w-2 h-2 rounded-full bg-on-tertiary-container animate-ping"></span>
-                        HIGH LOAD
-                      </div>
-                      <div className="text-right">
-                        <span className="font-label-sm text-label-sm text-on-surface-variant block">Latency</span>
-                        <span className="font-tabular-num text-tabular-num text-on-surface font-semibold">210 ms</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md bg-surface-container-low p-space-md rounded-xl">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm">
-                        <span className="text-error font-semibold">API Rate Quota (Alert)</span>
-                        <span className="font-tabular-num font-semibold text-error">95 / 100 req/min (95%)</span>
-                      </div>
-                      <div className="w-full h-2 bg-surface-container rounded-full overflow-hidden">
-                        <div className="bg-error h-full rounded-full" style={{ width: "95%" }}></div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <span className="font-label-sm text-label-sm text-on-surface-variant">Resilience & Circuit</span>
-                      <span className="font-body-sm text-body-sm text-error font-semibold">Auto-Throttle Active · Backoff 2.4s</span>
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <span className="font-label-sm text-label-sm text-on-surface-variant">Validated Attributes</span>
-                      <span className="font-body-sm text-body-sm text-on-surface font-semibold">19-digit URN, NIC 4-Digit, Class (Micro/Small)</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-space-xs">
-                    <div className="flex flex-wrap gap-space-2xs text-on-surface-variant font-label-sm text-label-sm">
-                      <span className="px-space-xs py-0.5 rounded bg-surface-container">NIC Revision 2008</span>
-                      <span className="px-space-xs py-0.5 rounded bg-surface-container">Investment & Turnover Validation</span>
-                      <span className="px-space-xs py-0.5 rounded bg-surface-container">DIC Unit Confirmation</span>
-                    </div>
-                    <div className="flex items-center gap-space-xs">
-                      <button onClick={() => inspectPayload('Udyam MSME Registry', 'URN: UDYAM-KR-03-0019284', 'Classification: Micro Enterprise | Plant & Machinery: ₹84 Lakhs | Turnover: ₹2.4 Cr | NIC: 6201')} className="px-space-sm py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold transition-colors">
-                        Inspect Payload
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </div>
-
               <div className="xl:col-span-4 flex flex-col gap-space-md">
+
                 {/* Module A */}
                 <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
                   <div className="flex items-center justify-between">
