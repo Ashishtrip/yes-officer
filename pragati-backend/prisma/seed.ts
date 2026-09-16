@@ -109,6 +109,34 @@ async function main() {
     },
   });
 
+  // Create Vigilance Flags
+  const flag1 = await prisma.vigilanceFlag.create({
+    data: {
+      bid_id: bid1.id,
+      flag_type: 'IP_SPOOFING',
+      severity: 'HIGH',
+      description: 'Multiple bids submitted from same IP address across different registered entities.'
+    }
+  });
+
+  const flag2 = await prisma.vigilanceFlag.create({
+    data: {
+      bid_id: bid1.id, // using bid1 since we only have bid1
+      flag_type: 'TAX_EVASION',
+      severity: 'MEDIUM',
+      description: 'GST mismatch with declared turnover.'
+    }
+  });
+
+  const flag3 = await prisma.vigilanceFlag.create({
+    data: {
+      bid_id: bid1.id, // using bid1
+      flag_type: 'CARTEL_RISK',
+      severity: 'HIGH',
+      description: 'Bid pricing matches historical cartel patterns for this category.'
+    }
+  });
+
   // Create Audit Logs
   await prisma.auditLog.createMany({
     data: [

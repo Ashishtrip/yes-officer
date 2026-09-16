@@ -1,8 +1,26 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Link from "next/link";
 
 export default function VigilanceAnalyticsPage() {
+  // @ts-nocheck
+  const [flags, setFlags] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchFlags = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/vigilance/analytics");
+        if (res.data && res.data.success) {
+          setFlags(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch vigilance flags", err);
+      }
+    };
+    fetchFlags();
+  }, []);
+
   return (
     <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
 

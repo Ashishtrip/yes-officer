@@ -1,8 +1,26 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Link from "next/link";
 
 export default function Page() {
+  // @ts-nocheck
+  const [forensics, setForensics] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchForensics = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/vigilance/forensics");
+        if (res.data && res.data.success) {
+          setForensics(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch forensics data", err);
+      }
+    };
+    fetchForensics();
+  }, []);
+
   return (
     <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
 
@@ -152,8 +170,8 @@ export default function Page() {
 </div>
 <div className="my-space-xs">
 <div className="font-display-lg text-display-lg font-bold text-tertiary leading-none">
-              6 <span className="font-title-sm text-title-sm text-tertiary-container font-semibold">Anomalies</span>
-</div>
+              {forensics.length > 0 ? forensics.length : 6} <span className="font-title-sm text-title-sm text-tertiary-container font-semibold">Anomalies</span>
+            </div>
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
               UDIN Stamp Vector, IP Concurrence, MCA DIN
             </p>
