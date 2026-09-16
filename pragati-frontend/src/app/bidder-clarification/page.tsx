@@ -20,7 +20,7 @@ export default function Page() {
           <nav className="hidden xl:flex items-center h-full gap-space-lg" aria-label="Main Navigation">
             <Link href="/" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Tenders &amp; Bids</Link>
             <Link href="/vigilance-analytics" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Vigilance &amp; Analytics</Link>
-            <Link href="/statutory-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
+            <Link href="/compliance-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
             <Link href="/portal-connectors" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Portal Connectors</Link>
             <Link href="/audit-logs" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Audit Logs</Link>
             <Link href="/user-management" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">User &amp; Access / Admin</Link>
@@ -87,11 +87,11 @@ export default function Page() {
 </div>
 {/* Action Buttons */}
 <div className="flex flex-wrap items-center gap-space-xs shrink-0">
-<button className="h-9 px-space-md rounded bg-primary hover:bg-primary-container text-on-primary font-label-md flex items-center gap-space-xs shadow-sm transition-all" onClick="alert('Notice Composer: Launching Rule 173 Statutory Notice Form...')" type="button">
+<button className="h-9 px-space-md rounded bg-primary hover:bg-primary-container text-on-primary font-label-md flex items-center gap-space-xs shadow-sm transition-all" onClick={() => alert('Notice Composer: Launching Rule 173 Statutory Notice Form...')} type="button">
 <span className="material-symbols-outlined text-[18px]">add_circle</span>
 <span>+ Issue Statutory Clarification Notice</span>
 </button>
-<button className="h-9 px-space-md rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md flex items-center gap-space-xs transition-all" onClick="this.classList.add('animate-pulse'); setTimeout(() =&gt; this.classList.remove('animate-pulse'), 800);" type="button">
+<button className="h-9 px-space-md rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md flex items-center gap-space-xs transition-all" onClick={(e) => { e.currentTarget.classList.add('animate-pulse'); setTimeout(() => e.currentTarget.classList.remove('animate-pulse'), 800); }} type="button">
 <span className="material-symbols-outlined text-[18px] text-secondary">sync</span>
 <span>Sync GeM Inbound Queue</span>
 </button>
@@ -232,7 +232,7 @@ export default function Page() {
 </thead>
 <tbody className="divide-y divide-outline-variant/20 font-body-sm text-on-surface">
 {/* Active Selected Row (#CLN-4892-03) */}
-<tr className="bg-primary-fixed/20 transition-colors cursor-pointer" onClick="selectClarificationRow(this, 'CLN-4892-03')">
+<tr className="bg-primary-fixed/20 transition-colors cursor-pointer" onClick={() => console.log('selectClarificationRow', 'CLN-4892-03')}>
 <td className="py-3 px-3 align-top">
 <div className="flex items-center gap-1.5">
 <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
@@ -271,7 +271,7 @@ export default function Page() {
 </td>
 </tr>
 {/* Row 2 (#CLN-4892-02) */}
-<tr className="hover:bg-surface-container-low transition-colors cursor-pointer" onClick="selectClarificationRow(this, 'CLN-4892-02')">
+<tr className="hover:bg-surface-container-low transition-colors cursor-pointer" onClick={() => console.log('selectClarificationRow', 'CLN-4892-02')}>
 <td className="py-3 px-3 align-top">
 <span className="font-tabular-num font-bold text-on-surface">#CLN-4892-02</span>
 <div className="font-label-md font-semibold text-on-surface mt-0.5">Bharat Imaging Devices Pvt Ltd</div>
@@ -306,7 +306,7 @@ export default function Page() {
 </td>
 </tr>
 {/* Row 3 (#CLN-4892-01) */}
-<tr className="hover:bg-surface-container-low transition-colors cursor-pointer" onClick="selectClarificationRow(this, 'CLN-4892-01')">
+<tr className="hover:bg-surface-container-low transition-colors cursor-pointer" onClick={() => console.log('selectClarificationRow', 'CLN-4892-01')}>
 <td className="py-3 px-3 align-top">
 <span className="font-tabular-num font-bold text-on-surface">#CLN-4892-01</span>
 <div className="font-label-md font-semibold text-on-surface mt-0.5">Siddhartha MedTech Systems</div>
@@ -538,10 +538,10 @@ export default function Page() {
 <label className="block font-label-md text-label-md text-on-surface mb-1" htmlFor="justification-text">
               Mandatory Statutory Justification Note (Signed to Audit Trail):
             </label>
-<textarea className="w-full p-2 bg-surface-container-lowest rounded border border-outline-variant font-body-sm text-on-surface focus:outline-none focus:border-primary placeholder:text-outline text-[13px]" id="justification-text" placeholder="State statutory reasoning referencing GFR Rule 173(iv)..." rows="3">Verified revised ISO 13485:2016 calibration document against NABL registry live API. Document verified authentic without modification of tender technical baseline. Deviation categorized as non-substantive clerical cure. Recommended for technical clearance.</textarea>
+<textarea className="w-full p-2 bg-surface-container-lowest rounded border border-outline-variant font-body-sm text-on-surface focus:outline-none focus:border-primary placeholder:text-outline text-[13px]" id="justification-text" placeholder="State statutory reasoning referencing GFR Rule 173(iv)..." rows={3}>Verified revised ISO 13485:2016 calibration document against NABL registry live API. Document verified authentic without modification of tender technical baseline. Deviation categorized as non-substantive clerical cure. Recommended for technical clearance.</textarea>
 </div>
 {/* Execution Button */}
-<button className="w-full h-10 px-4 rounded bg-primary hover:bg-primary-container text-on-primary font-label-md flex items-center justify-center gap-2 shadow-sm transition-all" onClick="signAndLogVerdict()" type="button">
+<button className="w-full h-10 px-4 rounded bg-primary hover:bg-primary-container text-on-primary font-label-md flex items-center justify-center gap-2 shadow-sm transition-all" onClick={() => console.log('signAndLogVerdict')} type="button">
 <span className="material-symbols-outlined text-[18px]">fingerprint</span>
 <span>Digitally Sign &amp; Append to Audit Trail (Class-3 DSC)</span>
 </button>

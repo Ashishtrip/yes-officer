@@ -8,7 +8,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 export default function BidderDetail() {
   const router = useRouter();
   const params = useParams();
-  const [bid, setBid] = useState<Record<string, any>>(null);
+  const [bid, setBid] = useState<any>({});
   const [loadingBid, setLoadingBid] = useState(true);
 
   useEffect(() => {

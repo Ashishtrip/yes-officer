@@ -20,7 +20,7 @@ export default function Page() {
           <nav className="hidden xl:flex items-center h-full gap-space-lg" aria-label="Main Navigation">
             <Link href="/" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Tenders &amp; Bids</Link>
             <Link href="/vigilance-analytics" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Vigilance &amp; Analytics</Link>
-            <Link href="/statutory-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
+            <Link href="/compliance-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
             <Link href="/portal-connectors" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Portal Connectors</Link>
             <Link href="/audit-logs" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Audit Logs</Link>
             <Link href="/user-management" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">User &amp; Access / Admin</Link>
@@ -563,7 +563,7 @@ export default function Page() {
 <span>Reasoned Order Summary &amp; Statutory Dictum:</span>
 <span className="text-primary text-[11px] cursor-pointer hover:underline">Insert Legal Precedent</span>
 </label>
-<textarea className="w-full p-2.5 rounded-md border border-outline-variant bg-surface-container-lowest text-on-surface font-body-sm text-[13px] leading-snug focus:outline-none focus:border-primary" rows="4" defaultValue="Upon comprehensive examination of the appellant's CA certificate vis-à-vis Customs Bill of Entry No. 8491028-DEL, the Tribunal finds no procedural irregularity in TEC's disqualification order. The domestic content is verified at 17.4%, failing the statutory 20% mandate under DPIIT Notification P-45021/2/2017-PP(BE-II). Representation stands dismissed with no cost."></textarea>
+<textarea className="w-full p-2.5 rounded-md border border-outline-variant bg-surface-container-lowest text-on-surface font-body-sm text-[13px] leading-snug focus:outline-none focus:border-primary" rows={4} defaultValue="Upon comprehensive examination of the appellant's CA certificate vis-à-vis Customs Bill of Entry No. 8491028-DEL, the Tribunal finds no procedural irregularity in TEC's disqualification order. The domestic content is verified at 17.4%, failing the statutory 20% mandate under DPIIT Notification P-45021/2/2017-PP(BE-II). Representation stands dismissed with no cost."></textarea>
 </div>
 {/* Attestation Button */}
 <button className="w-full py-2.5 px-4 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold flex items-center justify-center gap-2 shadow-sm transition-all" type="button">

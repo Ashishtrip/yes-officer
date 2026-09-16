@@ -17,6 +17,28 @@ async function main() {
     },
   });
 
+  const adminUser = await prisma.user.upsert({
+    where: { email: 'admin@pragati.gov.in' },
+    update: {},
+    create: {
+      email: 'admin@pragati.gov.in',
+      name: 'System Admin',
+      password_hash: passwordHash,
+      role: 'ADMIN',
+    },
+  });
+
+  const auditorUser = await prisma.user.upsert({
+    where: { email: 'auditor@pragati.gov.in' },
+    update: {},
+    create: {
+      email: 'auditor@pragati.gov.in',
+      name: 'Vigilance Auditor',
+      password_hash: passwordHash,
+      role: 'AUDITOR',
+    },
+  });
+
   // Create Tender 1
   const tender1 = await prisma.tender.upsert({
     where: { gem_tender_id: 'GEM/2023/B/1234567' },
@@ -85,6 +107,70 @@ async function main() {
         ]
       }
     },
+  });
+
+  // Create Vigilance Flags
+  const flag1 = await prisma.vigilanceFlag.create({
+    data: {
+      bid_id: bid1.id,
+      flag_type: 'IP_SPOOFING',
+      severity: 'HIGH',
+      description: 'Multiple bids submitted from same IP address across different registered entities.'
+    }
+  });
+
+  const flag2 = await prisma.vigilanceFlag.create({
+    data: {
+      bid_id: bid1.id, // using bid1 since we only have bid1
+      flag_type: 'TAX_EVASION',
+      severity: 'MEDIUM',
+      description: 'GST mismatch with declared turnover.'
+    }
+  });
+
+  const flag3 = await prisma.vigilanceFlag.create({
+    data: {
+      bid_id: bid1.id, // using bid1
+      flag_type: 'CARTEL_RISK',
+      severity: 'HIGH',
+      description: 'Bid pricing matches historical cartel patterns for this category.'
+    }
+  });
+
+  // Create Audit Logs
+  await prisma.auditLog.createMany({
+    data: [
+      {
+        action: 'USER_LOGIN',
+        user_email: 'po@pragati.gov.in',
+        target: 'System',
+        status: 'SUCCESS',
+        ip_address: '192.168.1.10',
+      },
+      {
+        action: 'TENDER_CREATED',
+        user_email: 'admin@pragati.gov.in',
+        target: 'Tender: GEM/2023/B/1234567',
+        status: 'SUCCESS',
+        ip_address: '192.168.1.5',
+      },
+      {
+        action: 'BID_VERIFIED',
+        user_email: 'SYSTEM',
+        target: 'Bid: TechCorp India Pvt Ltd',
+        status: 'SUCCESS',
+        details: { checksPassed: 2, riskLevel: 'LOW' },
+        ip_address: '127.0.0.1',
+      },
+      {
+        action: 'FAILED_LOGIN',
+        user_email: 'unknown@example.com',
+        target: 'System',
+        status: 'FAILURE',
+        details: { reason: 'Invalid credentials' },
+        ip_address: '203.0.113.45',
+      },
+    ]
   });
 
   console.log('Database seeded successfully!');

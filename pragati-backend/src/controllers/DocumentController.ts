@@ -32,6 +32,9 @@ export class DocumentController extends BaseController {
       // Log the document upload action
       await auditService.logAction({
         action: 'DOCUMENT_UPLOADED',
+        user_email: (req as any).user?.email || 'SYSTEM',
+        target: `Document: ${destinationKey}`,
+        status: 'SUCCESS',
         details: { mimeType, destinationKey, extractionSuccess: !!extractionResult },
       });
 

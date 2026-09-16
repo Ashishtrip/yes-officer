@@ -18,4 +18,13 @@ export class AuditController extends BaseController {
       this.handleError(error, res, 'AuditController.searchLogs');
     }
   };
+
+  public getLogs = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const logs = await auditService.getLogs();
+      this.handleSuccess(res, { logs });
+    } catch (error) {
+      this.handleError(error, res, 'AuditController.getLogs');
+    }
+  };
 }

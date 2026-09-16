@@ -50,6 +50,7 @@ model Bid {
   bidder            Bidder               @relation(fields: [bidder_id], references: [id])
   documents         Document[]
   verificationChecks VerificationCheck[]
+  vigilanceFlags    VigilanceFlag[]
 }
 
 model Document {
@@ -87,4 +88,26 @@ model User {
   name          String
   role          String   @default("PROCUREMENT_OFFICER") // ADMIN, PROCUREMENT_OFFICER, TEC_MEMBER, AUDITOR
   created_at    DateTime @default(now())
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  action      String
+  user_email  String
+  target      String
+  status      String
+  details     Json?
+  ip_address  String?
+  timestamp   DateTime @default(now())
+}
+
+model VigilanceFlag {
+  id          String   @id @default(uuid())
+  bid_id      String
+  flag_type   String   // e.g., 'IP_SPOOFING', 'CARTEL_RISK', 'TAX_EVASION'
+  severity    String   // 'HIGH', 'MEDIUM', 'LOW'
+  description String
+  detected_at DateTime @default(now())
+
+  bid         Bid      @relation(fields: [bid_id], references: [id])
 }

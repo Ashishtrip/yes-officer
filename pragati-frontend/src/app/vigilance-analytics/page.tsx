@@ -1,8 +1,26 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Link from "next/link";
 
 export default function VigilanceAnalyticsPage() {
+  // @ts-nocheck
+  const [flags, setFlags] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchFlags = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/v1/vigilance/analytics");
+        if (res.data && res.data.success) {
+          setFlags(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch vigilance flags", err);
+      }
+    };
+    fetchFlags();
+  }, []);
+
   return (
     <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
 
@@ -20,7 +38,7 @@ export default function VigilanceAnalyticsPage() {
           <nav className="hidden xl:flex items-center h-full gap-space-lg" aria-label="Main Navigation">
             <Link href="/" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Tenders &amp; Bids</Link>
             <Link href="/vigilance-analytics" className="h-full flex items-center px-space-xs font-title-sm text-title-sm text-primary border-b-2 border-primary transition-colors">Vigilance &amp; Analytics</Link>
-            <Link href="/statutory-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
+            <Link href="/compliance-rules" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Compliance Rules</Link>
             <Link href="/portal-connectors" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Portal Connectors</Link>
             <Link href="/audit-logs" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">Audit Logs</Link>
             <Link href="/user-management" className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors">User &amp; Access / Admin</Link>

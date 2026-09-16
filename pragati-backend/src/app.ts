@@ -16,12 +16,16 @@ import { bidRoutes } from './routes/bidRoutes';
 import documentRoutes from './routes/documentRoutes';
 import auditRoutes from './routes/auditRoutes';
 import { tenderRoutes } from './routes/tenderRoutes';
+import userRoutes from './routes/userRoutes';
+import vigilanceRoutes from './routes/vigilanceRoutes';
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/bids', bidRoutes);
 app.use('/api/v1/documents', documentRoutes);
 app.use('/api/v1/audit', auditRoutes);
 app.use('/api/v1/tenders', tenderRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/vigilance', vigilanceRoutes);
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {
