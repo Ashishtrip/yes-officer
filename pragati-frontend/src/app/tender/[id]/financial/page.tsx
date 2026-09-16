@@ -85,7 +85,7 @@ export default function Page() {
           <div className="flex items-center gap-space-md min-w-[280px]">
             <div className="flex flex-col">
               <div className="flex items-center gap-space-xs">
-                <span className="font-title-sm text-title-sm text-primary leading-none font-bold">Yes Officer</span>
+                <span className="font-title-sm text-title-sm text-primary leading-none font-bold">Pragati</span>
                 <span className="px-1.5 py-0.5 rounded bg-surface-container text-primary font-label-sm text-[10px] uppercase font-bold tracking-wider">Gov Portal</span>
               </div>
               <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight mt-0.5">GeM Integrated Compliance & Statutory Audit</span>

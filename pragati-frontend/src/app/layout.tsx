@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Yes Officer - GeM Integrated Compliance Suite",
+  title: "Pragati - GeM Integrated Compliance Suite",
   description: "Sovereign Compliance Gateway",
 };
 
