@@ -21,7 +21,20 @@ export const verifyGstn = async (gstin: string): Promise<GstnData | null> => {
 
   if (!apiKey || apiKey === 'your_api_key_here') {
     console.warn('⚠️ No VERIFICATION_API_KEY provided. Simulating GSTN API response.');
-    
+    if (gstin.endsWith('FAIL')) {
+      return {
+        gstin,
+        legalName: 'Simulated Fraudulent Enterprise',
+        tradeName: 'Simulated Fraud',
+        status: 'Suspended',
+        registrationDate: '2020-01-01',
+        taxpayerType: 'Regular',
+        recentFilings: [
+          { returnType: 'GSTR-3B', taxPeriod: '072026', status: 'Pending', dateOfFiling: '' },
+          { returnType: 'GSTR-1', taxPeriod: '072026', status: 'Pending', dateOfFiling: '' },
+        ],
+      };
+    }
     if (gstin.length === 15) {
       return {
         gstin,

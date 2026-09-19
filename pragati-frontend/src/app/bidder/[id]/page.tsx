@@ -208,91 +208,30 @@ export default function BidderDetail() {
 </tr>
 </thead>
 <tbody className="divide-y divide-slate-100 font-normal">
-{/* Check 1: Entity Legal Name */}
-<tr className="hover:bg-slate-50/70 transition-colors">
-<td className="py-3 px-4">
-<p className="font-medium text-slate-900 text-xs">Entity Legal Name</p>
-<p className="text-[11px] text-slate-400 font-mono">MCA / ROC Registry Match</p>
-</td>
-<td className="py-3 px-4 font-medium text-slate-800">ABC Industries Limited</td>
-<td className="py-3 px-4 font-mono font-medium text-slate-700">ABC INDUSTRIES LIMITED</td>
-<td className="py-3 px-4">
-<span className="text-emerald-700 font-medium text-xs">0.0% variance (Exact Match)</span>
-</td>
-<td className="py-3 px-4 text-right">
-<span className="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
-                    100% • Verified
-                  </span>
-</td>
-</tr>
-{/* Check 2: Average Turnover */}
-<tr className="hover:bg-slate-50/70 transition-colors">
-<td className="py-3 px-4">
-<p className="font-medium text-slate-900 text-xs">Average Turnover (FY 24-25)</p>
-<p className="text-[11px] text-slate-400 font-mono">ITR-6 Form &amp; Audited Balance Sheet</p>
-</td>
-<td className="py-3 px-4 font-medium text-slate-800">₹48.60 Crore</td>
-<td className="py-3 px-4 font-mono text-slate-700">₹48.58 Crore (ITR / MCA)</td>
-<td className="py-3 px-4">
-<span className="text-emerald-700 font-medium text-xs">+0.04% <span className="text-[10px] text-slate-400">(Allowable ≤ 1.0%)</span></span>
-</td>
-<td className="py-3 px-4 text-right">
-<span className="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
-                    99.8% • Validated
-                  </span>
-</td>
-</tr>
-{/* Check 3: MSME Classification */}
-<tr className="hover:bg-slate-50/70 transition-colors">
-<td className="py-3 px-4">
-<p className="font-medium text-slate-900 text-xs">MSME Classification</p>
-<p className="text-[11px] text-slate-400 font-mono">Udyam Registration Portal</p>
-</td>
-<td className="py-3 px-4 font-medium text-slate-800">Medium Enterprise</td>
-<td className="py-3 px-4 font-mono text-slate-700">Medium (Inv: ₹18.2 Cr, Turn: ₹48.58 Cr)</td>
-<td className="py-3 px-4">
-<span className="text-emerald-700 font-medium text-xs">Category Concurrence</span>
-</td>
-<td className="py-3 px-4 text-right">
-<span className="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
-                    100% • Verified
-                  </span>
-</td>
-</tr>
-{/* Check 4: PAN Status & Linking */}
-<tr className="hover:bg-slate-50/70 transition-colors">
-<td className="py-3 px-4">
-<p className="font-medium text-slate-900 text-xs">PAN Status &amp; Linking</p>
-<p className="text-[11px] text-slate-400 font-mono">NSDL / Income Tax API</p>
-</td>
-<td className="py-3 px-4 font-mono font-medium text-slate-800">{bid.bidder.pan}</td>
-<td className="py-3 px-4 font-mono text-slate-700">{bid.bidder.pan} (Active / Operative)</td>
-<td className="py-3 px-4">
-<span className="text-emerald-700 font-medium text-xs">Identical PAN-Aadhaar Seeded</span>
-</td>
-<td className="py-3 px-4 text-right">
-<span className="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
-                    100% • Verified
-                  </span>
-</td>
-</tr>
-{/* Check 5: Central Debarment & Blacklist */}
-<tr className="hover:bg-slate-50/70 transition-colors">
-<td className="py-3 px-4">
-<p className="font-medium text-slate-900 text-xs">Central Debarment &amp; Blacklist</p>
-<p className="text-[11px] text-slate-400 font-mono">CIPP, CVC &amp; GeM Ban Repository</p>
-</td>
-<td className="py-3 px-4 font-medium text-slate-800">Declaration: Not Debarred</td>
-<td className="py-3 px-4 font-mono text-slate-700">0 Adverse Records Across 14 Portals</td>
-<td className="py-3 px-4">
-<span className="text-emerald-700 font-medium text-xs">Clean Background</span>
-</td>
-<td className="py-3 px-4 text-right">
-<span className="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
-                    Zero Risk • Clear
-                  </span>
-</td>
-</tr>
+{bid.verificationChecks?.map((check: any, idx: number) => (
+  <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
+    <td className="py-3 px-4">
+      <p className="font-medium text-slate-900 text-xs">{check.check_type}</p>
+      <p className="text-[11px] text-slate-400 font-mono">{check.portal_source}</p>
+    </td>
+    <td className="py-3 px-4 font-medium text-slate-800">
+      <pre className="text-[10px] whitespace-pre-wrap">{JSON.stringify(check.submitted_value, null, 2)}</pre>
+    </td>
+    <td className="py-3 px-4 font-mono text-slate-700">
+      <pre className="text-[10px] whitespace-pre-wrap">{JSON.stringify(check.verified_value, null, 2)}</pre>
+    </td>
+    <td className="py-3 px-4">
+      <span className={`font-medium text-xs ${check.match_result === 'MATCH' ? 'text-emerald-700' : 'text-rose-700'}`}>
+        {check.discrepancy_detail || check.match_result}
+      </span>
+    </td>
+    <td className="py-3 px-4 text-right">
+      <span className={`inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded text-[11px] border ${check.status === 'VERIFIED' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'}`}>
+        {check.status}
+      </span>
+    </td>
+  </tr>
+))}
 </tbody>
 </table>
 </div>
@@ -366,8 +305,8 @@ export default function BidderDetail() {
 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">AI Recommendation Engine</h3>
 </div>
 <p className="text-xs text-slate-700 leading-relaxed font-sans">
-<strong className="font-bold text-slate-900">Recommended for Technical Qualification.</strong> {bid.bidder.entity_name} satisfies all statutory compliance mandates under <span className="font-semibold text-slate-900">GFR Rule 144(xi)</span> and <span className="font-semibold text-slate-900">Make in India (PPO 2017)</span>. All 5 connected public registries returned zero critical variances.
-            </p>
+{bid.ai_recommendation ? bid.ai_recommendation : "AI Recommendation is pending. All connected public registries returned zero critical variances."}
+</p>
 </div>
 {/* Cryptographic Audit Trail */}
 <div className="mt-4 pt-3 border-t border-slate-100 bg-slate-50 rounded-lg p-3" data-purpose="cryptographic-trail">

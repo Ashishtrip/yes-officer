@@ -13,6 +13,14 @@ export async function verifyPan(pan: string): Promise<PanData> {
 
   if (!apiKey) {
     console.warn("[PAN] Missing API Key. Using mock response.");
+    if (pan.endsWith('FAIL')) {
+      return {
+        pan,
+        status: "Inactive",
+        name_match: false,
+        name: "Unknown"
+      };
+    }
     return {
       pan,
       status: "Active",

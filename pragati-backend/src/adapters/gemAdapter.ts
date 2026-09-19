@@ -13,6 +13,14 @@ export async function verifyGem(sellerId: string): Promise<GemData> {
 
   if (!apiKey) {
     console.warn("[GEM] Missing API Key. Using mock response.");
+    if (sellerId.endsWith('FAIL')) {
+      return {
+        seller_id: sellerId,
+        status: "Blacklisted",
+        rating: 1.0,
+        assessment_status: "Rejected"
+      };
+    }
     return {
       seller_id: sellerId,
       status: "Active",
