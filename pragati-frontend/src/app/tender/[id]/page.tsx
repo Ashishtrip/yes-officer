@@ -30,6 +30,18 @@ export default function TenderDetail() {
   if (loadingTender) return <div className="p-8">Loading Tender details...</div>;
   if (!tender) return <div className="p-8 text-red-500">Tender not found.</div>;
 
+  const totalBidders = tender.bids?.length || 0;
+  const fullyVerified = tender.bids?.filter((b: any) => b.risk_level === 'LOW').length || 0;
+  const flaggedIssues = tender.bids?.filter((b: any) => ['HIGH', 'CRITICAL'].includes(b.risk_level)).length || 0;
+  const pendingVerification = tender.bids?.filter((b: any) => b.status === 'PENDING').length || 0;
+
+  const avgScore = totalBidders > 0 
+    ? (tender.bids.reduce((acc: number, b: any) => acc + (b.compliance_score || 0), 0) / totalBidders).toFixed(1)
+    : "0.0";
+  const complianceRate = totalBidders > 0
+    ? ((fullyVerified / totalBidders) * 100).toFixed(1)
+    : "0.0";
+
   return (
     <ProtectedRoute>
       <header className="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b border-surface-container-high">
@@ -140,7 +152,7 @@ export default function TenderDetail() {
 <div className="flex items-start justify-between">
 <div className="space-y-1">
 <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Fully Verified</span>
-<div className="font-display-lg text-display-lg text-secondary font-tabular-num">18</div>
+<div className="font-display-lg text-display-lg text-secondary font-tabular-num">{fullyVerified}</div>
 </div>
 <div className="w-10 h-10 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary">
 <span className="material-symbols-outlined text-[22px]">verified</span>
@@ -148,9 +160,9 @@ export default function TenderDetail() {
 </div>
 <div className="mt-space-sm pt-space-xs flex items-center justify-between text-body-sm font-body-sm">
 <span className="text-on-surface-variant flex items-center gap-1 font-tabular-num">
-<span className="font-semibold text-secondary">75.0%</span> compliance rate
+<span className="font-semibold text-secondary">{complianceRate}%</span> compliance rate
           </span>
-<span className="text-on-surface-variant font-tabular-num font-label-sm text-label-sm">Avg Score: 91.4</span>
+<span className="text-on-surface-variant font-tabular-num font-label-sm text-label-sm">Avg Score: {avgScore}</span>
 </div>
 </div>
 {/* Card 3: Flagged Issues */}
@@ -158,7 +170,7 @@ export default function TenderDetail() {
 <div className="flex items-start justify-between">
 <div className="space-y-1">
 <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Flagged Issues</span>
-<div className="font-display-lg text-display-lg text-amber-600 font-tabular-num">4</div>
+<div className="font-display-lg text-display-lg text-amber-600 font-tabular-num">{flaggedIssues}</div>
 </div>
 <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
 <span className="material-symbols-outlined text-[22px]">warning</span>
@@ -177,7 +189,7 @@ export default function TenderDetail() {
 <div className="flex items-start justify-between">
 <div className="space-y-1">
 <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Pending Verification</span>
-<div className="font-display-lg text-display-lg text-outline font-tabular-num">2</div>
+<div className="font-display-lg text-display-lg text-outline font-tabular-num">{pendingVerification}</div>
 </div>
 <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-outline">
 <span className="material-symbols-outlined text-[22px] animate-spin">sync</span>
@@ -203,16 +215,16 @@ export default function TenderDetail() {
 </div>
 <div className="flex items-center gap-1.5 overflow-x-auto py-1">
 <button className="filter-chip active px-3 py-1.5 rounded-full font-label-md text-label-md bg-primary-container text-on-primary shadow-xs transition-colors" data-filter="all">
-              All Bidders (24)
+              All Bidders ({totalBidders})
             </button>
 <button className="filter-chip px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors" data-filter="verified">
-              Fully Verified (18)
+              Fully Verified ({fullyVerified})
             </button>
 <button className="filter-chip px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors" data-filter="flagged">
-              Flagged (4)
+              Flagged ({flaggedIssues})
             </button>
 <button className="filter-chip px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors" data-filter="pending">
-              Pending (2)
+              Pending ({pendingVerification})
             </button>
 </div>
 </div>
@@ -258,28 +270,49 @@ export default function TenderDetail() {
 <td className="py-3.5 px-space-md">
 <div className="flex flex-col gap-1">
 <div className="flex items-center justify-between font-tabular-num">
-<span className="font-semibold text-emerald-600">{bid.compliance_score?.toFixed(1)} / 100</span>
-<span className="font-label-sm text-label-sm text-emerald-700">Excellent</span>
+<span className={`font-semibold ${bid.compliance_score >= 80 ? 'text-emerald-600' : bid.compliance_score >= 50 ? 'text-amber-600' : 'text-rose-600'}`}>
+  {bid.compliance_score?.toFixed(1)} / 100
+</span>
+<span className={`font-label-sm text-label-sm ${bid.compliance_score >= 80 ? 'text-emerald-700' : bid.compliance_score >= 50 ? 'text-amber-700' : 'text-rose-700'}`}>
+  {bid.compliance_score >= 80 ? 'Excellent' : bid.compliance_score >= 50 ? 'Fair' : 'Poor'}
+</span>
 </div>
 <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div className="bg-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: "92%" }}></div>
+<div className={`${bid.compliance_score >= 80 ? 'bg-emerald-500' : bid.compliance_score >= 50 ? 'bg-amber-500' : 'bg-rose-500'} h-full rounded-full transition-all duration-500`} style={{ width: `${bid.compliance_score || 0}%` }}></div>
 </div>
 </div>
 </td>
 <td className="py-3.5 px-space-md">
-<span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-label-sm text-label-sm bg-emerald-50 text-emerald-700 font-semibold">
-<span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>{bid.risk_level}</span>
+<span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold ${
+  bid.risk_level === 'LOW' ? 'bg-emerald-50 text-emerald-700' : 
+  bid.risk_level === 'MEDIUM' ? 'bg-amber-50 text-amber-700' : 'bg-rose-50 text-rose-700'
+}`}>
+<span className={`w-1.5 h-1.5 rounded-full ${
+  bid.risk_level === 'LOW' ? 'bg-emerald-500' : 
+  bid.risk_level === 'MEDIUM' ? 'bg-amber-500' : 'bg-rose-500'
+}`}></span>{bid.risk_level}</span>
 </td>
 <td className="py-3.5 px-space-md">
-<span className="inline-flex items-center gap-1 text-emerald-700 font-medium">
-<span className="material-symbols-outlined text-[18px]">check_circle</span>
-                  Verified
+<span className={`inline-flex items-center gap-1 font-medium ${
+  bid.status === 'ACCEPTED' ? 'text-emerald-700' : 
+  bid.status === 'REJECTED' ? 'text-rose-700' : 'text-slate-600'
+}`}>
+<span className="material-symbols-outlined text-[18px]">
+  {bid.status === 'ACCEPTED' ? 'check_circle' : bid.status === 'REJECTED' ? 'cancel' : 'pending'}
+</span>
+                  {bid.status}
                 </span>
 </td>
 <td className="py-3.5 px-space-md">
 <div className="flex items-start gap-1.5">
-<span className="material-symbols-outlined text-emerald-600 text-[18px] shrink-0 mt-0.5">verified_user</span>
-<span className="text-on-surface-variant">All 5 checks passed (Udyam, GSTN active, PAN matched, No Blacklist, ITR valid)</span>
+<span className={`material-symbols-outlined text-[18px] shrink-0 mt-0.5 ${
+  bid.verificationChecks?.every((c: any) => c.status === 'VERIFIED') ? 'text-emerald-600' : 'text-amber-600'
+}`}>
+  {bid.verificationChecks?.every((c: any) => c.status === 'VERIFIED') ? 'verified_user' : 'warning'}
+</span>
+<span className="text-on-surface-variant line-clamp-2" title={bid.ai_recommendation || 'No recommendation'}>
+  {bid.ai_recommendation || `${bid.verificationChecks?.filter((c: any) => c.status === 'VERIFIED').length || 0} checks passed.`}
+</span>
 </div>
 </td>
 <td className="py-3.5 px-space-md text-right">

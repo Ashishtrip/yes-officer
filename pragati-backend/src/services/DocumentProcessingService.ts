@@ -26,7 +26,11 @@ export class DocumentProcessingService {
 
       if (!projectId || !processorId) {
         console.warn('GCP Document AI not configured. Using mocked text extraction.');
-        extractedText = 'Mocked extracted text containing PAN ABCDE1234F and GSTIN 29GGGGG1314R9Z6';
+        if (documentKey.includes('fail')) {
+            extractedText = 'Mocked extracted text containing PAN ABCDE1234FAIL and GSTIN 29GGGGG1314R9ZFAIL and UDYAM UDYAM-MH-00-FAIL';
+        } else {
+            extractedText = 'Mocked extracted text containing PAN ABCDE1234F and GSTIN 29GGGGG1314R9Z6 and UDYAM UDYAM-MH-00-123456';
+        }
       } else {
         const name = `projects/${projectId}/locations/${location}/processors/${processorId}`;
         const request = {
@@ -52,7 +56,7 @@ ${extractedText}
       let extractedFields: any = {};
       try {
         const aiResponse = await ai.models.generateContent({
-            model: 'gemini-2.5-pro',
+            model: 'gemini-1.5-flash',
             contents: geminiPrompt,
             config: {
                 responseMimeType: 'application/json'

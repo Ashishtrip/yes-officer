@@ -18,6 +18,17 @@ export const verifyUdyam = async (udyamNumber: string): Promise<UdyamData | null
     console.warn('⚠️ No VERIFICATION_API_KEY provided. Simulating Udyam API response.');
     
     // Fallback simulation if no API key is provided
+    if (udyamNumber.endsWith('FAIL')) {
+      return {
+        udyamNumber,
+        enterpriseName: 'Simulated Inactive Enterprise Pvt Ltd',
+        organizationType: 'Private Limited Company',
+        majorActivity: 'Manufacturing',
+        enterpriseType: 'Small',
+        dateOfRegistration: '2020-05-10',
+        status: 'Inactive',
+      };
+    }
     if (udyamNumber.startsWith('UDYAM-')) {
       return {
         udyamNumber,
