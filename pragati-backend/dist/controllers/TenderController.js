@@ -1,13 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TenderController = void 0;
-const client_1 = require("@prisma/client");
+const prisma_1 = __importDefault(require("../utils/prisma"));
 const BaseController_1 = require("./BaseController");
-const prisma = new client_1.PrismaClient();
 class TenderController extends BaseController_1.BaseController {
     getTenders = async (req, res) => {
         try {
-            const tenders = await prisma.tender.findMany({
+            const tenders = await prisma_1.default.tender.findMany({
                 include: {
                     _count: {
                         select: { bids: true }
@@ -25,7 +27,7 @@ class TenderController extends BaseController_1.BaseController {
     getTenderById = async (req, res) => {
         const { id } = req.params;
         try {
-            const tender = await prisma.tender.findUnique({
+            const tender = await prisma_1.default.tender.findUnique({
                 where: { id: id },
                 include: {
                     bids: {

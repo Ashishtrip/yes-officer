@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { BaseController } from './BaseController';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
 
 export class UserController extends BaseController {
   public getUsers = async (req: Request, res: Response): Promise<void> => {

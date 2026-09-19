@@ -1,0 +1,37 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.prisma = void 0;
+const client_1 = require("@prisma/client");
+const prismaClient = new client_1.PrismaClient();
+// Add the Audit Log Extension
+exports.prisma = prismaClient.$extends({
+    query: {
+        $allModels: {
+            async $allOperations({ operation, model, args, query }) {
+                const result = await query(args);
+                // We only want to log mutations (creates, updates, deletes) on specific models
+                const auditableModels = ['VerificationCheck', 'Bid', 'Document', 'Tender'];
+                const auditableOperations = ['create', 'update', 'delete', 'createMany', 'updateMany', 'deleteMany'];
+                if (auditableModels.includes(model) && auditableOperations.includes(operation)) {
+                    // Extract user email if provided in the context, otherwise default to SYSTEM
+                    // In a real scenario with ALS (AsyncLocalStorage), you'd pull the user context here.
+                    // For now, we will default to 'SYSTEM' unless explicitly passed (which is tricky with standard Prisma args without context passing)
+                    const user_email = 'SYSTEM'; // Placeholder until ALS or context passing is implemented
+                    const untypedArgs = args;
+                    // Fire and forget the audit log creation
+                    prismaClient.auditLog.create({
+                        data: {
+                            action: `${model}_${operation.toUpperCase()}`,
+                            user_email: user_email,
+                            target: model,
+                            status: 'SUCCESS',
+                            details: JSON.parse(JSON.stringify(untypedArgs.data || untypedArgs.where || {})),
+                        }
+                    }).catch(err => console.error("Failed to write audit log:", err));
+                }
+                return result;
+            }
+        }
+    }
+});
+exports.default = exports.prisma;

@@ -5,13 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const BaseController_1 = require("./BaseController");
-const client_1 = require("@prisma/client");
+const prisma_1 = __importDefault(require("../utils/prisma"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const prisma = new client_1.PrismaClient();
 class UserController extends BaseController_1.BaseController {
     getUsers = async (req, res) => {
         try {
-            const users = await prisma.user.findMany({
+            const users = await prisma_1.default.user.findMany({
                 select: {
                     id: true,
                     email: true,
@@ -30,7 +29,7 @@ class UserController extends BaseController_1.BaseController {
         try {
             const { email, name, role, password } = req.body;
             const password_hash = await bcryptjs_1.default.hash(password || 'password123', 10);
-            const user = await prisma.user.create({
+            const user = await prisma_1.default.user.create({
                 data: {
                     email,
                     name,

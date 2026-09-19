@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma';
 import { BaseController } from './BaseController';
 import { ComplianceEngineService } from '../services/ComplianceEngineService';
 import { ScoringService } from '../services/ScoringService';
 import { PortalIntegrationService } from '../services/PortalIntegrationService';
 import { auditService } from '../services/AuditService';
 
-const prisma = new PrismaClient();
 
 export class BidController extends BaseController {
   private complianceEngine: ComplianceEngineService;
