@@ -45,4 +45,24 @@ export const api = {
   getBidDetails: (id: string) => apiClient.get(`/bids/${id}`).then(res => res.data),
   submitPoDecision: (id: string, decision: 'APPROVED' | 'REJECTED', comments: string) => 
     apiClient.post(`/bids/${id}/decision`, { decision, comments }).then(res => res.data),
+
+  // Audit Logs
+  getAuditLogs: (params?: any) => apiClient.get('/audit', { params }).then(res => res.data),
+
+  // Config / Rules
+  getConfigRules: () => apiClient.get('/config/compliance-rules').then(res => res.data),
+  getPortalConnectors: () => apiClient.get('/config/portal-connectors').then(res => res.data),
+  updateConfigRule: (id: string, data: any) => apiClient.put(`/config/rules/${id}`, data).then(res => res.data),
+
+  // Interactions
+  getClarifications: () => apiClient.get('/interaction/clarifications').then(res => res.data),
+  getGrievances: () => apiClient.get('/interaction/grievances').then(res => res.data),
+
+  // Users
+  getUsers: () => apiClient.get('/users').then(res => res.data),
+  getUserById: (id: string) => apiClient.get(`/users/${id}`).then(res => res.data),
+
+  // Vigilance Analytics
+  getVigilanceStats: () => apiClient.get('/vigilance/analytics').then(res => res.data),
+  getVigilanceAlerts: () => apiClient.get('/vigilance/forensics').then(res => res.data),
 };
