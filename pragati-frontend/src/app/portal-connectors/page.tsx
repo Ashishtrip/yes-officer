@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { api } from '@/services/api';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -25,9 +25,9 @@ export default function PortalConnectors() {
   useEffect(() => {
     const fetchConnectors = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/v1/config/portal-connectors");
-        if (res.data && res.data.success) {
-          setConnectors(res.data.data);
+        const data = await api.getPortalConnectors();
+        if (data && data.success) {
+          setConnectors(data.data);
         }
       } catch (err) {
         console.error("Failed to fetch portal connectors", err);
@@ -76,34 +76,7 @@ export default function PortalConnectors() {
 
   return (
     <ProtectedRoute>
-      <header className="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest border-b border-surface-container-high">
-        <div className="h-14 w-full px-layout-gutter flex items-center justify-between gap-space-lg">
-          <div className="flex items-center gap-space-md min-w-[280px]">
-            <img alt="Pragati Logo" className="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XF1PZsUoMowWpDMDKHX4d0Uh2TzyN0ieKoXRAg9eWo0KUOJEYX9ay-0FikqKi6SCy-s2qdnXKKSVBN1U3cGfFxFZF0ukpbfXY2DXXHGRuTayL8HUzuRTRsVXDXLBNUvCkLJ45-5sgvvJPij2xXTdFwemSujw5XjPH5QUdV8NmgQmyup3OjnHPFKO06ETugegA2e_yc3BJ49NnxvbQ_j3UdtcbgijRrC1sPHCXBUxBBvQe1hRNlh5IrYBas" />
-            <div className="flex flex-col">
-              <span className="font-title-sm text-title-sm text-primary leading-none">Pragati</span>
-              <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight mt-0.5">GeM Integrated Compliance Suite</span>
-            </div>
-          </div>
-          <nav className="hidden xl:flex items-center h-full gap-space-lg">
-            <Link className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="/">Tenders & Bids</Link>
-            <Link className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="/compliance-rules">Compliance Rules</Link>
-            <Link className="h-full flex items-center px-space-xs font-title-sm text-title-sm text-primary border-b-2 border-primary transition-colors" href="/portal-connectors">Portal Connectors</Link>
-            <Link className="h-full flex items-center px-space-xs font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="/audit-logs">Audit Logs</Link>
-          </nav>
-          <div className="flex items-center gap-space-md ml-auto">
-            <button onClick={logout} className="text-on-surface-variant hover:text-primary font-label-md">Logout</button>
-            <div className="h-6 w-px bg-surface-container-high mx-space-2xs"></div>
-            <div className="flex items-center gap-space-sm pl-space-xs cursor-pointer group">
-              <img alt="Profile" className="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0gElgbgal4gd4SIMy3OwrKEcZe588flOOdKLPMe4KQ8SoeCQsdkrar6ypZ2bugDnd-W1CEEwh6fZA0UeQvpJYK4xZQmhS5NS9VGrL2hCUUlpfTD9A4ONwukYNR9GdwE_uDTQ7SBkE4ZFxXZMguxQxl-QG5ChJzn0KbJqTwPV0WnU1JFroUwLdTwGYDpAy41oufwfBXZlsuDZK3oN7EQKVs24q22rliyszAmfiQaCV5xMLweN3IuNKsQ" />
-              <div className="hidden lg:flex flex-col text-left">
-                <span className="font-label-md text-label-md text-on-surface leading-tight font-semibold">{user?.name || 'Rajesh Kumar, IAS'}</span>
-                <span className="font-label-sm text-label-sm text-on-surface-variant leading-tight">{user?.role || 'Senior Procurement Officer'}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      
 
       <main className="w-full pt-14 bg-surface min-h-screen">
         <div className="flex flex-col w-full">
