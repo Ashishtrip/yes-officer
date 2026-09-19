@@ -1,12 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.auditService = exports.AuditService = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma_1 = __importDefault(require("../utils/prisma"));
 class AuditService {
     async logAction(payload) {
         try {
-            await prisma.auditLog.create({
+            await prisma_1.default.auditLog.create({
                 data: payload
             });
             console.log(`Audit log created: ${payload.action}`);
@@ -17,7 +19,7 @@ class AuditService {
     }
     async getLogs() {
         try {
-            return await prisma.auditLog.findMany({
+            return await prisma_1.default.auditLog.findMany({
                 orderBy: { timestamp: 'desc' },
                 take: 100
             });
@@ -29,7 +31,7 @@ class AuditService {
     }
     async searchLogs(query) {
         try {
-            return await prisma.auditLog.findMany({
+            return await prisma_1.default.auditLog.findMany({
                 where: {
                     OR: [
                         { action: { contains: query, mode: 'insensitive' } },

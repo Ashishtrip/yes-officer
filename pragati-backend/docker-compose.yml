@@ -50,6 +50,16 @@ services:
       exit 0;
       "
 
+  redis:
+    image: redis:7-alpine
+    container_name: pragati-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - pragati-redis-data:/data
+    restart: unless-stopped
+
 volumes:
   pragati-pgdata:
   pragati-minio-data:
+  pragati-redis-data:

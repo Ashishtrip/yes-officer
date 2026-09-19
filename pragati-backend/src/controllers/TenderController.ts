@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma';
 import { BaseController } from './BaseController';
 
-const prisma = new PrismaClient();
 
 export class TenderController extends BaseController {
   

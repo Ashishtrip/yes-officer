@@ -1,13 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BidController = void 0;
-const client_1 = require("@prisma/client");
+const prisma_1 = __importDefault(require("../utils/prisma"));
 const BaseController_1 = require("./BaseController");
 const ComplianceEngineService_1 = require("../services/ComplianceEngineService");
 const ScoringService_1 = require("../services/ScoringService");
 const PortalIntegrationService_1 = require("../services/PortalIntegrationService");
 const AuditService_1 = require("../services/AuditService");
-const prisma = new client_1.PrismaClient();
 class BidController extends BaseController_1.BaseController {
     complianceEngine;
     scoringService;
@@ -21,7 +23,7 @@ class BidController extends BaseController_1.BaseController {
     getBidById = async (req, res) => {
         const { id } = req.params;
         try {
-            const bid = await prisma.bid.findUnique({
+            const bid = await prisma_1.default.bid.findUnique({
                 where: { id: id },
                 include: {
                     tender: true,
@@ -44,7 +46,7 @@ class BidController extends BaseController_1.BaseController {
         const { id } = req.params;
         const { decision, comments } = req.body;
         try {
-            const bid = await prisma.bid.update({
+            const bid = await prisma_1.default.bid.update({
                 where: { id: id },
                 data: {
                     po_decision: decision,
@@ -76,7 +78,7 @@ class BidController extends BaseController_1.BaseController {
         // 3. Save to database using Prisma
         try {
             // Upsert bidder first
-            const savedBidder = await prisma.bidder.upsert({
+            const savedBidder = await prisma_1.default.bidder.upsert({
                 where: {
                     id: bidder.id || 'NEW', // In reality, maybe match on PAN/GSTIN, but we will create for now if no ID
                 },
@@ -90,7 +92,7 @@ class BidController extends BaseController_1.BaseController {
                     entity_type: bidder.entityType || 'Private Limited',
                 }
             });
-            const savedBid = await prisma.bid.create({
+            const savedBid = await prisma_1.default.bid.create({
                 data: {
                     tender_id: tenderId,
                     bidder_id: savedBidder.id,
