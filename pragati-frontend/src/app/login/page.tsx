@@ -23,31 +23,16 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const { apiClient } = await import('@/lib/apiClient');
+      const data = await apiClient('/auth/login', {
+        data: { email, password }
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      setTimeout(() => {
-        login(data.data.token, data.data.user);
-        router.push('/');
-      }, 1000);
-      
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError(String(err));
-      }
+      login(data.data.token, data.data.user);
+      router.push('/');
+    } catch (err: any) {
+      setError(err.message || String(err));
+    } finally {
       setLoading(false);
     }
   };
