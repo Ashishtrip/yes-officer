@@ -2,17 +2,17 @@ const fs = require('fs');
 const path = require('path');
 
 const mapping = {
-  'Tenders &amp; Bids': '/tenders',
-  'Compliance Rules': '/evaluation',
-  'Portal Connectors': '/integration',
-  'Audit Logs': '/transparency',
-  'Vigilance &amp; Analytics': '/investigation',
-  'Contract Award &amp; PBG': '/contract-award',
-  'Grievance &amp; IEM Appeals': '/grievance',
-  'Public RTI Disclosures': '/transparency',
-  'Developer Gateway': '/integration',
-  'Admin': '/dashboard',
-  'User &amp; Access / Admin': '/dashboard'
+  'Tenders &amp; Bids': '/tender',
+  'Compliance Rules': '/compliance-rules',
+  'Portal Connectors': '/portal-connectors',
+  'Audit Logs': '/audit-logs',
+  'Vigilance &amp; Analytics': '/vigilance-analytics',
+  'Contract Award &amp; PBG': '/public-procurement',
+  'Grievance &amp; IEM Appeals': '/bidder-grievance',
+  'Public RTI Disclosures': '/audit-logs',
+  'Developer Gateway': '/portal-connectors',
+  'Admin': '/user-management',
+  'User &amp; Access / Admin': '/user-management'
 };
 
 function processDir(dir) {
@@ -48,5 +48,5 @@ function processDir(dir) {
     }
 }
 
-processDir('src/app');
+processDir('pragati-frontend/src/app');
 console.log('Done mapping links.');
