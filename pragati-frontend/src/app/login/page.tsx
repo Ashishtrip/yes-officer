@@ -45,7 +45,7 @@ export default function LoginPage() {
         </div>
       )}
       
-<main className="w-full pt-14 bg-surface min-h-screen">
+<main className="w-full bg-surface-container min-h-screen">
 <div className="flex flex-col w-full font-body-md text-body-md text-on-surface">
 {/* Sovereign Top Tricolor Border Strip */}
 <div className="w-full h-1.5 flex flex-row">
