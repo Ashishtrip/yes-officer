@@ -11,8 +11,8 @@ export default function Page() {
     const fetchClarifications = async () => {
       try {
         const res = await api.getClarifications();
-        if (res && res.success) {
-          setClarifications(res.data);
+        if (res && res.clarifications) {
+          setClarifications(res.clarifications);
         }
       } catch (err) {
         console.error("Failed to fetch clarifications", err);

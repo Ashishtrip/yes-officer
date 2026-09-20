@@ -25,8 +25,8 @@ export const api = {
   updateConfigRule: (id: string, data: any) => apiClient(`/config/rules/${id}`, { data, method: 'PUT' }).then((res: any) => res.data),
 
   // Interactions
-  getClarifications: () => apiClient('/interaction/clarifications').then((res: any) => res.data),
-  getGrievances: () => apiClient('/interaction/grievances').then((res: any) => res.data),
+  getClarifications: () => apiClient('/interactions/clarifications').then((res: any) => res.data),
+  getGrievances: () => apiClient('/interactions/grievances').then((res: any) => res.data),
 
   // Users
   getUsers: () => apiClient('/users').then((res: any) => res.data || res),

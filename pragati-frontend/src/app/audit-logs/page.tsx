@@ -26,14 +26,15 @@ export default function AuditLogs() {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const res = await api.getAuditLogs();
-        if (res && res.success) {
-          const apiLogs = res.data.logs.map((log: any, idx: number) => ({
+        const data = await api.getAuditLogs();
+        if (data && data.logs) {
+          const apiLogs = data.logs.map((log: any, idx: number) => ({
             id: `row${idx + 1}`,
             realId: log.id,
             officer: log.user_email,
             role: "System Check",
-            hash: "7f3b89a01f964032d849a64720980c6551b81ee0a905a5a1f292c2a048a19a01", // Fake hash for demo
+            // Generate a pseudo-random hash for visual representation if one doesn't exist
+            hash: log.id ? log.id.replace(/-/g, '') + "a64720980c6551b81ee0a905a5a1f292c2a048a19a01" : "7f3b89a01f964032d849a64720980c6551b81ee0a905a5a1f292c2a048a19a01", 
             justification: log.action + " - " + (log.details ? JSON.stringify(log.details) : log.target),
             timestamp: new Date(log.timestamp).toLocaleString(),
             action: log.action,

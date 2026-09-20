@@ -17,10 +17,10 @@ export default function ComplianceRules() {
     const fetchRules = async () => {
       try {
         const res = await api.getConfigRules();
-        if (res && res.success) {
-          setRules(res.data);
-          if (res.data.length > 0) {
-            setSelectedRule(res.data[0].rule_id);
+        if (Array.isArray(res)) {
+          setRules(res);
+          if (res.length > 0) {
+            setSelectedRule(res[0].rule_id);
           }
         }
       } catch (err) {

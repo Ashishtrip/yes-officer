@@ -26,8 +26,8 @@ export default function PortalConnectors() {
     const fetchConnectors = async () => {
       try {
         const data = await api.getPortalConnectors();
-        if (data && data.success) {
-          setConnectors(data.data);
+        if (data && data.connectors) {
+          setConnectors(data.connectors);
         }
       } catch (err) {
         console.error("Failed to fetch portal connectors", err);
