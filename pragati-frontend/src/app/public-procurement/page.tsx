@@ -3,7 +3,24 @@
 import React from "react";
 import Link from "next/link";
 
+import { useEffect, useState } from 'react';
+import { api } from '@/services/api';
+
 export default function Page() {
+  const [tenders, setTenders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.getTenders()
+      .then(res => {
+        if (res && res.tenders) {
+          setTenders(res.tenders);
+        }
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
 
@@ -189,131 +206,79 @@ export default function Page() {
 </tr>
 </thead>
 <tbody className="text-on-surface">
-{/* ROW 1 */}
-<tr className="hover:bg-surface-container-low/60 transition-colors">
-<td className="py-3 px-3 align-top font-tabular-num text-tabular-num font-semibold text-primary">
-<div className="flex items-center gap-1">
-<span>GEM/2026/B/489201</span>
-</div>
-<span className="text-[10px] text-on-surface-variant block font-normal">GeM Public RA No. 8912</span>
-<span className="inline-flex items-center gap-1 mt-1 text-[10px] px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-semibold uppercase">
-<span className="w-1 h-1 rounded-full bg-secondary"></span> Published
-                    </span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="font-semibold text-on-surface block">MoHFW (Procurement Wing-IV)</span>
-<span className="text-body-sm text-on-surface-variant text-[12px] block mt-0.5">High-Precision Biomedical Diagnostic Imaging Suite (64-Slice PET-CT)</span>
-<span className="text-[11px] text-on-surface-variant opacity-80 block">Qty: 24 Systems • AIIMS Delivery Cluster</span>
-</td>
-<td className="py-3 px-3 align-top text-right font-tabular-num text-tabular-num">
-<div className="text-[11px] text-on-surface-variant">Est: ₹48.50 Cr</div>
-<div className="font-bold text-on-surface text-[14px]">₹41.20 Cr</div>
-<div className="text-[11px] font-semibold text-secondary">
-                      Saved ₹7.30 Cr (15.05%)
-                    </div>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="font-medium text-on-surface">Apex Heavy Diagnostic Systems <span className="text-[11px] text-on-surface-variant">(50%)</span></div>
-<div className="font-medium text-on-surface mt-1">ABC Industries Ltd <span className="text-[11px] text-secondary font-semibold">(50% MII Match)</span></div>
-<span className="text-[10px] text-on-surface-variant block mt-0.5 font-tabular-num">GSTIN: 07AAACA4918Q1Z4</span>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="text-[12px] text-on-surface leading-tight">
-                      Lowest Evaluated Commercial (L-1); Class-I Local Content declared at <span className="font-semibold text-primary">68.4%</span>.
-                    </div>
-<span className="inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
-                      Integrity Pact Compliant
-                    </span>
-</td>
-<td className="py-3 px-3 align-top text-right">
-<Link className="inline-flex items-center gap-1 text-[11px] font-label-md text-primary hover:underline bg-surface-container px-2 py-1 rounded" href="#view-gazette-1">
-<span className="material-symbols-outlined text-[14px]">picture_as_pdf</span> Notice
-                    </Link>
-</td>
-</tr>
-{/* ROW 2 */}
-<tr className="hover:bg-surface-container-low/60 transition-colors bg-surface-container-low/20">
-<td className="py-3 px-3 align-top font-tabular-num text-tabular-num font-semibold text-primary">
-<div className="flex items-center gap-1">
-<span>GEM/2026/B/481902</span>
-</div>
-<span className="text-[10px] text-on-surface-variant block font-normal">GeM Direct Reverse Auction</span>
-<span className="inline-flex items-center gap-1 mt-1 text-[10px] px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-semibold uppercase">
-<span className="w-1 h-1 rounded-full bg-secondary"></span> Published
-                    </span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="font-semibold text-on-surface block">Ministry of Defence (AFMS)</span>
-<span className="text-body-sm text-on-surface-variant text-[12px] block mt-0.5">Automated External Defibrillators &amp; ICU Ventilator Modules</span>
-<span className="text-[11px] text-on-surface-variant opacity-80 block">Qty: 480 Units • Border Command Hospitals</span>
-</td>
-<td className="py-3 px-3 align-top text-right font-tabular-num text-tabular-num">
-<div className="text-[11px] text-on-surface-variant">Est: ₹18.20 Cr</div>
-<div className="font-bold text-on-surface text-[14px]">₹15.85 Cr</div>
-<div className="text-[11px] font-semibold text-secondary">
-                      Saved ₹2.35 Cr (12.91%)
-                    </div>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="font-medium text-on-surface">MedTech Bharat Innovations LLP</div>
-<span className="text-[10px] px-1.5 py-0.2 rounded bg-surface-container-high text-primary font-semibold">MSE Registered</span>
-<span className="text-[10px] text-on-surface-variant block mt-0.5 font-tabular-num">GSTIN: 27AABCM8210P1ZK</span>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="text-[12px] text-on-surface leading-tight">
-                      L-1 Responsive; Class-I MII Content <span className="font-semibold text-primary">82.1%</span> (Pune R&amp;D Facility Certified).
-                    </div>
-<span className="inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
-                      NABL Tested Batch
-                    </span>
-</td>
-<td className="py-3 px-3 align-top text-right">
-<Link className="inline-flex items-center gap-1 text-[11px] font-label-md text-primary hover:underline bg-surface-container px-2 py-1 rounded" href="#view-gazette-2">
-<span className="material-symbols-outlined text-[14px]">picture_as_pdf</span> Notice
-                    </Link>
-</td>
-</tr>
-{/* ROW 3 */}
-<tr className="hover:bg-surface-container-low/60 transition-colors">
-<td className="py-3 px-3 align-top font-tabular-num text-tabular-num font-semibold text-primary">
-<div className="flex items-center gap-1">
-<span>GEM/2026/B/479100</span>
-</div>
-<span className="text-[10px] text-on-surface-variant block font-normal">Global Open Tender E-Proc</span>
-<span className="inline-flex items-center gap-1 mt-1 text-[10px] px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-semibold uppercase">
-<span className="w-1 h-1 rounded-full bg-secondary"></span> Published
-                    </span>
-</td>
-<td className="py-3 px-3 align-top">
-<span className="font-semibold text-on-surface block">Ministry of Heavy Industries</span>
-<span className="text-body-sm text-on-surface-variant text-[12px] block mt-0.5">Heavy Mobile Medical Vans with On-board Sterilization Units</span>
-<span className="text-[11px] text-on-surface-variant opacity-80 block">Qty: 60 Custom Chassis • PM-ABHIM Scheme</span>
-</td>
-<td className="py-3 px-3 align-top text-right font-tabular-num text-tabular-num">
-<div className="text-[11px] text-on-surface-variant">Est: ₹32.00 Cr</div>
-<div className="font-bold text-on-surface text-[14px]">₹29.10 Cr</div>
-<div className="text-[11px] font-semibold text-secondary">
-                      Saved ₹2.90 Cr (9.06%)
-                    </div>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="font-medium text-on-surface">Tata Motors Special Vehicles Div.</div>
-<span className="text-[10px] text-on-surface-variant block mt-0.5 font-tabular-num">GSTIN: 27AAACT2727Q1ZW</span>
-</td>
-<td className="py-3 px-3 align-top">
-<div className="text-[12px] text-on-surface leading-tight">
-                      L-1 Techno-Commercial Matrix; Local content verified at <span className="font-semibold text-primary">91.5%</span>.
-                    </div>
-<span className="inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
-                      ARA-Certified Body
-                    </span>
-</td>
-<td className="py-3 px-3 align-top text-right">
-<Link className="inline-flex items-center gap-1 text-[11px] font-label-md text-primary hover:underline bg-surface-container px-2 py-1 rounded" href="#view-gazette-3">
-<span className="material-symbols-outlined text-[14px]">picture_as_pdf</span> Notice
-                    </Link>
-</td>
-</tr>
+  {loading ? (
+    <tr>
+      <td colSpan={6} className="text-center py-8 text-on-surface-variant">Loading public procurement data...</td>
+    </tr>
+  ) : tenders.length === 0 ? (
+    <tr>
+      <td colSpan={6} className="text-center py-8 text-on-surface-variant">No records found.</td>
+    </tr>
+  ) : (
+    tenders.map((tender, idx) => {
+      const awardedBids = tender.bids ? tender.bids.filter((b: any) => b.status === 'ACCEPTED') : [];
+      const savings = tender.estimated_value && tender.awarded_value ? tender.estimated_value - tender.awarded_value : 0;
+      const savingsPct = tender.estimated_value && savings > 0 ? (savings / tender.estimated_value) * 100 : 0;
+      
+      return (
+        <tr key={tender.id || idx} className="hover:bg-surface-container-low/60 transition-colors">
+          <td className="py-3 px-3 align-top font-tabular-num text-tabular-num font-semibold text-primary">
+            <div className="flex items-center gap-1">
+              <span>{tender.gem_tender_id}</span>
+            </div>
+            <span className="text-[10px] text-on-surface-variant block font-normal">{tender.category}</span>
+            <span className="inline-flex items-center gap-1 mt-1 text-[10px] px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-semibold uppercase">
+              <span className="w-1 h-1 rounded-full bg-secondary"></span> {tender.status}
+            </span>
+          </td>
+          <td className="py-3 px-3 align-top">
+            <span className="font-semibold text-on-surface block">{tender.department || 'Central Procurement'}</span>
+            <span className="text-body-sm text-on-surface-variant text-[12px] block mt-0.5">{tender.title}</span>
+            <span className="text-[11px] text-on-surface-variant opacity-80 block">Qty: As per RFP</span>
+          </td>
+          <td className="py-3 px-3 align-top text-right font-tabular-num text-tabular-num">
+            <div className="text-[11px] text-on-surface-variant">Est: ₹{tender.estimated_value?.toFixed(2) || 'N/A'} Cr</div>
+            <div className="font-bold text-on-surface text-[14px]">₹{tender.awarded_value?.toFixed(2) || 'N/A'} Cr</div>
+            {savings > 0 && (
+              <div className="text-[11px] font-semibold text-secondary">
+                Saved ₹{savings.toFixed(2)} Cr ({savingsPct.toFixed(2)}%)
+              </div>
+            )}
+          </td>
+          <td className="py-3 px-3 align-top">
+            {awardedBids.length > 0 ? awardedBids.map((bid: any, bidx: number) => (
+              <div key={bidx} className="mb-2 last:mb-0">
+                <div className="font-medium text-on-surface">
+                  {bid.bidder?.entity_name}
+                  {bid.is_mse && <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded bg-surface-container-high text-primary font-semibold">MSE</span>}
+                </div>
+                <span className="text-[10px] text-on-surface-variant block mt-0.5 font-tabular-num">GSTIN: {bid.bidder?.gstin}</span>
+              </div>
+            )) : (
+              <span className="text-sm text-on-surface-variant">Pending</span>
+            )}
+          </td>
+          <td className="py-3 px-3 align-top">
+            {awardedBids.length > 0 ? (
+              <div className="text-[12px] text-on-surface leading-tight">
+                Lowest Evaluated Commercial (L-1); Class-I Local Content declared at <span className="font-semibold text-primary">{awardedBids[0].local_content_pct}%</span>.
+              </div>
+            ) : (
+              <div className="text-[12px] text-on-surface leading-tight text-on-surface-variant">Evaluating...</div>
+            )}
+            <span className="inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">
+              Integrity Pact Compliant
+            </span>
+          </td>
+          <td className="py-3 px-3 align-top text-right">
+            <Link className="inline-flex items-center gap-1 text-[11px] font-label-md text-primary hover:underline bg-surface-container px-2 py-1 rounded" href={`/tender/${tender.id}`}>
+              <span className="material-symbols-outlined text-[14px]">visibility</span> View Details
+            </Link>
+          </td>
+        </tr>
+      );
+    })
+  )}
 </tbody>
 </table>
 </div>

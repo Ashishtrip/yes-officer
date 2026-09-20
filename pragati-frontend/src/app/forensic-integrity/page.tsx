@@ -375,30 +375,30 @@ export default function Page() {
 </tr>
 </thead>
 <tbody className="divide-y divide-surface-container-high">
-{/* Row 1: EXIF & PDF Metadata Chronology */}
-<tr className="hover:bg-surface-container-low/50 transition-colors">
+{forensics.map((f, idx) => (
+<tr key={f.id || idx} className="hover:bg-surface-container-low/50 transition-colors">
 <td className="py-space-md px-space-md align-top">
 <div className="font-title-sm text-title-sm font-semibold text-on-surface">
-                      PDF Metadata &amp; Chronology
+                      {f.flag_type.replace('_', ' ')}
                     </div>
 <div className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-                      EXIF, Font Subsets, Producer Hashes
+                      Vigilance Analytics Rule
                     </div>
 <div className="text-[11px] font-mono text-on-surface-variant mt-1">
-                      Payload: BoQ_Specs_Signed.pdf
+                      Bid Ref: {f.bid_id.slice(0,8)}...
                     </div>
 </td>
 <td className="py-space-md px-space-md align-top">
 <span className="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold text-on-surface">
-                      LayoutLMv3 Multi-Modal
+                      Vigilance Graph Engine
                     </span>
 <div className="text-[11px] text-on-surface-variant mt-1">
-                      Entropy &amp; Compression Scan
+                      Detected at: {new Date(f.detected_at).toLocaleString()}
                     </div>
 </td>
 <td className="py-space-md px-space-md align-top max-w-sm">
 <p className="text-on-surface text-body-sm leading-relaxed">
-                      Author string <span className="font-mono text-error font-bold">&quot;Administrator-HP&quot;</span> and cracked Adobe Acrobat Pro v2024.1 signature identical across Bidder A, B, and D with creation timestamp delta of only <span className="font-bold text-error">14 seconds</span>.
+                      {f.description}
                     </p>
 </td>
 <td className="py-space-md px-space-md align-top">
@@ -406,123 +406,20 @@ export default function Page() {
 <div className="text-[11px] text-secondary font-semibold mt-0.5">Strict Collusion Inference</div>
 </td>
 <td className="py-space-md px-space-md align-top text-right">
-<span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-error-container/40 text-on-error-container font-label-sm text-label-sm font-bold uppercase">
-<span className="w-1.5 h-1.5 rounded-full bg-error"></span>
-                      COLLUSIVE
+<span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded font-label-sm text-label-sm font-bold uppercase ${f.severity === 'HIGH' ? 'bg-error-container/40 text-on-error-container' : 'bg-tertiary-fixed/60 text-tertiary'}`}>
+<span className={`w-1.5 h-1.5 rounded-full ${f.severity === 'HIGH' ? 'bg-error' : 'bg-tertiary'}`}></span>
+                      {f.severity === 'HIGH' ? 'CRITICAL' : f.severity}
                     </span>
 </td>
 </tr>
-{/* Row 2: ICAI CA UDIN Seal */}
-<tr className="hover:bg-surface-container-low/50 transition-colors">
-<td className="py-space-md px-space-md align-top">
-<div className="font-title-sm text-title-sm font-semibold text-on-surface">
-                      ICAI CA UDIN Stamp Vector
-                    </div>
-<div className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-                      Auditor Turnover Certification
-                    </div>
-<div className="text-[11px] font-mono text-on-surface-variant mt-1">
-                      Ref UDIN: 24089421B8942E1
-                    </div>
-</td>
-<td className="py-space-md px-space-md align-top">
-<span className="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold text-on-surface">
-                      ICAI API Bridge v2
-                    </span>
-<div className="text-[11px] text-on-surface-variant mt-1">
-                      Pixel-Vector Congruence
-                    </div>
-</td>
-<td className="py-space-md px-space-md align-top max-w-sm">
-<p className="text-on-surface text-body-sm leading-relaxed">
-                      Pixel raster comparison yields <span className="font-bold text-error">99.8% geometric congruence</span> to a revoked stamp of CA Pramod &amp; Associates. Identical digital signature raster copied and pasted onto Bidder D submission.
-                    </p>
-</td>
-<td className="py-space-md px-space-md align-top">
-<div className="font-label-sm text-label-sm text-on-surface font-semibold">IPC Sec 465 / 471 (Forgery)</div>
-<div className="text-[11px] text-error font-semibold mt-0.5">Direct Criminal Fraud</div>
-</td>
-<td className="py-space-md px-space-md align-top text-right">
-<span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-error-container/40 text-on-error-container font-label-sm text-label-sm font-bold uppercase">
-<span className="w-1.5 h-1.5 rounded-full bg-error"></span>
-                      FRAUDULENT
-                    </span>
-</td>
-</tr>
-{/* Row 3: Rule 144(xi) Beneficial Ownership */}
-<tr className="hover:bg-surface-container-low/50 transition-colors">
-<td className="py-space-md px-space-md align-top">
-<div className="font-title-sm text-title-sm font-semibold text-on-surface">
-                      Land Border &amp; Beneficial Ownership
-                    </div>
-<div className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-                      GFR Rule 144(xi) Compliance
-                    </div>
-<div className="text-[11px] font-mono text-on-surface-variant mt-1">
-                      MCA21 CIN: U74999DL2018PTC
-                    </div>
-</td>
-<td className="py-space-md px-space-md align-top">
-<span className="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold text-on-surface">
-                      MCA21 Graph Traversal
-                    </span>
-<div className="text-[11px] text-on-surface-variant mt-1">
-                      Layered Corporate Trace
-                    </div>
-</td>
-<td className="py-space-md px-space-md align-top max-w-sm">
-<p className="text-on-surface text-body-sm leading-relaxed">
-                      Hidden beneficial holding of <span className="font-bold text-tertiary">42.4% equity</span> routed via Sino-Tech Global Holdings (Hong Kong) without mandatory MHA security clearance or DPIIT registration certificate.
-                    </p>
-</td>
-<td className="py-space-md px-space-md align-top">
-<div className="font-label-sm text-label-sm text-on-surface font-semibold">DoE OM F.No.6/18/2019-PPD</div>
-<div className="text-[11px] text-tertiary font-semibold mt-0.5">National Security Bar</div>
-</td>
-<td className="py-space-md px-space-md align-top text-right">
-<span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-tertiary-fixed/60 text-tertiary font-label-sm text-label-sm font-bold uppercase">
-<span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-                      NON-COMPLIANT
-                    </span>
-</td>
-</tr>
-{/* Row 4: Geo-Spatial & Telemetry Concurrence */}
-<tr className="hover:bg-surface-container-low/50 transition-colors">
-<td className="py-space-md px-space-md align-top">
-<div className="font-title-sm text-title-sm font-semibold text-on-surface">
-                      Geo-Spatial &amp; Telemetry Concurrence
-                    </div>
-<div className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-                      Submission TLS &amp; BGP Fingerprints
-                    </div>
-<div className="text-[11px] font-mono text-on-surface-variant mt-1">
-                      Coord: 28.6289° N, 77.3792° E
-                    </div>
-</td>
-<td className="py-space-md px-space-md align-top">
-<span className="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold text-on-surface">
-                      NIC GeoIP Bridge
-                    </span>
-<div className="text-[11px] text-on-surface-variant mt-1">
-                      Airtel ASN BGP Peering
-                    </div>
-</td>
-<td className="py-space-md px-space-md align-top max-w-sm">
-<p className="text-on-surface text-body-sm leading-relaxed">
-                      Submissions for Bidder A &amp; Bidder B routed via identical BGP router hops and exact match MAC address gateway hash (<span className="font-mono text-error">4A:89:12:DF:99</span>), proving operational unity.
-                    </p>
-</td>
-<td className="py-space-md px-space-md align-top">
-<div className="font-label-sm text-label-sm text-on-surface font-semibold">IT Act 2000 §43A &amp; §65B</div>
-<div className="text-[11px] text-secondary font-semibold mt-0.5">Conclusive Digital Proof</div>
-</td>
-<td className="py-space-md px-space-md align-top text-right">
-<span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-error-container/40 text-on-error-container font-label-sm text-label-sm font-bold uppercase">
-<span className="w-1.5 h-1.5 rounded-full bg-error"></span>
-                      COLLUSIVE
-                    </span>
-</td>
-</tr>
+))}
+{forensics.length === 0 && (
+  <tr>
+    <td colSpan={5} className="py-space-xl text-center text-on-surface-variant">
+      No forensic anomalies detected.
+    </td>
+  </tr>
+)}
 </tbody>
 </table>
 </div>
