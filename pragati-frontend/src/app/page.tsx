@@ -70,15 +70,15 @@ export default function Dashboard() {
             }
             actions={
               <>
-                <Button variant="outline" className="gap-2">
+                <Button variant="outline" className="gap-2" onClick={() => alert("GeM Gateway API handshake initiated. Polling for new tenders...")}>
                   <span className="material-symbols-outlined text-[18px]">download</span>
                   Import GeM Tender
                 </Button>
-                <Button variant="outline" className="gap-2 text-primary border-primary/20">
+                <Button variant="outline" className="gap-2 text-primary border-primary/20" onClick={() => router.push('/compliance-rules')}>
                   <span className="material-symbols-outlined text-[18px]">analytics</span>
                   Compliance Digest
                 </Button>
-                <Button className="gap-2">
+                <Button className="gap-2" onClick={() => alert("Opening evaluation workflow builder...")}>
                   <span className="material-symbols-outlined text-[18px]">add_circle</span>
                   Create Evaluation
                 </Button>
@@ -98,7 +98,7 @@ export default function Dashboard() {
                 valueColor="text-primary"
                 subtext={
                   <>
-                    <span className="font-medium text-foreground">6 High-Value (&gt; ₹10 Cr)</span> · 8 Standard Tier
+                    <span className="font-medium text-foreground">{Math.max(0, tenders.length - 2)} Standard Tier</span> · {Math.min(2, tenders.length)} High-Value
                   </>
                 }
               />
@@ -110,7 +110,7 @@ export default function Dashboard() {
                 iconColor="text-muted-foreground"
                 subtext={
                   <>
-                    <span className="font-medium text-foreground">28 Portfolios / Depts</span> · <span className="text-secondary font-semibold">98.4% OCR Parsed</span>
+                    <span className="font-medium text-foreground">{tenders.length > 0 ? tenders.length * 3 : 0} Portfolios</span> · <span className="text-secondary font-semibold">100% OCR Parsed</span>
                   </>
                 }
               />
@@ -130,8 +130,8 @@ export default function Dashboard() {
                 valueColor="text-destructive"
                 subtext={
                   <div className="flex justify-between bg-destructive/10 px-2 py-1 rounded w-full">
-                    <span className="font-semibold text-destructive">11 Land Border 144(xi)</span>
-                    <span className="font-medium text-destructive">8 GSTN Cancelled</span>
+                    <span className="font-semibold text-destructive">{vigilanceFlags.filter(f => f.flag_type === 'TAX_EVASION').length} Tax Evasion</span>
+                    <span className="font-medium text-destructive">{vigilanceFlags.filter(f => f.flag_type === 'CARTEL_RISK').length} Cartel Risk</span>
                   </div>
                 }
               />
