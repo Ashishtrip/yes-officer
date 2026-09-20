@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "@/services/api";
 import Link from "next/link";
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function Page() {
   // @ts-nocheck
@@ -11,8 +12,8 @@ export default function Page() {
     const fetchGrievances = async () => {
       try {
         const data = await api.getGrievances();
-        if (data && data.success) {
-          setGrievances(data.data);
+        if (data && data.grievances) {
+          setGrievances(data.grievances);
         }
       } catch (err) {
         console.error("Failed to fetch grievances", err);
@@ -22,9 +23,8 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
+    <ProtectedRoute>
 
-      
 <main className="w-full pt-14 bg-surface min-h-screen"><div className="flex flex-col w-full">
 {/* Sub-Header & Statutory Meta Ribbon */}
 <section className="w-full bg-surface-container-lowest border-b border-surface-container-high px-layout-gutter py-space-md">
@@ -89,9 +89,9 @@ export default function Page() {
 <div>
 <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Active Representations</span>
 <div className="flex items-baseline gap-2 mt-1">
-<span className="font-display-lg text-display-lg font-bold text-on-surface tabular-nums">3</span>
-<span className="font-label-sm text-label-sm text-error font-medium">1 Critical</span>
-<span className="font-label-sm text-label-sm text-on-surface-variant font-medium">/ 2 Routine</span>
+<span className="font-display-lg text-display-lg font-bold text-on-surface tabular-nums">{grievances?.length || 3}</span>
+<span className="font-label-sm text-label-sm text-error font-medium">{grievances?.filter(g => g.priority === 'High' || g.priority === 'Urgent').length || 1} Critical</span>
+<span className="font-label-sm text-label-sm text-on-surface-variant font-medium">/ {grievances?.filter(g => g.priority !== 'High' && g.priority !== 'Urgent').length || 2} Routine</span>
 </div>
 </div>
 <span className="p-2 rounded-lg bg-surface-container text-primary material-symbols-outlined text-[20px]">gavel</span>
@@ -163,7 +163,7 @@ export default function Page() {
 <div className="flex items-center gap-space-xs">
 <span className="material-symbols-outlined text-primary text-[20px]">account_balance</span>
 <h2 className="font-title-sm text-title-sm text-on-surface font-semibold">Statutory Grievance &amp; Appeal Docket Ledger</h2>
-<span className="ml-2 font-label-sm text-[11px] bg-primary text-on-primary px-2 py-0.2 rounded-full">3 Cases Pending</span>
+<span className="ml-2 font-label-sm text-[11px] bg-primary text-on-primary px-2 py-0.2 rounded-full">{grievances?.length || 0} Cases Pending</span>
 </div>
 <div className="flex items-center gap-2">
 <div className="flex items-center bg-surface-container-lowest rounded border border-outline-variant px-2 py-1">
@@ -186,97 +186,50 @@ export default function Page() {
 </tr>
 </thead>
 <tbody className="divide-y divide-surface-container font-body-sm text-body-sm">
-{/* Case Row 1 (Active/Selected) */}
-<tr className="bg-surface-container-low/60 hover:bg-surface-container-low transition-colors border-l-4 border-l-primary">
-<td className="py-3 px-space-md whitespace-nowrap">
-<span className="font-mono text-primary font-bold">#GRV-2026-0891</span>
-<span className="block font-label-sm text-[10px] text-on-surface-variant">Class-II MII</span>
-</td>
-<td className="py-3 px-space-md">
-<div className="font-semibold text-on-surface">Zenith Diagnostic Importers</div>
-<span className="font-label-sm text-[11px] text-error">Disqualified for Non-Local Status</span>
-</td>
-<td className="py-3 px-space-md">
-<p className="line-clamp-2 max-w-xs text-on-surface-variant">
-                      Alleged misclassification of Class-II local supplier threshold under DPIIT PPO 2017 order.
-                    </p>
-</td>
-<td className="py-3 px-space-md whitespace-nowrap text-on-surface-variant font-tabular-num">
-                    12-Oct-2026<br/><span className="text-[11px]">11:30 IST</span>
-</td>
-<td className="py-3 px-space-md whitespace-nowrap">
-<span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-label-sm font-semibold bg-amber-50 text-amber-800 border border-amber-200">
-<span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
-                      Hearing Concluded
-                    </span>
-</td>
-<td className="py-3 px-space-md text-right whitespace-nowrap">
-<button className="px-2.5 py-1 rounded bg-primary text-on-primary font-label-sm text-label-sm hover:bg-primary-container transition-colors inline-flex items-center gap-1" type="button">
-<span>Active</span>
-<span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-</button>
-</td>
-</tr>
-{/* Case Row 2 */}
-<tr className="hover:bg-surface-container-low transition-colors">
-<td className="py-3 px-space-md whitespace-nowrap">
-<span className="font-mono text-on-surface font-semibold">#GRV-2026-0884</span>
-<span className="block font-label-sm text-[10px] text-on-surface-variant">Tech Specs</span>
-</td>
-<td className="py-3 px-space-md">
-<div className="font-semibold text-on-surface">MedTech Solutions Corp</div>
-<span className="font-label-sm text-[11px] text-on-surface-variant">GSTIN: 07AABCM9102K1Z9</span>
-</td>
-<td className="py-3 px-space-md">
-<p className="line-clamp-2 max-w-xs text-on-surface-variant">
-                      Challenge against rejection of Technical Envelope C (Optical sensor tolerances).
-                    </p>
-</td>
-<td className="py-3 px-space-md whitespace-nowrap text-on-surface-variant font-tabular-num">
-                    09-Oct-2026<br/><span className="text-[11px]">16:45 IST</span>
-</td>
-<td className="py-3 px-space-md whitespace-nowrap">
-<span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-label-sm font-semibold bg-blue-50 text-blue-800 border border-blue-200">
-<span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-                      Evidence Under Review
-                    </span>
-</td>
-<td className="py-3 px-space-md text-right whitespace-nowrap">
-<button className="px-2.5 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors" type="button">
-                      Open Docket
-                    </button>
-</td>
-</tr>
-{/* Case Row 3 */}
-<tr className="hover:bg-surface-container-low transition-colors">
-<td className="py-3 px-space-md whitespace-nowrap">
-<span className="font-mono text-error font-semibold">#DEB-2026-0042</span>
-<span className="block font-label-sm text-[10px] text-error">Rule 144(xi)</span>
-</td>
-<td className="py-3 px-space-md">
-<div className="font-semibold text-on-surface">Sino-Global Biosensors Ltd</div>
-<span className="font-label-sm text-[11px] text-error font-medium">Land-Border Land Restriction</span>
-</td>
-<td className="py-3 px-space-md">
-<p className="line-clamp-2 max-w-xs text-on-surface-variant">
-                      Notice of 2-Year Debarment for failure of mandatory beneficial ownership disclosure.
-                    </p>
-</td>
-<td className="py-3 px-space-md whitespace-nowrap text-on-surface-variant font-tabular-num">
-                    04-Oct-2026<br/><span className="text-[11px]">09:15 IST</span>
-</td>
-<td className="py-3 px-space-md whitespace-nowrap">
-<span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-label-sm font-semibold bg-red-50 text-red-800 border border-red-200">
-<span className="w-1.5 h-1.5 rounded-full bg-red-600"></span>
-                      Interim Stay Denied
-                    </span>
-</td>
-<td className="py-3 px-space-md text-right whitespace-nowrap">
-<button className="px-2.5 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors" type="button">
-                      Open Docket
-                    </button>
-</td>
-</tr>
+{grievances && grievances.length > 0 ? (
+  grievances.map((grievance: any, index: number) => (
+    <tr key={index} className={`hover:bg-surface-container-low transition-colors ${index === 0 ? "bg-surface-container-low/60 border-l-4 border-l-primary" : ""}`}>
+      <td className="py-3 px-space-md whitespace-nowrap">
+        <span className={`font-mono font-bold ${index === 0 ? "text-primary" : "text-on-surface"}`}>{grievance.id || `#GRV-2026-0${884 + index}`}</span>
+        <span className="block font-label-sm text-[10px] text-on-surface-variant">{grievance.category || 'Tech Specs'}</span>
+      </td>
+      <td className="py-3 px-space-md">
+        <div className="font-semibold text-on-surface">{grievance.submittedBy || 'Appellant'}</div>
+        <span className="font-label-sm text-[11px] text-on-surface-variant">Status: {grievance.status}</span>
+      </td>
+      <td className="py-3 px-space-md">
+        <p className="line-clamp-2 max-w-xs text-on-surface-variant">
+          {grievance.description}
+        </p>
+      </td>
+      <td className="py-3 px-space-md whitespace-nowrap text-on-surface-variant font-tabular-num">
+        {new Date(grievance.createdAt).toLocaleDateString()}<br /><span className="text-[11px]">{new Date(grievance.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+      </td>
+      <td className="py-3 px-space-md whitespace-nowrap">
+        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-label-sm font-semibold ${grievance.status === 'Resolved' ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-blue-50 text-blue-800 border-blue-200'} border`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${grievance.status === 'Resolved' ? 'bg-amber-600' : 'bg-blue-600'}`}></span>
+          {grievance.status}
+        </span>
+      </td>
+      <td className="py-3 px-space-md text-right whitespace-nowrap">
+        <button className={`px-2.5 py-1 rounded font-label-sm text-label-sm transition-colors ${index === 0 ? 'bg-primary text-on-primary hover:bg-primary-container inline-flex items-center gap-1' : 'bg-surface-container-low hover:bg-surface-container text-on-surface'}`} type="button">
+          {index === 0 ? (
+            <>
+              <span>Active</span>
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </>
+          ) : (
+            'Open Docket'
+          )}
+        </button>
+      </td>
+    </tr>
+  ))
+) : (
+  <tr>
+    <td colSpan={6} className="py-6 text-center text-on-surface-variant">No grievances found.</td>
+  </tr>
+)}
 </tbody>
 </table>
 </div>
@@ -289,9 +242,9 @@ export default function Page() {
 <div>
 <div className="flex items-center gap-2">
 <h2 className="font-title-sm text-title-sm text-on-surface font-bold">Case Evidence &amp; Scrutiny Workspace</h2>
-<span className="px-2 py-0.5 rounded bg-surface-container text-on-surface font-mono text-[11px] font-semibold">#GRV-2026-0891</span>
+<span className="px-2 py-0.5 rounded bg-surface-container text-on-surface font-mono text-[11px] font-semibold">{grievances?.[0]?.id || '#GRV-2026-0891'}</span>
 </div>
-<span className="font-body-sm text-body-sm text-on-surface-variant">Appellant: Zenith Diagnostic Importers vs. Technical Evaluation Committee (MoHFW)</span>
+<span className="font-body-sm text-body-sm text-on-surface-variant">Appellant: {grievances?.[0]?.submittedBy || 'Zenith Diagnostic Importers'} vs. Technical Evaluation Committee (MoHFW)</span>
 </div>
 </div>
 <div className="flex items-center gap-2">
@@ -311,7 +264,7 @@ export default function Page() {
 <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant">Annexure-A1</span>
 </div>
 <p className="font-body-sm text-body-sm text-on-surface leading-relaxed">
-                &quot;The appellant claims their statutory Class-II Local Value Addition Certificate (stamped by an independent Chartered Accountant firm M/s Aggarwal &amp; Co.) asserting 21.8% domestic value addition was summarily rejected by the TEC during Envelope B evaluation without providing a 48-hour cure period.&quot;
+                &quot;{grievances?.[0]?.description || 'The appellant claims their statutory Class-II Local Value Addition Certificate (stamped by an independent Chartered Accountant firm M/s Aggarwal & Co.) asserting 21.8% domestic value addition was summarily rejected by the TEC during Envelope B evaluation without providing a 48-hour cure period.'}&quot;
               </p>
 <div className="mt-auto pt-2 flex items-center justify-between text-[11px] text-on-surface-variant">
 <span>Chartered Accountant UDIN: 26084912AAAA99</span>
@@ -504,7 +457,7 @@ export default function Page() {
 <span className="font-label-sm text-[10px] bg-surface-container px-2 py-0.5 rounded font-mono font-bold">CVC FORM-IV</span>
 </div>
 <p className="font-body-sm text-body-sm text-on-surface-variant">
-            Record binding bench verdict for <strong className="text-on-surface">Docket #GRV-2026-0891</strong>. This finding will automatically update the GeM procurement engine and seal the tender evaluation.
+            Record binding bench verdict for <strong className="text-on-surface">Docket {grievances?.[0]?.id || '#GRV-2026-0891'}</strong>. This finding will automatically update the GeM procurement engine and seal the tender evaluation.
           </p>
 {/* Radio Options for Official Verdict */}
 <div className="space-y-2">
@@ -606,6 +559,6 @@ export default function Page() {
 </footer>
 </div>
 </div></main>
-    </div>
+    </ProtectedRoute>
   );
 }

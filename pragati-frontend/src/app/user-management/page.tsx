@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { api } from "@/services/api";
 import Link from "next/link";
-import PageHeader from '@/components/PageHeader';
-import KpiCard from '@/components/KpiCard';
+import { PageHeader } from '@/components/PageHeader';
+import { KpiCard } from '@/components/KpiCard';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';

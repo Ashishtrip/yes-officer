@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -14,8 +14,11 @@ model Tender {
   id               String   @id @default(uuid())
   gem_tender_id    String   @unique
   title            String
+  department       String?
   category         String
   bid_end_date     DateTime
+  estimated_value  Float?
+  awarded_value    Float?
   compliance_rules Json
   status           String
   created_at       DateTime @default(now())
@@ -44,6 +47,8 @@ model Bid {
   ai_recommendation String?
   po_decision       String?
   po_comments       String?
+  local_content_pct Float?
+  is_mse            Boolean              @default(false)
   created_at        DateTime             @default(now())
 
   tender            Tender               @relation(fields: [tender_id], references: [id])

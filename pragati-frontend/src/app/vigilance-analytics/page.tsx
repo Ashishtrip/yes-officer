@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { api } from "@/services/api";
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { PageHeader } from "@/components/PageHeader";
 import { KpiCard } from "@/components/KpiCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -91,8 +92,9 @@ export default function VigilanceAnalyticsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <PageHeader 
+    <ProtectedRoute>
+      <div className="min-h-screen bg-background flex flex-col pt-14">
+        <PageHeader 
         breadcrumbs={breadcrumbs}
         title="Vigilance & Procurement Compliance Analytics"
         description="Real-time forensic telemetry across GeM bids, statutory database discrepancies, collusion signatures, and sovereign verification pipelines."
@@ -583,6 +585,7 @@ export default function VigilanceAnalyticsPage() {
           </div>
         </footer>
       </main>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 }

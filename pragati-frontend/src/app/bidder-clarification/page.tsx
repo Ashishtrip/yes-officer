@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "@/services/api";
 import Link from "next/link";
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function Page() {
   // @ts-nocheck
@@ -11,8 +12,8 @@ export default function Page() {
     const fetchClarifications = async () => {
       try {
         const res = await api.getClarifications();
-        if (res && res.success) {
-          setClarifications(res.data);
+        if (res && res.clarifications) {
+          setClarifications(res.clarifications);
         }
       } catch (err) {
         console.error("Failed to fetch clarifications", err);
@@ -22,9 +23,8 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
+    <ProtectedRoute>
 
-      
 <main className="w-full pt-14 bg-surface min-h-screen"><div className="flex flex-col w-full">
 {/* Breadcrumb & Regulatory Context Bar */}
 <section className="w-full bg-surface-container-low px-layout-gutter py-space-sm border-b border-outline-variant/30 flex flex-wrap items-center justify-between gap-y-space-xs text-body-sm text-on-surface-variant">
@@ -415,8 +415,7 @@ export default function Page() {
 </div>
 </div>
 </footer>
-</div>
-</main>
-    </div>
+</div></main>
+    </ProtectedRoute>
   );
 }

@@ -11,6 +11,11 @@ export class TenderController extends BaseController {
         include: {
           _count: {
             select: { bids: true }
+          },
+          bids: {
+            include: {
+              bidder: true
+            }
           }
         },
         orderBy: { created_at: 'desc' }

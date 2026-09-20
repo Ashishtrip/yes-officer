@@ -2,14 +2,14 @@ const fs = require('fs');
 const path = require('path');
 
 const files = [
-  'src/app/grievance/page.tsx',
-  'src/app/clarifications/page.tsx',
-  'src/app/evaluation/page.tsx',
-  'src/app/contract-award/page.tsx',
-  'src/app/transparency/page.tsx',
-  'src/app/investigation/page.tsx',
-  'src/app/financial-bid/page.tsx',
-  'src/app/integration/page.tsx'
+  'pragati-frontend/src/app/grievance/page.tsx',
+  'pragati-frontend/src/app/clarifications/page.tsx',
+  'pragati-frontend/src/app/evaluation/page.tsx',
+  'pragati-frontend/src/app/contract-award/page.tsx',
+  'pragati-frontend/src/app/transparency/page.tsx',
+  'pragati-frontend/src/app/investigation/page.tsx',
+  'pragati-frontend/src/app/financial-bid/page.tsx',
+  'pragati-frontend/src/app/integration/page.tsx'
 ];
 
 files.forEach(file => {

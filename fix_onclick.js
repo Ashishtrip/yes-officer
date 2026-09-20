@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const files = [
-  'src/app/clarifications/page.tsx'
+  'pragati-frontend/src/app/clarifications/page.tsx'
 ];
 
 files.forEach(file => {

@@ -12,9 +12,10 @@ interface PageHeaderProps {
   description?: string;
   actions?: React.ReactNode;
   statusInfo?: React.ReactNode;
+  badges?: { icon: string; label: string; subtext?: string; variant?: string }[];
 }
 
-export function PageHeader({ breadcrumbs, title, description, actions, statusInfo }: PageHeaderProps) {
+export function PageHeader({ breadcrumbs, title, description, actions, statusInfo, badges }: PageHeaderProps) {
   return (
     <section className="w-full bg-surface-container-lowest px-layout-margin py-space-md shadow-sm border-b">
       <div className="max-w-[1680px] mx-auto flex flex-col gap-4">
@@ -60,6 +61,19 @@ export function PageHeader({ breadcrumbs, title, description, actions, statusInf
               <p className="text-sm text-muted-foreground mt-1">
                 {description}
               </p>
+            )}
+            {badges && badges.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2 mt-3">
+                {badges.map((badge, idx) => (
+                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-secondary/10 border border-secondary/20">
+                    {badge.icon && <span className="material-symbols-outlined text-[16px] text-secondary">{badge.icon}</span>}
+                    <div className="flex flex-col">
+                      <span className="text-xs font-semibold text-secondary">{badge.label}</span>
+                      {badge.subtext && <span className="text-[10px] text-muted-foreground">{badge.subtext}</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
           {actions && (

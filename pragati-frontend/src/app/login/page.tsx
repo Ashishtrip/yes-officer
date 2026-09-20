@@ -9,8 +9,8 @@ import Image from 'next/image';
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'gov' | 'sso' | 'dsc'>('gov');
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('rajesh.kumar92@nic.in');
-  const [password, setPassword] = useState('GovSecure2025*#!');
+  const [email, setEmail] = useState('po@pragati.gov.in');
+  const [password, setPassword] = useState('password123');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -23,31 +23,16 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const { apiClient } = await import('@/lib/apiClient');
+      const data = await apiClient('/auth/login', {
+        data: { email, password }
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      setTimeout(() => {
-        login(data.data.token, data.data.user);
-        router.push('/');
-      }, 1000);
-      
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError(String(err));
-      }
+      login(data.data.token, data.data.user);
+      router.push('/');
+    } catch (err: any) {
+      setError(err.message || String(err));
+    } finally {
       setLoading(false);
     }
   };
@@ -328,10 +313,10 @@ export default function LoginPage() {
 </div>
 </div>
 <div className="grid grid-cols-6 gap-2 sm:gap-3">
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="8"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="4"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="1"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="9"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" defaultValue="8"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" defaultValue="4"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" defaultValue="1"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" defaultValue="9"/>
 <input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} placeholder="•" type="text"/>
 <input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} placeholder="•" type="text"/>
 </div>

@@ -1,68 +1,38 @@
-import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:4000/api/v1';
-
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Request interceptor to add the auth token
-apiClient.interceptors.request.use((config) => {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Response interceptor to handle 401 errors
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+import { apiClient } from '@/lib/apiClient';
 
 export const api = {
   // Auth
-  getMe: () => apiClient.get('/auth/me').then(res => res.data),
+  getMe: () => apiClient('/auth/me').then((res: any) => res.data),
 
   // Tenders
-  getTenders: () => apiClient.get('/tenders').then(res => res.data),
-  getTenderById: (id: string) => apiClient.get(`/tenders/${id}`).then(res => res.data),
+  getTenders: () => apiClient('/tenders').then((res: any) => res.data),
+  getTenderById: (id: string) => apiClient(`/tenders/${id}`).then((res: any) => res.data),
 
   // Bids
-  getBidDetails: (id: string) => apiClient.get(`/bids/${id}`).then(res => res.data),
+  getBidDetails: (id: string) => apiClient(`/bids/${id}`).then((res: any) => res.data),
   submitPoDecision: (id: string, decision: 'APPROVED' | 'REJECTED', comments: string) => 
-    apiClient.post(`/bids/${id}/decision`, { decision, comments }).then(res => res.data),
+    apiClient(`/bids/${id}/decision`, { data: { decision, comments } }).then((res: any) => res.data),
 
   // Audit Logs
-  getAuditLogs: (params?: any) => apiClient.get('/audit', { params }).then(res => res.data),
+  getAuditLogs: (params?: any) => {
+    const query = params ? '?' + new URLSearchParams(params).toString() : '';
+    return apiClient(`/audit${query}`).then((res: any) => res.data);
+  },
 
   // Config / Rules
-  getConfigRules: () => apiClient.get('/config/compliance-rules').then(res => res.data),
-  getPortalConnectors: () => apiClient.get('/config/portal-connectors').then(res => res.data),
-  updateConfigRule: (id: string, data: any) => apiClient.put(`/config/rules/${id}`, data).then(res => res.data),
+  getConfigRules: () => apiClient('/config/compliance-rules').then((res: any) => res.data),
+  getPortalConnectors: () => apiClient('/config/portal-connectors').then((res: any) => res.data),
+  updateConfigRule: (id: string, data: any) => apiClient(`/config/rules/${id}`, { data, method: 'PUT' }).then((res: any) => res.data),
 
   // Interactions
-  getClarifications: () => apiClient.get('/interaction/clarifications').then(res => res.data),
-  getGrievances: () => apiClient.get('/interaction/grievances').then(res => res.data),
+  getClarifications: () => apiClient('/interactions/clarifications').then((res: any) => res.data),
+  getGrievances: () => apiClient('/interactions/grievances').then((res: any) => res.data),
 
   // Users
-  getUsers: () => apiClient.get('/users').then(res => res.data),
-  getUserById: (id: string) => apiClient.get(`/users/${id}`).then(res => res.data),
+  getUsers: () => apiClient('/users').then((res: any) => res.data || res),
+  getUserById: (id: string) => apiClient(`/users/${id}`).then((res: any) => res.data || res),
 
   // Vigilance Analytics
-  getVigilanceStats: () => apiClient.get('/vigilance/analytics').then(res => res.data),
-  getVigilanceAlerts: () => apiClient.get('/vigilance/forensics').then(res => res.data),
+  getVigilanceStats: () => apiClient('/vigilance/analytics').then((res: any) => res.data),
+  getVigilanceAlerts: () => apiClient('/vigilance/forensics').then((res: any) => res.data),
 };
