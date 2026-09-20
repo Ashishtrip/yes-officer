@@ -141,6 +141,7 @@ export default function BidderDetail() {
 <th className="py-2.5 px-4 text-right" scope="col">Confidence &amp; Result</th>
 </tr>
 </thead>
+<tbody>
 {bid.verificationChecks?.map((check: any, idx: number) => (
   <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
     <td className="py-3 px-4">

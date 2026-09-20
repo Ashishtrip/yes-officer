@@ -8,6 +8,8 @@ interface KpiCardProps {
   iconColor?: string;
   valueColor?: string;
   subtext?: React.ReactNode;
+  trend?: React.ReactNode;
+  variant?: string;
   cardClassName?: string;
   titleClassName?: string;
 }
@@ -19,6 +21,8 @@ export function KpiCard({
   iconColor = "text-muted-foreground", 
   valueColor = "text-foreground", 
   subtext, 
+  trend,
+  variant,
   cardClassName = "",
   titleClassName = ""
 }: KpiCardProps) {
@@ -35,6 +39,11 @@ export function KpiCard({
         {subtext && (
           <div className="text-xs text-muted-foreground mt-1">
             {subtext}
+          </div>
+        )}
+        {trend && (
+          <div className="text-xs mt-2 font-medium">
+            {trend}
           </div>
         )}
       </CardContent>
