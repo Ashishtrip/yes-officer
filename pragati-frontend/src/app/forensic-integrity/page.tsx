@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "@/services/api";
 import Link from "next/link";
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function Page() {
   // @ts-nocheck
@@ -22,9 +23,8 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
+    <ProtectedRoute>
 
-      
 <main className="w-full pt-14 bg-surface min-h-screen"><div className="flex flex-col w-full">
 {/* TOP STATUTORY NOTICE & FORENSIC INVESTIGATION META-BAR */}
 <section className="bg-surface-container-lowest px-layout-gutter py-space-md shadow-sm">
@@ -606,6 +606,6 @@ export default function Page() {
 </div>
 </footer>
 </div></main>
-    </div>
+    </ProtectedRoute>
   );
 }

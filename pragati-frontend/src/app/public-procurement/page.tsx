@@ -2,6 +2,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 import { useEffect, useState } from 'react';
 import { api } from '@/services/api';
@@ -22,10 +23,8 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="bg-surface font-sans text-on-surface min-h-screen flex flex-col">
-
-      
-<main className="w-full pt-14 bg-surface min-h-screen"><div className="flex flex-col w-full">
+    <ProtectedRoute>
+      <main className="w-full pt-14 bg-surface min-h-screen"><div className="flex flex-col w-full">
 {/* Top Notice & Statutory Banner */}
 <div className="w-full bg-primary text-on-primary px-layout-gutter py-2 text-label-sm font-label-sm flex flex-wrap items-center justify-between gap-space-sm">
 <div className="flex items-center gap-space-sm flex-wrap">
@@ -680,6 +679,6 @@ export default function Page() {
 </div>
 </div>
 </div></main>
-    </div>
+    </ProtectedRoute>
   );
 }
