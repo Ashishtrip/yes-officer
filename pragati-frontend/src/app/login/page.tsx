@@ -9,8 +9,8 @@ import Image from 'next/image';
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'gov' | 'sso' | 'dsc'>('gov');
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('rajesh.kumar92@nic.in');
-  const [password, setPassword] = useState('GovSecure2025*#!');
+  const [email, setEmail] = useState('po@pragati.gov.in');
+  const [password, setPassword] = useState('password123');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -328,10 +328,10 @@ export default function LoginPage() {
 </div>
 </div>
 <div className="grid grid-cols-6 gap-2 sm:gap-3">
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="8"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="4"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="1"/>
-<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" value="9"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" defaultValue="8"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" defaultValue="4"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" defaultValue="1"/>
+<input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} type="text" defaultValue="9"/>
 <input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} placeholder="•" type="text"/>
 <input className="h-11 text-center font-headline-md text-headline-md font-bold rounded bg-surface-container-lowest border border-outline text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" maxLength={1} placeholder="•" type="text"/>
 </div>
