@@ -184,7 +184,7 @@ export default function Page() {
 <div className="flex items-center gap-space-xs shrink-0">
 <span className="font-label-sm text-label-sm text-on-surface-variant">Filter by Ministry:</span>
 <select className="h-8 px-2 rounded-lg bg-surface-container-low text-on-surface text-label-sm font-label-sm focus:outline-none">
-<option defaultValue>All Participating Ministries (12)</option>
+<option value="">All Participating Ministries (12)</option>
 <option>Ministry of Health &amp; Family Welfare</option>
 <option>Ministry of Defence (Medical)</option>
 <option>Ministry of Heavy Industries</option>

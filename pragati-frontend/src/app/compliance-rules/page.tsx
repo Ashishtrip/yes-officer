@@ -268,7 +268,7 @@ export default function ComplianceRules() {
                             </td>
                             <td className={`py-space-md px-space-md text-right font-tabular-num text-tabular-num font-semibold ${rule.weight.includes('Fail') ? 'text-error' : 'text-on-surface font-bold'}`}>{rule.weight}</td>
                             <td className="py-space-md px-space-lg text-center whitespace-nowrap">
-                              <button aria-defaultChecked={rule.status} className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none ${rule.status ? 'bg-primary-container' : 'bg-surface-container-high'}`}>
+                              <button aria-checked={rule.status} className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none ${rule.status ? 'bg-primary-container' : 'bg-surface-container-high'}`}>
                                 <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-surface shadow ring-0 transition duration-200 ease-in-out ${rule.status ? 'translate-x-4' : 'translate-x-0'}`}></span>
                               </button>
                             </td>
@@ -426,7 +426,7 @@ export default function ComplianceRules() {
                             Extracts raw CA membership seal and UDIN barcode from scanned PDF balance sheets.
                           </p>
                         </div>
-                        <button aria-defaultChecked={true} className="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full bg-secondary p-0.5 transition-colors duration-200" role="switch">
+                        <button aria-checked={true} className="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full bg-secondary p-0.5 transition-colors duration-200" role="switch">
                           <span className="translate-x-4 pointer-events-none inline-block h-4 w-4 transform rounded-full bg-surface shadow ring-0"></span>
                         </button>
                       </div>
@@ -435,7 +435,7 @@ export default function ComplianceRules() {
                     <div className="flex flex-col gap-space-xs">
                       <label className="font-title-sm text-body-sm text-on-surface font-semibold">Fallback Protocol (Portal API Failure / Timeout)</label>
                       <select className="h-9 bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 rounded-lg outline-none focus:bg-surface-container-lowest">
-                        <option defaultValue="1">Escalate to Senior PO for Manual Verification Drawer</option>
+                        <option value="1">Escalate to Senior PO for Manual Verification Drawer</option>
                         <option>Halt Bid Evaluation & Retry in 15 Minutes</option>
                         <option>Provisional Pass Subject to Post-Qualification Audit</option>
                         <option>Automated Clarification Request to Bidder (GeM Notice)</option>
