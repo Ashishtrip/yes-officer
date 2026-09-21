@@ -6,20 +6,20 @@ import { useAuth } from '@/context/AuthContext';
 import Header from './Header';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, loading } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !isAuthenticated) {
+    if (!loading && !user) {
       router.push('/login');
     }
-  }, [loading, isAuthenticated, router]);
+  }, [loading, user, router]);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading session...</div>;
   }
 
-  if (!isAuthenticated) {
+  if (!user) {
     return null;
   }
 
